@@ -28,7 +28,21 @@ Welcome to the repository powering `goosewin.com`.
    bun dev
    ```
 
-## 📝 Writing Blog Posts
+## Environment Variables
+
+This project uses environment variables for configuration:
+
+- `GITHUB_TOKEN`: Your GitHub personal access token (required for fetching GitHub repositories)
+
+You can copy the `.env.example` file and replace the values with your own:
+
+```sh
+cp .env.example .env.local
+```
+
+Then edit `.env.local` and replace `your_github_token_here` with your actual GitHub token.
+
+## Writing Blog Posts
 
 Add new MDX files to the `posts/` directory. Each post should include metadata at the top:
 

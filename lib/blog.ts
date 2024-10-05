@@ -41,7 +41,8 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       })
   );
 
-  return allPostsData.filter((post): post is BlogPost => post !== null)
+  return allPostsData
+    .filter((post): post is BlogPost => post !== null)
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
