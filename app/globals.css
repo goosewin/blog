@@ -2,26 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@layer base {
+  html {
+    font-family: 'Space Grotesk', sans-serif;
+    @apply text-base antialiased;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    @apply bg-white text-gray-900 transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-dark-bg text-gray-100;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-medium leading-tight mb-4;
+  }
+
+  h1 {
+    @apply text-4xl sm:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl sm:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl sm:text-3xl;
+  }
+
+  h4 {
+    @apply text-xl sm:text-2xl;
+  }
+
+  h5 {
+    @apply text-lg sm:text-xl;
+  }
+
+  h6 {
+    @apply text-base sm:text-lg;
+  }
+
+  p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  a:not(.nav-link):not(.title-link) {
+    @apply text-gray-900 dark:text-gray-100 transition-opacity duration-200;
+  }
+
+  a:not(.nav-link):not(.title-link):hover {
+    @apply opacity-80;
+  }
+
+  button,
+  a.nav-link,
+  a.title-link {
+    @apply transition-opacity duration-200;
+  }
+
+  a.underline-link {
+    @apply transition-opacity duration-200 border-b border-black dark:border-white;
+  }
+
+  a.nav-link {
+    @apply text-gray-600 dark:text-gray-400 font-normal;
+  }
+
+  a.nav-link:hover {
+    @apply opacity-80;
+  }
+
+  a.active-nav-link {
+    @apply text-black dark:text-white font-semibold border-b-2 border-black dark:border-white;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.text-balance {
+  text-wrap: balance;
 }
