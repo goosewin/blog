@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import StructuredData from '@/app/components/structured-data';
 
 export async function generateMetadata({
   params,
@@ -54,32 +55,48 @@ export default async function Article({
   const post = await getBlogPost(params.slug);
   if (!post) notFound();
 
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      '@type': 'Person',
+      name: 'Daniel Stolbov',
+    },
+    description: post.description || 'A blog post by Daniel Stolbov',
+  };
+
   return (
-    <article className="prose dark:prose-invert max-w-none">
-      <div className="mb-12">
-        <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 gap-2">
-          <span>
-            {new Date(post.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </span>
-          |
-          <span>
-            <Link
-              href="https://twitter.com/dan_goosewin"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-link"
-            >
-              @dan_goosewin
-            </Link>
-          </span>
+    <>
+      <StructuredData data={structuredData} />
+      <article className="prose dark:prose-invert max-w-none">
+        <div className="mb-12">
+          <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 gap-2">
+            <span>
+              {new Date(post.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </span>
+            |
+            <span>
+              <Link
+                href="https://twitter.com/dan_goosewin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link"
+              >
+                @dan_goosewin
+              </Link>
+            </span>
+          </div>
         </div>
-      </div>
-      <MDXContent slug={params.slug} />
-    </article>
+        <MDXContent slug={params.slug} />
+      </article>
+    </>
   );
 }

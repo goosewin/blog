@@ -3,6 +3,7 @@ import './globals.css';
 import PageLayout from './components/page-layout';
 import { ThemeProvider } from './components/theme-provider';
 import { Space_Grotesk } from 'next/font/google';
+import CanonicalLink from './components/canonical-link';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -28,15 +29,6 @@ export const metadata: Metadata = {
     creator: '@dan_goosewin',
     creatorId: '1559769056168710144',
   },
-  icons: {
-    icon: '/icon?size=32x32',
-    shortcut: '/icon?size=16x16',
-    apple: '/icon?size=180x180',
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: '/icon?size=180x180',
-    },
-  },
 };
 
 export default function RootLayout({
@@ -47,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={spaceGrotesk.className}>
       <head>
+        <CanonicalLink />
         <script
           id="theme-script"
           dangerouslySetInnerHTML={{
