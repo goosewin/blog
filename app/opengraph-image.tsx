@@ -26,7 +26,7 @@ export default async function Image() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="http://localhost:3000/icon.png"
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}/icon.png`}
           alt="goosewin.com icon"
           width={240}
           height={240}

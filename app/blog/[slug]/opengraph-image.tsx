@@ -1,11 +1,5 @@
 import { ImageResponse } from 'next/og';
 import { getBlogPost } from '@/lib/blog';
-import { Space_Grotesk } from 'next/font/google';
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 export const alt = 'Blog Post';
 export const size = {
@@ -27,7 +21,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
     (
       <div
         style={{
-          fontFamily: spaceGrotesk.style.fontFamily,
           fontSize: 32,
           background: '#232323',
           color: '#ffffff',
@@ -43,7 +36,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
         <div style={{ display: 'flex' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="http://localhost:3000/icon.png"
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/icon.png`}
             alt="goosewin.com icon"
             width={80}
             height={80}
