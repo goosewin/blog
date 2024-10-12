@@ -30,7 +30,7 @@ export default async function Image() {
           alt="goosewin.com icon"
           width={240}
           height={240}
-        />        
+        />
       </div>
     ),
     {
