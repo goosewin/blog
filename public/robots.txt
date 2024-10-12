@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://goosewin.com
+
+# Sitemaps
+Sitemap: https://goosewin.com/sitemap.xml
+Sitemap: https://goosewin.com/server-sitemap.xml
