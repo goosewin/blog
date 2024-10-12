@@ -3,7 +3,6 @@ import './globals.css';
 import PageLayout from './components/page-layout';
 import { ThemeProvider } from './components/theme-provider';
 import { Space_Grotesk } from 'next/font/google';
-import CanonicalLink from './components/canonical-link';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -16,7 +15,13 @@ export const metadata: Metadata = {
     template: '%s | Daniel Stolbov',
   },
   description:
-    'Daniel Stolbov is a software developer and a builder passionate about creating excellent digital experiences and inventing new enterprises.',
+    'Daniel Stolbov is an SDE Manager at Deaglo, a software engineer, and a builder. This website is collection of his thoughts and experiences.',
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL ?? 'https://goosewin.com'
+  ),
+  alternates: {
+    canonical: './',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -39,7 +44,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={spaceGrotesk.className}>
       <head>
-        <CanonicalLink />
         <script
           id="theme-script"
           dangerouslySetInnerHTML={{

@@ -6,7 +6,7 @@ import { GitHubRepo } from '@/types/github';
 export const metadata: Metadata = {
   title: 'Projects',
   description:
-    'Showcase of all the things I build to experiment with bleeding edge technology and to drive innovation.',
+    'Showcase of all the things Daniel Stolbov has built to experiment with bleeding edge technology and to drive innovation.',
 };
 
 interface CustomProject {

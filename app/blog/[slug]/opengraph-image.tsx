@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { getBlogPost } from '@/lib/blog';
 
-export const alt = 'Blog Post';
+export const alt = 'goosewin.com blog post preview';
 export const size = {
   width: 1200,
   height: 630,

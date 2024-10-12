@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Experience',
   description:
-    'Professional journey of Daniel Stolbov, a software developer and a builder with a track record of building excellent digital experiences and driving innovation across various industries.',
+    'Professional journey of Daniel Stolbov, a software developer and a builder with a track record of building disruptive digital experiences across various industries.',
 };
 
 interface ExperienceItem {
