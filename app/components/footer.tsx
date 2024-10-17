@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
           Daniel Stolbov, {new Date().getFullYear()}.{' '}
           <a
             className="nav-link"
-            href="https://github.com/goosewin/portfolio"
+            href="https://github.com/goosewin/blog"
             target="_blank"
             rel="noopener noreferrer"
           >

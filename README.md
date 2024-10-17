@@ -14,7 +14,7 @@ Welcome to the repository powering `goosewin.com`.
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/goosewin/portfolio.git
+   git clone https://github.com/goosewin/blog.git
    ```
 
 2. Install dependencies:
