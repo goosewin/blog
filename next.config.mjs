@@ -15,6 +15,18 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/js/script.js',
+        destination: 'https://analytics.goosewin.com/js/script.js',
+      },
+      {
+        source: '/api/event',
+        destination: 'https://analytics.goosewin.com/api/event',
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({

@@ -48,6 +48,9 @@ export default function RootLayout({
         <PlausibleProvider
           domain="goosewin.com"
           customDomain="https://analytics.goosewin.com"
+          selfHosted
+          trackOutboundLinks
+          enabled
         />
         <script
           id="theme-script"
