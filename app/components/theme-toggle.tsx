@@ -26,14 +26,14 @@ export default function ThemeToggle() {
         {theme === 'light' ? (
           <Moon size={20} />
         ) : theme === 'dark' ? (
-          <Sun size={20} />
-        ) : (
           <Monitor size={20} />
+        ) : (
+          <Sun size={20} />
         )}
         <div
           className={`absolute z-50 right-[-250%] w-8 text-center transition-opacity duration-150 ${isHovered ? 'opacity-100' : 'opacity-0'} sm:bottom-[-200%] sm:right-0 sm:w-16`}
         >
-          {theme === 'light' ? 'Light' : theme === 'dark' ? 'Dark' : 'System'}
+          {theme === 'light' ? 'Dark' : theme === 'dark' ? 'System' : 'Light'}
         </div>
       </div>
     </button>
