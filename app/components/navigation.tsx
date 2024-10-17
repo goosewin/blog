@@ -11,8 +11,8 @@ const Navigation: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { href: '/projects', label: 'Projects' },
-    { href: '/experience', label: 'Experience' },
+    { href: '/about', label: 'About' },
+    { href: '/work', label: 'Work' },
     { href: '/contact', label: 'Contact' },
   ];
 
