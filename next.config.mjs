@@ -4,7 +4,16 @@ import createMDX from '@next/mdx';
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
-    domains: ['github.com', 'api.github.com'],
+    remotePatterns: [
+      {
+        hostname: 'github.com',
+        protocol: 'https',
+      },
+      {
+        hostname: 'api.github.com',
+        protocol: 'https',
+      },
+    ],
   },
 };
 
