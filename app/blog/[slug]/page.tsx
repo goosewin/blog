@@ -5,11 +5,10 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import StructuredData from '@/app/components/structured-data';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const params = await props.params;
   const post = await getBlogPost(params.slug);
   if (!post) return {};
 
@@ -42,11 +41,10 @@ const MDXContent = dynamic(() => import('@/app/components/mdx-content'), {
   ssr: true,
 });
 
-export default async function Article({
-  params,
-}: {
-  params: { slug: string };
+export default async function Article(props: {
+  params: Promise<{ slug: string }>;
 }) {
+  const params = await props.params;
   const posts = await getAllBlogPosts();
   if (posts.length === 0) {
     redirect('/');

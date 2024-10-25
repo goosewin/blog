@@ -4,6 +4,7 @@ import PageLayout from './components/page-layout';
 import { ThemeProvider } from './components/theme-provider';
 import { Space_Grotesk } from 'next/font/google';
 import PlausibleProvider from 'next-plausible';
+import Head from 'next/head';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -43,8 +44,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={spaceGrotesk.className}>
-      <head>
+    <html lang="en" className={spaceGrotesk.className + ' dark'}>
+      <Head>
         <PlausibleProvider
           domain="goosewin.com"
           customDomain="https://analytics.goosewin.com"
@@ -52,23 +53,7 @@ export default function RootLayout({
           trackOutboundLinks
           enabled
         />
-        <script
-          id="theme-script"
-          dangerouslySetInnerHTML={{
-            __html: `
-            (function() {
-              function getInitialTheme() {
-                const savedTheme = localStorage.getItem('theme');
-                if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
-                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-              }
-              const theme = getInitialTheme();
-              document.documentElement.classList.toggle('dark', theme === 'dark');
-            })();
-          `,
-          }}
-        />
-      </head>
+      </Head>
       <body>
         <ThemeProvider>
           <PageLayout>{children}</PageLayout>
