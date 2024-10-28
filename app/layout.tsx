@@ -4,7 +4,6 @@ import PageLayout from './components/page-layout';
 import { ThemeProvider } from './components/theme-provider';
 import { Space_Grotesk } from 'next/font/google';
 import PlausibleProvider from 'next-plausible';
-import Head from 'next/head';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
