@@ -1,5 +1,6 @@
 import createMDX from '@next/mdx';
 import type { NextConfig } from 'next';
+import { withPlausibleProxy } from 'next-plausible';
 
 const nextConfig: NextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
@@ -15,18 +16,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/js/script.js',
-        destination: 'https://analytics.goosewin.com/js/script.js',
-      },
-      {
-        source: '/api/event',
-        destination: 'https://analytics.goosewin.com/api/event',
-      },
-    ];
-  },
 };
 
 const withMDX = createMDX({
@@ -37,4 +26,6 @@ const withMDX = createMDX({
   },
 });
 
-export default withMDX(nextConfig);
+export default withPlausibleProxy({
+  customDomain: 'https://analytics.goosewin.com',
+})(withMDX(nextConfig));

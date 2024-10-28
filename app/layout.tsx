@@ -45,19 +45,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={spaceGrotesk.className + ' dark'}>
-      <Head>
+      <body>
         <PlausibleProvider
           domain="goosewin.com"
-          customDomain="https://analytics.goosewin.com"
+          customDomain="https://goosewin.com"
           selfHosted
           trackOutboundLinks
           enabled
-        />
-      </Head>
-      <body>
-        <ThemeProvider>
-          <PageLayout>{children}</PageLayout>
-        </ThemeProvider>
+          trackLocalhost
+        >
+          <ThemeProvider>
+            <PageLayout>{children}</PageLayout>
+          </ThemeProvider>
+        </PlausibleProvider>
       </body>
     </html>
   );
