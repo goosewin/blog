@@ -16,6 +16,29 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  redirects: async () => {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'goosewin.me',
+          },
+          {
+            type: 'host',
+            value: 'goosew.in',
+          },
+          {
+            type: 'host',
+            value: 'goose.codes',
+          },
+        ],
+        destination: 'https://goosewin.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({
