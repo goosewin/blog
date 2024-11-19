@@ -20,7 +20,7 @@ const contactLinks: ContactLink[] = [
   { name: 'GitHub', url: 'https://github.com/goosewin', icon: <Github /> },
   {
     name: 'LinkedIn',
-    url: 'https://www.linkedin.com/in/dstolbov',
+    url: 'https://www.linkedin.com/in/goosewin',
     icon: <Linkedin />,
   },
   {
