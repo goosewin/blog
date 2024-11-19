@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
     <footer className="py-4 mt-8">
       <div className="flex flex-col sm:flex-row items-center">
         <p className="mb-2 sm:mb-0 sm:mr-auto text-center sm:text-left">
-          Daniel Stolbov, {new Date().getFullYear()}.{' '}
+          Dan Goosewin, {new Date().getFullYear()}.{' '}
           <a
             className="nav-link"
             href="https://github.com/goosewin/blog"

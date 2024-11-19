@@ -6,7 +6,7 @@ import XLogo from '@/app/components/x-logo';
 export const metadata: Metadata = {
   title: 'Contact',
   description:
-    'Connect with Daniel Stolbov for collaboration, technology leadership insights, or discussions on building innovative digital experiences and enterprises.',
+    'Connect with Dan Goosewin for collaboration, technology leadership insights, or discussions on building innovative digital experiences and enterprises.',
 };
 
 interface ContactLink {

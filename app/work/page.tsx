@@ -6,7 +6,7 @@ import { GitHubRepo } from '@/types/github';
 export const metadata: Metadata = {
   title: 'Work',
   description:
-    'Professional experience and projects of Daniel Stolbov, a software developer and builder with a track record of creating disruptive digital experiences across various industries.',
+    'Professional experience and projects of Dan Goosewin, a software developer and builder with a track record of creating disruptive digital experiences across various industries.',
 };
 
 interface ExperienceItem {

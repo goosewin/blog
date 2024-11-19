@@ -14,18 +14,18 @@ export async function generateMetadata(props: {
 
   return {
     title: post.title,
-    description: post.description || 'A blog post by Daniel Stolbov',
+    description: post.description || 'A blog post by Dan Goosewin',
     openGraph: {
       title: post.title,
-      description: post.description || 'A blog post by Daniel Stolbov',
+      description: post.description || 'A blog post by Dan Goosewin',
       type: 'article',
       publishedTime: post.date,
-      authors: ['Daniel Stolbov'],
+      authors: ['Dan Goosewin'],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.description || 'A blog post by Daniel Stolbov',
+      description: post.description || 'A blog post by Dan Goosewin',
     },
   };
 }
@@ -61,9 +61,9 @@ export default async function Article(props: {
     dateModified: post.date,
     author: {
       '@type': 'Person',
-      name: 'Daniel Stolbov',
+      name: 'Dan Goosewin',
     },
-    description: post.description || 'A blog post by Daniel Stolbov',
+    description: post.description || 'A blog post by Dan Goosewin',
   };
 
   return (

@@ -12,11 +12,11 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Daniel Stolbov',
-    template: '%s | Daniel Stolbov',
+    default: 'Dan Goosewin',
+    template: '%s | Dan Goosewin',
   },
   description:
-    'Daniel Stolbov is an SDE Manager at Deaglo, a software engineer, and a builder. This website is collection of his thoughts and experiences.',
+    'Dan Goosewin is an SDE Manager at Deaglo, a software engineer, and a builder. This website is collection of his thoughts and experiences.',
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_BASE_URL ?? 'https://goosewin.com'
   ),
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://goosewin.com',
-    siteName: 'Daniel Stolbov',
+    siteName: 'Dan Goosewin',
   },
   twitter: {
     card: 'summary_large_image',

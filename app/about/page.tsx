@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'About Daniel Stolbov',
+  title: 'About Dan Goosewin',
   description:
     "I'm a software engineer and entrepreneur based in Granite Bay, California. I owe much of my career to the web and software development—it's what I've been doing for the past decade.",
 };
@@ -14,14 +14,14 @@ export default function About() {
       <h1 className="text-3xl font-bold">About</h1>
       <div className="relative">
         <Image
-          src="/images/dstolbov.jpg"
-          alt="Daniel Stolbov"
+          src="/images/goosewin.jpg"
+          alt="Dan Goosewin"
           width={200}
           height={200}
           className="float-right ml-6 mb-4 rounded"
         />
         <p className="text-gray-600 dark:text-gray-400">
-          My name is Daniel Stolbov. I&apos;m a software engineer and
+          My name is Dan Goosewin. I&apos;m a software engineer and
           entrepreneur based in Granite Bay, California. I owe much of my career
           to the web and software development—it&apos;s what I&apos;ve been
           doing for the past decade.
