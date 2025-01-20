@@ -21,10 +21,10 @@ export default function About() {
           className="float-right ml-6 mb-4 rounded"
         />
         <p className="text-gray-600 dark:text-gray-400">
-          My name is Dan Goosewin. I&apos;m a software engineer and
-          entrepreneur based in Granite Bay, California. I owe much of my career
-          to the web and software development—it&apos;s what I&apos;ve been
-          doing for the past decade.
+          My name is Dan Goosewin. I&apos;m a software engineer and entrepreneur
+          based in Granite Bay, California. I owe much of my career to the web
+          and software development—it&apos;s what I&apos;ve been doing for the
+          past decade.
         </p>
         <p className="text-gray-600 dark:text-gray-400 text-balance">
           My journey in tech started in Ufa, Russia, with a desire to start a
