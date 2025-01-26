@@ -1,8 +1,8 @@
 'use client';
 
-import { Moon, Sun, Monitor } from 'lucide-react';
-import { useTheme } from './theme-provider';
+import { Monitor, Moon, Sun } from 'lucide-react';
 import { useState } from 'react';
+import { useTheme } from './theme-provider';
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -19,7 +19,7 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="p-2 rounded-full bg-gray-200 dark:bg-gray-800"
+      className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:cursor-pointer"
       aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} mode`}
     >
       <div className="flex items-center justify-center relative">
