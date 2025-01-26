@@ -18,7 +18,7 @@ export default function About() {
           alt="Dan Goosewin"
           width={200}
           height={200}
-          className="float-right ml-6 mb-4 rounded"
+          className="float-right ml-6 mb-4 rounded-sm"
         />
         <p className="text-gray-600 dark:text-gray-400">
           My name is Dan Goosewin. I&apos;m a software engineer and entrepreneur
