@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'About Dan Goosewin',
   description:
-    "I'm a software engineer and entrepreneur based in Granite Bay, California. I owe much of my career to the web and software development—it's what I've been doing for the past decade.",
+    "I'm a software engineer and entrepreneur based in San Francisco, California. I owe much of my career to the web and software development—it's what I've been doing for the past decade.",
 };
 
 export default function About() {
@@ -22,7 +22,7 @@ export default function About() {
         />
         <p className="text-gray-600 dark:text-gray-400">
           My name is Dan Goosewin. I&apos;m a software engineer and entrepreneur
-          based in Granite Bay, California. I owe much of my career to the web
+          based in San Francisco, California. I owe much of my career to the web
           and software development—it&apos;s what I&apos;ve been doing for the
           past decade.
         </p>
