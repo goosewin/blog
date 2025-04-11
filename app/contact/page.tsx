@@ -1,7 +1,7 @@
+import XLogo from '@/app/components/x-logo';
+import { Github, Linkedin, Mail } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Mail, Github, Linkedin } from 'lucide-react';
-import XLogo from '@/app/components/x-logo';
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -16,7 +16,7 @@ interface ContactLink {
 }
 
 const contactLinks: ContactLink[] = [
-  { name: 'Email', url: 'mailto:daniel@webline.app', icon: <Mail /> },
+  { name: 'Email', url: 'mailto:dan@goosewin.com', icon: <Mail /> },
   { name: 'GitHub', url: 'https://github.com/goosewin', icon: <Github /> },
   {
     name: 'LinkedIn',
