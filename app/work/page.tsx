@@ -1,7 +1,7 @@
+import { GitHubRepo } from '@/types/github';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { cache } from 'react';
-import { GitHubRepo } from '@/types/github';
 
 export const metadata: Metadata = {
   title: 'Work',
@@ -60,6 +60,18 @@ const customProjects: CustomProject[] = [
     description:
       'The Deaglo Platform is a SaaS consisting of powerful tools for modern finance teams to manage international investments and transactions.',
     url: 'https://platform.deaglo.com/',
+  },
+  {
+    name: 'Inverview Agent',
+    description:
+      'A fully automated Technical Interview AI Agent built during the ElevenLabs x a16z hackathon.',
+    url: 'https://inverview-agent.com/',
+  },
+  {
+    name: 'Chronicler',
+    description:
+      'Experimental project to streamline the process of creating user-friendly changelogs for repositories using LLM agents.',
+    url: 'https://chronicler-lake.vercel.app/',
   },
 ];
 
