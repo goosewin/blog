@@ -39,6 +39,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  turbopack: {
+    resolveExtensions: ['.js', '.jsx', '.mdx', '.ts', '.tsx'],
+  }
 };
 
 const withMDX = createMDX({
