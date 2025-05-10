@@ -1,9 +1,9 @@
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
-import './globals.css';
+import { Space_Grotesk } from 'next/font/google';
 import PageLayout from './components/page-layout';
 import { ThemeProvider } from './components/theme-provider';
-import { Space_Grotesk } from 'next/font/google';
-import PlausibleProvider from 'next-plausible';
+import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -45,18 +45,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={spaceGrotesk.className + ' dark'}>
       <body>
-        <PlausibleProvider
-          domain="goosewin.com"
-          customDomain="https://goosewin.com"
-          selfHosted
-          trackOutboundLinks
-          enabled
-          trackLocalhost
-        >
-          <ThemeProvider>
-            <PageLayout>{children}</PageLayout>
-          </ThemeProvider>
-        </PlausibleProvider>
+        <ThemeProvider>
+          <PageLayout>
+            {children}
+            <Analytics />
+          </PageLayout>
+        </ThemeProvider>
       </body>
     </html>
   );
