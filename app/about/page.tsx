@@ -36,12 +36,12 @@ export default function About() {
         </p>
         <p className="text-gray-600 dark:text-gray-400 text-balance">
           Since then, my career brought me to the US, where I&apos;ve been
-          building software in various industries. I&apos;m currently shaping
-          the future of FX as a Software Development Manager at Deaglo, where
-          I&apos;m spearheading the development of cutting-edge fintech
-          solutions. My technical toolkit includes a wide range of programming
-          languages and technologies (primarily in web), with experience
-          building on various cloud platforms (AWS, GCP, Azure, Oracle, etc.)
+          building software in various industries. I&apos;m currently leading
+          developer relations at Vapi, where I&apos;m building community and
+          developer experiences around voice AI technology. My technical toolkit
+          includes a wide range of programming languages and technologies
+          (primarily in web), with experience building on various cloud platforms
+          (AWS, GCP, Azure, Oracle, etc.)
         </p>
         <p className="text-gray-600 dark:text-gray-400 text-balance">
           I&apos;m always excited to connect with fellow tech enthusiasts and

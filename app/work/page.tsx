@@ -19,11 +19,19 @@ interface ExperienceItem {
 
 const experiences: ExperienceItem[] = [
   {
+    company: 'Vapi',
+    position: 'DevRel Lead',
+    period: '2025 - Present',
+    description:
+      'Leading developer relations and community engagement for Vapi\'s voice AI platform. Building developer experiences, creating technical content, and fostering a thriving developer ecosystem around voice AI technology.',
+    link: 'https://vapi.ai',
+  },
+  {
     company: 'Deaglo',
     position: 'Software Development Manager',
-    period: '2023 - Present',
+    period: '2023 - 2025',
     description:
-      'Overseeing the development and enhancement of FX Risk Management solutions. Responsible for system architecture, team leadership, cross-functional collaboration, and driving technical innovation to align with strategic goals.',
+      'Oversaw the development and enhancement of FX Risk Management solutions. Responsible for system architecture, team leadership, cross-functional collaboration, and driving technical innovation to align with strategic goals.',
   },
   {
     company: 'Webline',

@@ -8,9 +8,9 @@ export default async function Home() {
   return (
     <>
       <p className="mb-12 text-balance">
-        SDE Manager{' '}
-        <Link href="https://deaglo.com" className="nav-link" target="_blank">
-          @DeagloInc
+        DevRel Lead @{' '}
+        <Link href="https://vapi.ai" className="nav-link" target="_blank">
+          vapi.ai
         </Link>
         . Passionate about software, videogames, finance, entrepreneurship, and{' '}
         <Link
