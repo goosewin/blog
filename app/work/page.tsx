@@ -23,7 +23,7 @@ const experiences: ExperienceItem[] = [
     position: 'DevRel Lead',
     period: '2025 - Present',
     description:
-      'Leading developer relations and community engagement for Vapi\'s voice AI platform. Building developer experiences, creating technical content, and fostering a thriving developer ecosystem around voice AI technology.',
+      "Leading developer relations and community engagement for Vapi's voice AI platform. Building developer experiences, creating technical content, and fostering a thriving developer ecosystem around voice AI technology.",
     link: 'https://vapi.ai',
   },
   {

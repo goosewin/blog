@@ -40,8 +40,8 @@ export default function About() {
           developer relations at Vapi, where I&apos;m building community and
           developer experiences around voice AI technology. My technical toolkit
           includes a wide range of programming languages and technologies
-          (primarily in web), with experience building on various cloud platforms
-          (AWS, GCP, Azure, Oracle, etc.)
+          (primarily in web), with experience building on various cloud
+          platforms (AWS, GCP, Azure, Oracle, etc.)
         </p>
         <p className="text-gray-600 dark:text-gray-400 text-balance">
           I&apos;m always excited to connect with fellow tech enthusiasts and
