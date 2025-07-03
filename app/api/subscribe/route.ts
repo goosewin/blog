@@ -13,13 +13,19 @@ export async function POST(request: NextRequest) {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      );
     }
 
-    const audienceId = process.env.RESEND_AUDIENCE_ID;    
+    const audienceId = process.env.RESEND_AUDIENCE_ID;
     if (!audienceId) {
       console.error('RESEND_AUDIENCE_ID environment variable is not set');
-      return NextResponse.json({ error: 'Subscription service not configured' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'Subscription service not configured' },
+        { status: 500 }
+      );
     }
 
     await resend.contacts.create({
@@ -45,14 +51,20 @@ export async function POST(request: NextRequest) {
       `,
     });
 
-    return NextResponse.json({ message: 'Subscription successful' }, { status: 200 });
-  } catch (error: any) {
+    return NextResponse.json(
+      { message: 'Subscription successful' },
+      { status: 200 }
+    );
+  } catch (error: unknown) {
     console.error('Subscription error:', error);
-    
-    if (error.message?.includes('already exists')) {
-      return NextResponse.json({ error: 'This email is already subscribed' }, { status: 400 });
+
+    if (error instanceof Error && error.message?.includes('already exists')) {
+      return NextResponse.json(
+        { error: 'This email is already subscribed' },
+        { status: 400 }
+      );
     }
-    
+
     return NextResponse.json({ error: 'Failed to subscribe' }, { status: 500 });
   }
-} 
+}
