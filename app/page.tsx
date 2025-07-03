@@ -1,5 +1,6 @@
 import { getAllBlogPosts } from '@/lib/blog';
 import BlogPostList from '@/app/components/blog-post-list';
+import SubscriptionForm from '@/app/components/subscription-form';
 import Link from 'next/link';
 
 export default async function Home() {
@@ -22,7 +23,16 @@ export default async function Home() {
         </Link>
         .
       </p>
-      <BlogPostList posts={posts} showDate={true} />
+      <BlogPostList
+        posts={posts}
+        showDate={true}
+        limit={5}
+        showViewAllLink={true}
+      />
+
+      <div className="mt-12">
+        <SubscriptionForm />
+      </div>
     </>
   );
 }

@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import StructuredData from '@/app/components/structured-data';
+import SubscriptionForm from '@/app/components/subscription-form';
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
@@ -95,6 +96,10 @@ export default async function Article(props: {
         </div>
         <MDXContent slug={params.slug} />
       </article>
+
+      <div className="mt-12">
+        <SubscriptionForm />
+      </div>
     </>
   );
 }
