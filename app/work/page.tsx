@@ -24,7 +24,6 @@ const experiences: ExperienceItem[] = [
     period: '2025 - Present',
     description:
       "Leading developer relations and community engagement for Vapi's voice AI platform. Building developer experiences, creating technical content, and fostering a thriving developer ecosystem around voice AI technology.",
-    link: 'https://vapi.ai',
   },
   {
     company: 'Deaglo',
@@ -64,6 +63,18 @@ interface CustomProject {
 
 const customProjects: CustomProject[] = [
   {
+    name: 'Vapi CLI',
+    description:
+      'Command-line interface for Vapi voice AI platform. Build, test, and deploy voice applications from the terminal with powerful development tools.',
+    url: 'https://github.com/VapiAI/cli',
+  },
+  {
+    name: 'Prank Your Dad',
+    description:
+      'A fun voice AI application that lets you prank your dad with AI-generated phone calls. Built with Vapi to showcase voice AI capabilities.',
+    url: 'https://call-dad.vapi.ai',
+  },
+  {
     name: 'Deaglo Platform',
     description:
       'The Deaglo Platform is a SaaS consisting of powerful tools for modern finance teams to manage international investments and transactions.',
@@ -74,12 +85,6 @@ const customProjects: CustomProject[] = [
     description:
       'A fully automated Technical Interview AI Agent built during the ElevenLabs x a16z hackathon.',
     url: 'https://inverview-agent.com/',
-  },
-  {
-    name: 'Chronicler',
-    description:
-      'Experimental project to streamline the process of creating user-friendly changelogs for repositories using LLM agents.',
-    url: 'https://chronicler-lake.vercel.app/',
   },
 ];
 
