@@ -1,0 +1,82 @@
+name: Send Newsletter for New Blog Posts
+
+on:
+  push:
+    branches: [main]
+    paths: ['posts/*.mdx']
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Fetch current and previous commit to compare changes
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Check for new blog posts
+        id: check-posts
+        run: |
+          # Get list of added MDX files in posts directory
+          NEW_POSTS=$(git diff --name-only --diff-filter=A HEAD~1 HEAD | grep '^posts/.*\.mdx$' || true)
+
+          if [ -z "$NEW_POSTS" ]; then
+            echo "No new blog posts detected"
+            echo "has_new_posts=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "New blog posts detected:"
+          echo "$NEW_POSTS"
+          echo "has_new_posts=true" >> $GITHUB_OUTPUT
+
+          # Create JSON array of new posts with metadata
+          POSTS_JSON="["
+          FIRST=true
+
+          for POST_FILE in $NEW_POSTS; do
+            if [ "$FIRST" = false ]; then
+              POSTS_JSON="${POSTS_JSON},"
+            fi
+            FIRST=false
+            
+            # Extract slug from filename
+            SLUG=$(basename "$POST_FILE" .mdx)
+            
+            # Extract metadata from the MDX file
+            TITLE=$(grep -E "^\s*title:\s*['\"].*['\"]" "$POST_FILE" | sed -E "s/^\s*title:\s*['\"](.*)['\"]\s*,?\s*$/\1/" | head -1)
+            DESCRIPTION=$(grep -E "^\s*description:\s*['\"].*['\"]" "$POST_FILE" | sed -E "s/^\s*description:\s*['\"](.*)['\"]\s*,?\s*$/\1/" | head -1)
+            DATE=$(grep -E "^\s*date:\s*['\"].*['\"]" "$POST_FILE" | sed -E "s/^\s*date:\s*['\"](.*)['\"]\s*,?\s*$/\1/" | head -1)
+            
+            # Escape quotes for JSON
+            TITLE=$(echo "$TITLE" | sed 's/"/\\"/g')
+            DESCRIPTION=$(echo "$DESCRIPTION" | sed 's/"/\\"/g')
+            
+            POSTS_JSON="${POSTS_JSON}{\"title\":\"$TITLE\",\"slug\":\"$SLUG\",\"description\":\"$DESCRIPTION\",\"date\":\"$DATE\"}"
+          done
+
+          POSTS_JSON="${POSTS_JSON}]"
+          echo "posts_json=$POSTS_JSON" >> $GITHUB_OUTPUT
+
+      - name: Send newsletter
+        if: steps.check-posts.outputs.has_new_posts == 'true'
+        run: |
+          curl -X POST "${{ secrets.SITE_URL }}/api/send-newsletter" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.NEWSLETTER_SECRET }}" \
+            -d '{
+              "posts": ${{ steps.check-posts.outputs.posts_json }}
+            }' \
+            --fail --silent --show-error
+
+      - name: Log newsletter result
+        if: steps.check-posts.outputs.has_new_posts == 'true'
+        run: |
+          echo "Newsletter sent successfully for new blog posts!"
+          echo "Posts: ${{ steps.check-posts.outputs.posts_json }}"
