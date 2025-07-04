@@ -54,6 +54,12 @@ export default async function Article(props: {
   const post = await getBlogPost(params.slug);
   if (!post) notFound();
 
+  // Find current post index and get previous/next posts
+  const currentIndex = posts.findIndex((p) => p.slug === params.slug);
+  const previousPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
+  const nextPost =
+    currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -96,6 +102,71 @@ export default async function Article(props: {
         </div>
         <MDXContent slug={params.slug} />
       </article>
+
+      {/* Navigation buttons */}
+      <nav className="mt-12 flex justify-between items-center border-t border-gray-200 dark:border-gray-600 pt-8">
+        <div className="flex-1">
+          {previousPost && (
+            <Link
+              href={`/blog/${previousPost.slug}`}
+              className="flex items-center gap-3 p-4 rounded-lg hover:opacity-80 transition-opacity duration-200 bg-gray-50 dark:bg-[#1c1c1c]/60"
+            >
+              <svg
+                className="w-5 h-5 text-gray-600 dark:text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              <div className="text-left">
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Previous
+                </div>
+                <div className="text-base font-medium text-gray-900 dark:text-gray-100">
+                  {previousPost.title}
+                </div>
+              </div>
+            </Link>
+          )}
+        </div>
+
+        <div className="flex-1 flex justify-end">
+          {nextPost && (
+            <Link
+              href={`/blog/${nextPost.slug}`}
+              className="flex items-center gap-3 p-4 rounded-lg hover:opacity-80 transition-opacity duration-200 bg-gray-50 dark:bg-[#1c1c1c]/60"
+            >
+              <div className="text-right">
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Next
+                </div>
+                <div className="text-base font-medium text-gray-900 dark:text-gray-100">
+                  {nextPost.title}
+                </div>
+              </div>
+              <svg
+                className="w-5 h-5 text-gray-600 dark:text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </Link>
+          )}
+        </div>
+      </nav>
 
       <div className="mt-12">
         <SubscriptionForm />
