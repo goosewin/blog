@@ -14,7 +14,7 @@ export default function PageLayout({
           href="/"
           className="text-2xl items-center h-16 my-auto flex font-bold"
         >
-          <span className="sm:hidden">DS</span>
+          <span className="sm:hidden">G.</span>
           <span className="hidden sm:inline">Dan Goosewin</span>
         </Link>
         <Navigation />
