@@ -108,6 +108,127 @@
   a.active-nav-link {
     @apply text-black dark:text-white font-semibold border-b-2 border-black dark:border-white;
   }
+
+  /* Reference link styles */
+  sup .ref-link {
+    font-size: 0.85em;
+    color: #737373;
+    background-color: #f8f8f8;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+    margin-left: 3px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: inline-block;
+    line-height: 1;
+    border: none;
+    outline: none;
+  }
+
+  sup .ref-link:hover {
+    background-color: #f0f0f0;
+    color: #525252;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+  }
+
+  .dark sup .ref-link {
+    color: #a3a3a3;
+    background-color: #2a2a2a;
+  }
+
+  .dark sup .ref-link:hover {
+    color: #d4d4d4;
+    background-color: #3a3a3a;
+  }
+
+  /* Animated References Accordion */
+  .references-accordion {
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+
+  .references-accordion summary {
+    padding: 1rem;
+    background-color: #fafafa;
+    cursor: pointer;
+    font-weight: 500;
+    user-select: none;
+    transition: background-color 0.2s ease;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .references-accordion summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .references-accordion summary::after {
+    content: '▼';
+    font-size: 0.8em;
+    color: #737373;
+    transition: transform 0.3s ease;
+  }
+
+  .references-accordion[open] summary::after {
+    transform: rotate(180deg);
+  }
+
+  .references-accordion summary:hover {
+    background-color: #f5f5f5;
+  }
+
+  .references-accordion .references-content {
+    padding: 1rem;
+    background-color: white;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .references-accordion .references-content > div {
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .references-accordion .references-content > div:last-child {
+    margin-bottom: 0;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Dark mode styles */
+  .dark .references-accordion {
+    border-color: #404040;
+  }
+
+  .dark .references-accordion summary {
+    background-color: #2a2a2a;
+    color: #e5e5e5;
+  }
+
+  .dark .references-accordion summary:hover {
+    background-color: #333333;
+  }
+
+  .dark .references-accordion .references-content {
+    background-color: #1a1a1a;
+  }
 }
 
 .text-balance {
