@@ -1,5 +1,5 @@
 import XLogo from '@/app/components/x-logo';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -16,17 +16,16 @@ interface ContactLink {
 }
 
 const contactLinks: ContactLink[] = [
-  { name: 'Email', url: 'mailto:dan@goosewin.com', icon: <Mail /> },
+  {
+    name: 'X/Twitter',
+    url: 'https://x.com/dan_goosewin',
+    icon: <XLogo className="w-6 h-6 p-1" />,
+  },
   { name: 'GitHub', url: 'https://github.com/goosewin', icon: <Github /> },
   {
     name: 'LinkedIn',
     url: 'https://www.linkedin.com/in/goosewin',
     icon: <Linkedin />,
-  },
-  {
-    name: 'Twitter',
-    url: 'https://x.com/dan_goosewin',
-    icon: <XLogo className="w-6 h-6 p-1" />,
   },
 ];
 
@@ -35,8 +34,8 @@ export default function Contact() {
     <div className="space-y-8">
       <h1 className="text-3xl font-bold">Contact</h1>
       <p className="text-gray-600 dark:text-gray-400 text-balance">
-        I&apos;m open to helping build products that solve real problems. Feel
-        free to reach out through any of the following channels.
+        I&apos;m open to helping build products that solve real problems. The best
+        way to reach me is via DM on X/Twitter. You can also find me here:
       </p>
       <ul className="space-y-4">
         {contactLinks.map((link) => (

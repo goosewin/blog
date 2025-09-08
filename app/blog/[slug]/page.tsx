@@ -90,7 +90,7 @@ export default async function Article(props: {
             |
             <span>
               <Link
-                href="https://twitter.com/dan_goosewin"
+                href="https://x.com/dan_goosewin"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="nav-link"

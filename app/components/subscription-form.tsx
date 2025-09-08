@@ -65,7 +65,7 @@ export default function SubscriptionForm({
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="dan@goosewin.com"
+              placeholder="goose@duck.com"
               required
               disabled={status === 'loading'}
               className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:border-gray-900 dark:focus:border-gray-100 bg-white dark:bg-[#232323] text-gray-900 dark:text-white disabled:opacity-50 text-sm"

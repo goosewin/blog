@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
           </a>
         </p>
         <a
-          href="https://twitter.com/dan_goosewin"
+          href="https://x.com/dan_goosewin"
           target="_blank"
           rel="noopener noreferrer"
           className="mt-2 sm:mt-0 space-x-1 flex items-center nav-link"
