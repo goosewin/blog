@@ -20,7 +20,7 @@ interface ExperienceItem {
 const experiences: ExperienceItem[] = [
   {
     company: 'Vapi',
-    position: 'DevRel Lead',
+    position: 'DevRel & Partnerships Lead',
     period: '2025 - Present',
     description:
       "Leading developer relations and community engagement for Vapi's voice AI platform. Building developer experiences, creating technical content, and fostering a thriving developer ecosystem around voice AI technology.",

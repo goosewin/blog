@@ -9,7 +9,7 @@ export default async function Home() {
   return (
     <>
       <p className="mb-12 text-balance">
-        DevRel Lead @{' '}
+        DevRel & Partnerships Lead @{' '}
         <Link href="https://vapi.ai" className="nav-link" target="_blank">
           vapi.ai
         </Link>
@@ -26,8 +26,6 @@ export default async function Home() {
       <BlogPostList
         posts={posts}
         showDate={true}
-        limit={5}
-        showViewAllLink={true}
       />
 
       <div className="mt-12">

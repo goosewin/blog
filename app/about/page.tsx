@@ -58,7 +58,7 @@ export default function About() {
             work
           </Link>{' '}
           or my{' '}
-          <Link href="/blog" className="underline-link">
+          <Link href="/" className="underline-link">
             blog
           </Link>
           .

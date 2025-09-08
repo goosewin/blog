@@ -4,15 +4,11 @@ import { BlogPost } from '@/lib/blog';
 interface BlogPostListProps {
   posts: BlogPost[];
   showDate?: boolean;
-  limit?: number;
-  showViewAllLink?: boolean;
 }
 
 export default function BlogPostList({
   posts,
   showDate = true,
-  limit,
-  showViewAllLink = false,
 }: BlogPostListProps) {
   if (posts.length === 0) {
     return (
@@ -25,16 +21,13 @@ export default function BlogPostList({
     );
   }
 
-  const displayPosts = limit ? posts.slice(0, limit) : posts;
-  const hasMorePosts = limit && posts.length > limit;
-
   return (
     <div>
       <h2 className="text-sm text-gray-500 dark:text-gray-400 mb-4 uppercase">
         Blog
       </h2>
       <ul className="border-t border-gray-200 dark:border-gray-700">
-        {displayPosts.map((post) => (
+        {posts.map((post) => (
           <li
             key={post.slug}
             className="text-base border-b border-gray-200 dark:border-gray-700"
@@ -59,13 +52,6 @@ export default function BlogPostList({
           </li>
         ))}
       </ul>
-      {hasMorePosts && showViewAllLink && (
-        <div className="mt-4 text-right">
-          <Link href="/blog" className="underline-link">
-            more articles
-          </Link>
-        </div>
-      )}
     </div>
   );
 }
