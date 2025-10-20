@@ -83,25 +83,39 @@ for POST_FILE in $NEW_POSTS; do
   # Extract slug from filename
   SLUG=$(basename "$POST_FILE" .mdx)
   
-  # Extract metadata from the MDX file (handle multi-line values)
-  TITLE=$(grep "title:" "$POST_FILE" | head -1 | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/')
-  DATE=$(grep "date:" "$POST_FILE" | head -1 | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/')
+  # Extract metadata from the MDX file (handle multi-line values and escaped quotes)
+  TITLE=$(grep "title:" "$POST_FILE" | head -1 | sed -E "s/.*title:[[:space:]]*['\"](.+)['\"].*/\1/")
+  DATE=$(grep "date:" "$POST_FILE" | head -1 | sed -E "s/.*date:[[:space:]]*['\"](.+)['\"].*/\1/")
   
   # Extract description (may span multiple lines)
-  DESCRIPTION=$(sed -n '/description:/,/[;}]/p' "$POST_FILE" | sed -n '/description:/,$p' | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/' | head -1 | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+  DESCRIPTION=$(sed -n '/description:/,/[;}]/p' "$POST_FILE" | sed -n '/description:/,$p' | sed -E "s/.*description:[[:space:]]*['\"](.+)['\"].*/\1/" | head -1 | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
   
   # Extract image from metadata (if exists)
   IMAGE=$(grep "image:" "$POST_FILE" | head -1 | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/' || echo "")
   
-  # Escape quotes and backslashes for JSON
-  TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
-  DESCRIPTION=$(echo "$DESCRIPTION" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
-  
-  # Build JSON object with optional image field
+  # Build individual post JSON using jq (handles all escaping automatically)
   if [ -n "$IMAGE" ]; then
-    POSTS_JSON="${POSTS_JSON}{\"title\":\"$TITLE\",\"slug\":\"$SLUG\",\"description\":\"$DESCRIPTION\",\"date\":\"$DATE\",\"image\":\"$IMAGE\"}"
+    POST_OBJ=$(jq -n \
+      --arg title "$TITLE" \
+      --arg slug "$SLUG" \
+      --arg description "$DESCRIPTION" \
+      --arg date "$DATE" \
+      --arg image "$IMAGE" \
+      '{title: $title, slug: $slug, description: $description, date: $date, image: $image}')
   else
-    POSTS_JSON="${POSTS_JSON}{\"title\":\"$TITLE\",\"slug\":\"$SLUG\",\"description\":\"$DESCRIPTION\",\"date\":\"$DATE\"}"
+    POST_OBJ=$(jq -n \
+      --arg title "$TITLE" \
+      --arg slug "$SLUG" \
+      --arg description "$DESCRIPTION" \
+      --arg date "$DATE" \
+      '{title: $title, slug: $slug, description: $description, date: $date}')
+  fi
+  
+  # Append to array
+  if [ "$FIRST" = false ]; then
+    POSTS_JSON="${POSTS_JSON},${POST_OBJ}"
+  else
+    POSTS_JSON="${POSTS_JSON}${POST_OBJ}"
   fi
 done
 
@@ -110,11 +124,14 @@ POSTS_JSON="${POSTS_JSON}]"
 echo "Sending newsletter with posts: $POSTS_JSON"
 echo "API URL: $SITE_URL/api/send-newsletter"
 
+# Build full payload with jq
+PAYLOAD=$(echo "$POSTS_JSON" | jq -c '{posts: .}')
+
 # Send newsletter via API
 RESPONSE=$(curl -L -X POST "$SITE_URL/api/send-newsletter" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $NEWSLETTER_SECRET" \
-  -d "{\"posts\": $POSTS_JSON}" \
+  -d "$PAYLOAD" \
   -w "\nHTTP_CODE:%{http_code}" \
   -s)
 
