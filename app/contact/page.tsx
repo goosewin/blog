@@ -34,8 +34,8 @@ export default function Contact() {
     <div className="space-y-8">
       <h1 className="text-3xl font-bold">Contact</h1>
       <p className="text-gray-600 dark:text-gray-400 text-balance">
-        I&apos;m open to helping build products that solve real problems. The best
-        way to reach me is via DM on X/Twitter. You can also find me here:
+        I&apos;m open to helping build products that solve real problems. The
+        best way to reach me is via DM on X/Twitter. You can also find me here:
       </p>
       <ul className="space-y-4">
         {contactLinks.map((link) => (

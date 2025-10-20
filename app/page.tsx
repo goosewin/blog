@@ -23,10 +23,7 @@ export default async function Home() {
         </Link>
         .
       </p>
-      <BlogPostList
-        posts={posts}
-        showDate={true}
-      />
+      <BlogPostList posts={posts} showDate={true} />
 
       <div className="mt-12">
         <SubscriptionForm />
