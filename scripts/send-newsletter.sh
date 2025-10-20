@@ -22,6 +22,15 @@
 
 set -e
 
+# Load environment variables from .env file if it exists
+if [ -f .env.local ]; then
+  echo "Loading environment variables from .env.local"
+  export $(grep -v '^#' .env.local | xargs)
+elif [ -f .env ]; then
+  echo "Loading environment variables from .env"
+  export $(grep -v '^#' .env | xargs)
+fi
+
 # Check if manual post slugs were provided as arguments
 if [ $# -gt 0 ]; then
   echo "Manual mode: Processing specified posts"
