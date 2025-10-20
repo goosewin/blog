@@ -90,8 +90,8 @@ for POST_FILE in $NEW_POSTS; do
   # Extract description (may span multiple lines)
   DESCRIPTION=$(sed -n '/description:/,/[;}]/p' "$POST_FILE" | sed -n '/description:/,$p' | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/' | head -1 | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
   
-  # Extract first image from the MDX file (look for <Image src="/images/..." />)
-  IMAGE=$(grep -m 1 "src=\"/images/" "$POST_FILE" | sed -E 's/.*src="([^"]+)".*/\1/' || echo "")
+  # Extract image from metadata (if exists)
+  IMAGE=$(grep "image:" "$POST_FILE" | head -1 | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/' || echo "")
   
   # Escape quotes and backslashes for JSON
   TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')

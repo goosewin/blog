@@ -7,6 +7,7 @@ export interface BlogPostMetadata {
   title: string;
   date: string;
   description?: string;
+  image?: string;
 }
 
 export interface BlogPost extends BlogPostMetadata {
