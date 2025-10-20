@@ -54,7 +54,7 @@ export default function CommitmentCard() {
         </div>
 
         <p className="text-xs dark:text-gray-400 text-gray-600 mt-4">
-          (There's only one real choice)
+          (There&apos;s only one real choice)
         </p>
       </motion.div>
     </div>

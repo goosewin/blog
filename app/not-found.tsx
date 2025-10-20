@@ -72,7 +72,8 @@ export default function NotFound() {
             {randomError.description}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-500 max-w-md mx-auto mt-4">
-            (This is not a real error. You landed on a page that doesn't exist.)
+            (This is not a real error. You landed on a page that doesn&apos;t
+            exist.)
           </p>
         </div>
       </div>
