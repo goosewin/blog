@@ -14,8 +14,12 @@ function truncateText(text: string, maxLength: number) {
   return text.slice(0, maxLength - 3) + '...';
 }
 
-export default async function Image({ params }: { params: { slug: string } }) {
+export default async function Image(props: {
+  params: Promise<{ slug: string }>;
+}) {
+  const params = await props.params;
   const post = await getBlogPost(params.slug);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://goosewin.com';
 
   return new ImageResponse(
     (
@@ -33,10 +37,32 @@ export default async function Image({ params }: { params: { slug: string } }) {
           position: 'relative',
         }}
       >
-        <div style={{ display: 'flex' }}>
-          {}
+        {post?.image && (
           <img
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/icon.png`}
+            src={`${baseUrl}${post.image}`}
+            alt={post.title}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              opacity: 0.2,
+              zIndex: 0,
+            }}
+          />
+        )}
+        <div
+          style={{
+            display: 'flex',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          <img
+            src={`${baseUrl}/icon.png`}
             alt="goosewin.com icon"
             width={80}
             height={80}
@@ -51,6 +77,8 @@ export default async function Image({ params }: { params: { slug: string } }) {
             maxWidth: '90%',
             lineHeight: 1.2,
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+            position: 'relative',
+            zIndex: 1,
           }}
         >
           {truncateText(post?.title || 'Blog Post', 80)}
@@ -61,10 +89,12 @@ export default async function Image({ params }: { params: { slug: string } }) {
             justifyContent: 'space-between',
             alignItems: 'flex-end',
             width: '100%',
+            position: 'relative',
+            zIndex: 1,
           }}
         >
           <p style={{ fontSize: 24, opacity: 0.8 }}>
-            Software Development & Entrepreneurship
+            Collection of thoughts by Dan Goosewin
           </p>
           <p style={{ fontSize: 24, opacity: 0.8 }}>
             Read more at goosewin.com
