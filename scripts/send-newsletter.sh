@@ -100,13 +100,26 @@ done
 POSTS_JSON="${POSTS_JSON}]"
 
 echo "Sending newsletter with posts: $POSTS_JSON"
+echo "API URL: $SITE_URL/api/send-newsletter"
 
 # Send newsletter via API
-curl -X POST "$SITE_URL/api/send-newsletter" \
+RESPONSE=$(curl -L -X POST "$SITE_URL/api/send-newsletter" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $NEWSLETTER_SECRET" \
   -d "{\"posts\": $POSTS_JSON}" \
-  --fail --silent --show-error
+  -w "\nHTTP_CODE:%{http_code}" \
+  -s)
 
-echo "Newsletter sent successfully!"
+HTTP_CODE=$(echo "$RESPONSE" | grep "HTTP_CODE:" | cut -d: -f2)
+BODY=$(echo "$RESPONSE" | sed '/HTTP_CODE:/d')
+
+echo "Response code: $HTTP_CODE"
+echo "Response body: $BODY"
+
+if [ "$HTTP_CODE" = "200" ]; then
+  echo "Newsletter sent successfully!"
+else
+  echo "Error: Newsletter sending failed with code $HTTP_CODE"
+  exit 1
+fi
 
