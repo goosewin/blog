@@ -9,43 +9,51 @@ interface ErrorMessage {
 const errorMessages: ErrorMessage[] = [
   {
     title: "Type 'never' is not assignable",
-    description: "This route resolves to type 'unknown'. Expected type 'Page', but the compiler couldn't infer it. Try checking your type definitions.",
-    buttonText: "return home as Page"
+    description:
+      "This route resolves to type 'unknown'. Expected type 'Page', but the compiler couldn't infer it. Try checking your type definitions.",
+    buttonText: 'return home as Page',
   },
   {
     title: "Property 'page' does not exist",
-    description: "Property 'page' does not exist on type 'Website'. Did you mean 'home'? The TypeScript compiler suggests checking for typos or missing imports.",
-    buttonText: "() => navigate('home')"
+    description:
+      "Property 'page' does not exist on type 'Website'. Did you mean 'home'? The TypeScript compiler suggests checking for typos or missing imports.",
+    buttonText: "() => navigate('home')",
   },
   {
     title: "Cannot find module './page'",
-    description: "The requested module './page' was not found. Verify that the path is correct and that the file exists in your working directory.",
-    buttonText: "import Home from './'"
+    description:
+      "The requested module './page' was not found. Verify that the path is correct and that the file exists in your working directory.",
+    buttonText: "import Home from './'",
   },
   {
-    title: "Type instantiation is excessively deep",
-    description: "Type instantiation is excessively deep and possibly infinite. The compiler gave up trying to resolve this route. Even TypeScript has its limits.",
-    buttonText: "break;"
+    title: 'Type instantiation is excessively deep',
+    description:
+      'Type instantiation is excessively deep and possibly infinite. The compiler gave up trying to resolve this route. Even TypeScript has its limits.',
+    buttonText: 'break;',
   },
   {
-    title: "Expression produces a union type",
-    description: "Type 'Home | About | Blog | 404' has no call signatures. You've navigated to the '404' variant. Consider narrowing the type with a type guard.",
-    buttonText: "if (route !== '404') return home"
+    title: 'Expression produces a union type',
+    description:
+      "Type 'Home | About | Blog | 404' has no call signatures. You've navigated to the '404' variant. Consider narrowing the type with a type guard.",
+    buttonText: "if (route !== '404') return home",
   },
   {
-    title: "Type assertion failed",
-    description: "Conversion of type 'string' to type 'Page' may be a mistake. Neither type sufficiently overlaps with the other. Perhaps you meant to navigate elsewhere?",
-    buttonText: "home as unknown as Page"
+    title: 'Type assertion failed',
+    description:
+      "Conversion of type 'string' to type 'Page' may be a mistake. Neither type sufficiently overlaps with the other. Perhaps you meant to navigate elsewhere?",
+    buttonText: 'home as unknown as Page',
   },
   {
-    title: "Index signature is missing",
-    description: "Element implicitly has an 'any' type because expression of type '404' can't be used to index type 'Routes'. No index signature found with a parameter of this type.",
-    buttonText: "routes['home']"
-  }
+    title: 'Index signature is missing',
+    description:
+      "Element implicitly has an 'any' type because expression of type '404' can't be used to index type 'Routes'. No index signature found with a parameter of this type.",
+    buttonText: "routes['home']",
+  },
 ];
 
 export default function NotFound() {
-  const randomError = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+  const randomError =
+    errorMessages[Math.floor(Math.random() * errorMessages.length)];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
