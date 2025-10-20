@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { render } from '@react-email/render';
+import WelcomeEmail from '@/app/emails/welcome';
+import { createElement } from 'react';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -33,22 +36,14 @@ export async function POST(request: NextRequest) {
       audienceId,
     });
 
+    const baseUrl = process.env.SITE_URL || 'https://goosewin.com';
+    const emailHtml = await render(createElement(WelcomeEmail, { baseUrl }));
+
     await resend.emails.send({
       from: 'Dan Goosewin <dan@goosewin.com>',
       to: email,
       subject: 'Thanks for subscribing to my blog!',
-      html: `
-        <h2>Thanks for subscribing!</h2>
-        <p>Howdy,</p>
-        <p>Thanks for subscribing to my blog! I'm excited to share my thoughts on technology, business, entrepeneurship and more with you.</p>
-        <p>You'll get notified whenever I publish new posts. In the meantime, feel free to check out my latest articles at <a href="https://goosewin.com/blog">goosewin.com/blog</a>.</p>
-        <p>Best,<br>Dan Goosewin</p>
-        <hr>
-        <p style="font-size: 12px; color: #666;">
-          You're receiving this email because you subscribed to Dan Goosewin's blog. 
-          If you'd like to unsubscribe, you can do so by replying to this email.
-        </p>
-      `,
+      html: emailHtml,
     });
 
     return NextResponse.json(
