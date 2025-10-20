@@ -35,42 +35,50 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get all contacts from the audience
-    const contactsResponse = await resend.contacts.list({ audienceId });
+    const emailContent = generateEmailContent(posts);
+    const subject =
+      posts.length === 1
+        ? `New post: ${posts[0].title}`
+        : `${posts.length} new posts from Dan's blog`;
 
-    if (
-      !contactsResponse.data ||
-      !Array.isArray(contactsResponse.data) ||
-      contactsResponse.data.length === 0
-    ) {
+    console.log('Creating broadcast for audience:', audienceId);
+
+    // Create broadcast
+    const createResponse = await resend.broadcasts.create({
+      audienceId,
+      from: 'Dan Goosewin <dan@goosewin.com>',
+      subject,
+      html: emailContent,
+    });
+
+    if (createResponse.error) {
+      console.error('Error creating broadcast:', createResponse.error);
       return NextResponse.json(
-        { message: 'No subscribers found' },
-        { status: 200 }
+        { error: 'Failed to create broadcast', details: createResponse.error },
+        { status: 500 }
       );
     }
 
-    // Send email to all subscribers
-    const emailPromises = contactsResponse.data.map(
-      async (contact: { email: string; id: string }) => {
-        const emailContent = generateEmailContent(posts);
+    const broadcastId = createResponse.data?.id;
+    console.log('Broadcast created:', broadcastId);
 
-        return resend.emails.send({
-          from: 'Dan Goosewin <dan@goosewin.com>',
-          to: contact.email,
-          subject:
-            posts.length === 1
-              ? `New post: ${posts[0].title}`
-              : `${posts.length} new posts from Dan's blog`,
-          html: emailContent,
-        });
-      }
-    );
+    // Send broadcast
+    const sendResponse = await resend.broadcasts.send(broadcastId);
 
-    await Promise.all(emailPromises);
+    if (sendResponse.error) {
+      console.error('Error sending broadcast:', sendResponse.error);
+      return NextResponse.json(
+        { error: 'Failed to send broadcast', details: sendResponse.error },
+        { status: 500 }
+      );
+    }
+
+    console.log('Broadcast sent successfully:', sendResponse.data);
 
     return NextResponse.json(
       {
-        message: `Newsletter sent to ${contactsResponse.data.length} subscribers`,
+        message: 'Newsletter broadcast sent successfully',
+        broadcastId,
         postsCount: posts.length,
       },
       { status: 200 }
