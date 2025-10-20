@@ -70,16 +70,10 @@ else
   echo "$NEW_POSTS"
 fi
 
-# Create JSON array of new posts with metadata
-POSTS_JSON="["
-FIRST=true
+# Create JSON array of new posts with metadata using jq
+POSTS_ARRAY=()
 
 for POST_FILE in $NEW_POSTS; do
-  if [ "$FIRST" = false ]; then
-    POSTS_JSON="${POSTS_JSON},"
-  fi
-  FIRST=false
-  
   # Extract slug from filename
   SLUG=$(basename "$POST_FILE" .mdx)
   
@@ -111,15 +105,12 @@ for POST_FILE in $NEW_POSTS; do
       '{title: $title, slug: $slug, description: $description, date: $date}')
   fi
   
-  # Append to array
-  if [ "$FIRST" = false ]; then
-    POSTS_JSON="${POSTS_JSON},${POST_OBJ}"
-  else
-    POSTS_JSON="${POSTS_JSON}${POST_OBJ}"
-  fi
+  # Add to array
+  POSTS_ARRAY+=("$POST_OBJ")
 done
 
-POSTS_JSON="${POSTS_JSON}]"
+# Build final JSON array from all posts
+POSTS_JSON=$(printf '%s\n' "${POSTS_ARRAY[@]}" | jq -s '.')
 
 echo "Sending newsletter with posts: $POSTS_JSON"
 echo "API URL: $SITE_URL/api/send-newsletter"
