@@ -3,7 +3,7 @@ name: Send Newsletter for New Blog Posts
 on:
   push:
     branches: [main]
-    paths: ["posts/*.mdx"]
+    paths: ['posts/*.mdx']
 
 jobs:
   send-newsletter:
