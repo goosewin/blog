@@ -7,6 +7,7 @@ import {
   Heading,
   Hr,
   Html,
+  Img,
   Link,
   Preview,
   Section,
@@ -18,6 +19,7 @@ interface BlogPostData {
   slug: string;
   description?: string;
   date: string;
+  image?: string;
 }
 
 interface NewsletterEmailProps {
@@ -50,8 +52,25 @@ export default function NewsletterEmail({
       <Body style={styles.body}>
         <Container style={styles.container}>
           <Section style={styles.branding}>
-            <Text style={styles.brandingText}>G.</Text>
+            <Img
+              src={`${baseUrl}/icon.png`}
+              alt="Dan Goosewin"
+              width="48"
+              height="48"
+              style={styles.brandingImage}
+            />
           </Section>
+
+          {isSinglePost && posts[0].image && (
+            <Section style={styles.heroImageSection}>
+              <Img
+                src={`${baseUrl}${posts[0].image}`}
+                alt={posts[0].title}
+                width="560"
+                style={styles.heroImage}
+              />
+            </Section>
+          )}
 
           <Section style={styles.header}>
             <Text style={styles.label}>
@@ -83,6 +102,14 @@ export default function NewsletterEmail({
           ) : (
             posts.map((post, index) => (
               <Section key={post.slug} style={styles.postItem}>
+                {post.image && (
+                  <Img
+                    src={`${baseUrl}${post.image}`}
+                    alt={post.title}
+                    width="560"
+                    style={styles.postImage}
+                  />
+                )}
                 <Heading as="h2" style={styles.postTitle}>
                   <Link
                     href={`${baseUrl}/blog/${post.slug}`}
@@ -152,13 +179,19 @@ const styles = {
   branding: {
     marginBottom: '24px',
   },
-  brandingText: {
-    fontSize: '32px',
-    fontWeight: '700',
-    fontFamily: 'Space Grotesk, Arial, sans-serif',
-    color: '#000',
-    margin: '0',
-    letterSpacing: '-0.02em',
+  brandingImage: {
+    width: '48px',
+    height: '48px',
+    borderRadius: '8px',
+  },
+  heroImageSection: {
+    marginBottom: '24px',
+  },
+  heroImage: {
+    width: '100%',
+    maxWidth: '560px',
+    borderRadius: '8px',
+    display: 'block',
   },
   header: {
     textAlign: 'left' as const,
@@ -205,6 +238,13 @@ const styles = {
   },
   postItem: {
     marginBottom: '32px',
+  },
+  postImage: {
+    width: '100%',
+    maxWidth: '560px',
+    borderRadius: '8px',
+    marginBottom: '16px',
+    display: 'block',
   },
   postTitle: {
     fontSize: '22px',

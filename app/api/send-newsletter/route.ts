@@ -11,6 +11,7 @@ interface BlogPostData {
   slug: string;
   description?: string;
   date: string;
+  image?: string;
 }
 
 export async function POST(request: NextRequest) {

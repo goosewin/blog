@@ -90,11 +90,19 @@ for POST_FILE in $NEW_POSTS; do
   # Extract description (may span multiple lines)
   DESCRIPTION=$(sed -n '/description:/,/[;}]/p' "$POST_FILE" | sed -n '/description:/,$p' | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/' | head -1 | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
   
+  # Extract first image from the MDX file (look for <Image src="/images/..." />)
+  IMAGE=$(grep -m 1 "src=\"/images/" "$POST_FILE" | sed -E 's/.*src="([^"]+)".*/\1/' || echo "")
+  
   # Escape quotes and backslashes for JSON
   TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
   DESCRIPTION=$(echo "$DESCRIPTION" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
   
-  POSTS_JSON="${POSTS_JSON}{\"title\":\"$TITLE\",\"slug\":\"$SLUG\",\"description\":\"$DESCRIPTION\",\"date\":\"$DATE\"}"
+  # Build JSON object with optional image field
+  if [ -n "$IMAGE" ]; then
+    POSTS_JSON="${POSTS_JSON}{\"title\":\"$TITLE\",\"slug\":\"$SLUG\",\"description\":\"$DESCRIPTION\",\"date\":\"$DATE\",\"image\":\"$IMAGE\"}"
+  else
+    POSTS_JSON="${POSTS_JSON}{\"title\":\"$TITLE\",\"slug\":\"$SLUG\",\"description\":\"$DESCRIPTION\",\"date\":\"$DATE\"}"
+  fi
 done
 
 POSTS_JSON="${POSTS_JSON}]"
