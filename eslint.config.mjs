@@ -9,7 +9,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const config = [
+export default [
   {
     ignores: [
       '.next/**',
@@ -23,7 +23,7 @@ const config = [
       'next-env.d.ts',
     ],
   },
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...compat.config({
+    extends: ['next/core-web-vitals', 'next/typescript'],
+  }),
 ];
-
-export default config;
