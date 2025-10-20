@@ -24,7 +24,7 @@ export default async function Image() {
           position: 'relative',
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {}
         <img
           src={`${process.env.NEXT_PUBLIC_BASE_URL}/icon.png`}
           alt="goosewin.com icon"
