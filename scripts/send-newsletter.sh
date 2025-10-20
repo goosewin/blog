@@ -25,10 +25,14 @@ set -e
 # Load environment variables from .env file if it exists
 if [ -f .env.local ]; then
   echo "Loading environment variables from .env.local"
-  export $(grep -v '^#' .env.local | xargs)
+  set -a
+  source .env.local
+  set +a
 elif [ -f .env ]; then
   echo "Loading environment variables from .env"
-  export $(grep -v '^#' .env | xargs)
+  set -a
+  source .env
+  set +a
 fi
 
 # Check if manual post slugs were provided as arguments
@@ -79,10 +83,12 @@ for POST_FILE in $NEW_POSTS; do
   # Extract slug from filename
   SLUG=$(basename "$POST_FILE" .mdx)
   
-  # Extract metadata from the MDX file
-  TITLE=$(grep -E "^\s*title:\s*['\"].*['\"]" "$POST_FILE" | sed -E "s/^\s*title:\s*['\"](.*)['\"]\s*,?\s*$/\1/" | head -1)
-  DESCRIPTION=$(grep -E "^\s*description:\s*['\"].*['\"]" "$POST_FILE" | sed -E "s/^\s*description:\s*['\"](.*)['\"]\s*,?\s*$/\1/" | head -1)
-  DATE=$(grep -E "^\s*date:\s*['\"].*['\"]" "$POST_FILE" | sed -E "s/^\s*date:\s*['\"](.*)['\"]\s*,?\s*$/\1/" | head -1)
+  # Extract metadata from the MDX file (handle multi-line values)
+  TITLE=$(grep "title:" "$POST_FILE" | head -1 | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/')
+  DATE=$(grep "date:" "$POST_FILE" | head -1 | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/')
+  
+  # Extract description (may span multiple lines)
+  DESCRIPTION=$(sed -n '/description:/,/[;}]/p' "$POST_FILE" | sed -n '/description:/,$p' | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/' | head -1 | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
   
   # Escape quotes and backslashes for JSON
   TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
