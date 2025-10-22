@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
+import { Activity } from 'react';
 
 interface SubscriptionFormProps {
   className?: string;
@@ -10,41 +11,41 @@ export default function SubscriptionForm({
   className = '',
 }: SubscriptionFormProps) {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<
-    'idle' | 'loading' | 'success' | 'error'
-  >('idle');
+  const [isPending, startTransition] = useTransition();
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
     setMessage('');
 
-    try {
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
+    startTransition(async () => {
+      try {
+        const response = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (response.ok) {
-        setStatus('success');
-        setMessage(
-          "Thanks for subscribing! You'll get notified when I publish new posts."
-        );
-        setEmail('');
-      } else {
+        if (response.ok) {
+          setStatus('success');
+          setMessage(
+            "Thanks for subscribing! You'll get notified when I publish new posts."
+          );
+          setEmail('');
+        } else {
+          setStatus('error');
+          setMessage(data.error || 'Something went wrong. Please try again.');
+        }
+      } catch {
         setStatus('error');
-        setMessage(data.error || 'Something went wrong. Please try again.');
+        setMessage('Something went wrong. Please try again.');
       }
-    } catch {
-      setStatus('error');
-      setMessage('Something went wrong. Please try again.');
-    }
+    });
   };
 
   return (
@@ -67,15 +68,22 @@ export default function SubscriptionForm({
               onChange={(e) => setEmail(e.target.value)}
               placeholder="goose@duck.com"
               required
-              disabled={status === 'loading'}
+              disabled={isPending}
               className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:border-gray-900 dark:focus:border-gray-100 bg-white dark:bg-[#232323] text-gray-900 dark:text-white disabled:opacity-50 text-sm"
             />
             <button
               type="submit"
-              disabled={status === 'loading'}
+              disabled={isPending}
               className="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md hover:opacity-80 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
             >
-              {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+              {isPending ? (
+                <span className="flex items-center gap-2">
+                  <Activity>Loading</Activity>
+                  Subscribing...
+                </span>
+              ) : (
+                'Subscribe'
+              )}
             </button>
           </div>
           {status === 'error' && (
