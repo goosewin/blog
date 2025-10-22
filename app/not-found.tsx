@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 
 interface ErrorMessage {
   title: string;
@@ -52,8 +55,9 @@ const errorMessages: ErrorMessage[] = [
 ];
 
 export default function NotFound() {
-  const randomError =
-    errorMessages[Math.floor(Math.random() * errorMessages.length)];
+  const [randomError] = useState(
+    () => errorMessages[Math.floor(Math.random() * errorMessages.length)]
+  );
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">

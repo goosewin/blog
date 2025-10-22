@@ -1,6 +1,9 @@
-import React from 'react';
+import { cacheLife } from 'next/cache';
 
-const Footer: React.FC = () => {
+const Footer = async () => {
+  'use cache';
+  cacheLife('max');
+
   return (
     <footer className="py-4 mt-8">
       <div className="flex flex-col sm:flex-row items-center">

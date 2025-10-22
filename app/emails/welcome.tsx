@@ -50,8 +50,8 @@ export default function WelcomeEmail({ baseUrl }: WelcomeEmailProps) {
             </Heading>
             <Text style={styles.intro}>Howdy,</Text>
             <Text style={styles.description}>
-              Thanks for subscribing to my blog! This newsletter will reflect
-              a collection of my thoughts on things that I find interesting.
+              Thanks for subscribing to my blog! This newsletter will reflect a
+              collection of my thoughts on things that I find interesting.
             </Text>
             <Text style={styles.description}>
               You&apos;ll get notified whenever I publish new posts.
