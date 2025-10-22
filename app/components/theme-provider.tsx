@@ -1,6 +1,12 @@
 'use client';
 
-import React, { createContext, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useEffectEvent,
+} from 'react';
+import { track } from '@vercel/analytics';
 
 type Theme = 'light' | 'dark';
 
@@ -26,6 +32,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   });
   const [mounted, setMounted] = useState(false);
 
+  const trackThemeChange = useEffectEvent(() => {
+    if (typeof window !== 'undefined' && mounted) {
+      track('theme_change', { theme });
+    }
+  });
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
@@ -34,6 +46,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
+    trackThemeChange();
   }, [theme]);
 
   if (!mounted) {
