@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ViewTransition } from 'react';
 import Navigation from './navigation';
 import Footer from './footer';
 
@@ -19,7 +20,9 @@ export default function PageLayout({
         </Link>
         <Navigation />
       </header>
-      <main>{children}</main>
+      <ViewTransition name="main-content">
+        <main>{children}</main>
+      </ViewTransition>
       <Footer />
     </div>
   );

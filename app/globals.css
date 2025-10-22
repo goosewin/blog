@@ -234,3 +234,50 @@
 .text-balance {
   text-wrap: balance;
 }
+
+@layer base {
+  ::view-transition-old(main-content),
+  ::view-transition-new(main-content) {
+    animation-duration: 0.4s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  ::view-transition-old(main-content) {
+    animation: slide-out-to-left 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  ::view-transition-new(main-content) {
+    animation: slide-in-from-right 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  @keyframes slide-out-to-left {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+  }
+
+  @keyframes slide-in-from-right {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(main-content),
+    ::view-transition-new(main-content) {
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
