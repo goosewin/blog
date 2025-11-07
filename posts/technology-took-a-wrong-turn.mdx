@@ -2,6 +2,7 @@ import Image from 'next/image';
 import PrincipleStatement from '@/app/components/blog/principle-statement';
 import AnimatedRules from '@/app/components/blog/animated-rules';
 import CommitmentCard from '@/app/components/blog/commitment-card';
+import { siteImages, imageSizes } from '@/lib/images';
 
 export const metadata = {
    title: 'Technology Took a Wrong Turn',
@@ -10,7 +11,14 @@ export const metadata = {
    image: '/images/screen-time-by-age.png',
 };
 
-<Image src="/images/screen-time-by-age.png" alt="Attention span distribution by age, September 2025" width={1440} height={1094} />
+<Image
+  src={siteImages.screenTimeByAge.src}
+  alt={siteImages.screenTimeByAge.alt}
+  placeholder="blur"
+  sizes={imageSizes.article}
+  priority
+  className="rounded-lg"
+/>
 
 Tech should accelerate humans. It's doing the opposite.
 
@@ -101,4 +109,4 @@ The stakes are too high to optimize for the wrong things.
 
 ---
 
-_Building tools that accelerate humans? [DM me on X/Twitter](https://x.com/dan_goosewin)._
+_Building tools that accelerate humans? [DM me on X/Twitter](https://x.com/goosewin)._ 

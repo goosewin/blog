@@ -69,8 +69,8 @@ export default function WelcomeEmail({ baseUrl }: WelcomeEmailProps) {
             <Text style={styles.signatureText}>Best,</Text>
             <Text style={styles.signatureName}>
               Dan Goosewin |{' '}
-              <Link href="https://x.com/dan_goosewin" style={styles.handleLink}>
-                @dan_goosewin
+              <Link href="https://x.com/goosewin" style={styles.handleLink}>
+                @goosewin
               </Link>
             </Text>
           </Section>

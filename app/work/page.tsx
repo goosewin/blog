@@ -1,13 +1,11 @@
-import { GitHubRepo } from '@/types/github';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { cache } from 'react';
 
-export const metadata: Metadata = {
-  title: 'Work',
-  description:
-    'Professional experience and projects of Dan Goosewin, a software developer and builder with a track record of creating disruptive digital experiences across various industries.',
-};
+import { PageHeader } from '@/app/components/page-header';
+import { ButtonLink } from '@/app/components/ui/button';
+import { Surface } from '@/app/components/ui/surface';
+import { GitHubRepo } from '@/types/github';
 
 interface ExperienceItem {
   company: string;
@@ -99,12 +97,18 @@ function extractDomain(url: string): string {
 
 const getGitHubRepos = cache(async (): Promise<GitHubRepo[] | null> => {
   try {
+    const headers: Record<string, string> = {
+      Accept: 'application/vnd.github+json',
+    };
+
+    if (process.env.GITHUB_TOKEN) {
+      headers.Authorization = `token ${process.env.GITHUB_TOKEN}`;
+    }
+
     const response = await fetch(
       'https://api.github.com/users/goosewin/repos?sort=updated&per_page=5',
       {
-        headers: {
-          Authorization: `token ${process.env.GITHUB_TOKEN}`,
-        },
+        headers,
         next: { revalidate: 3600 },
       }
     );
@@ -125,64 +129,97 @@ export default async function Work() {
 
   return (
     <div className="space-y-12">
-      <section>
-        <h2 className="text-2xl font-bold mb-6">Experience</h2>
-        {experiences.map((exp, index) => (
-          <div
-            key={index}
-            className="border-t border-gray-200 dark:border-gray-700 pt-12 first-of-type:border-t-0 first-of-type:pt-0 mb-12"
-          >
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2 sm:mb-0">
-                {exp.link ? (
-                  <Link
-                    href={exp.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="nav-link hover:opacity-80 transition-opacity"
-                  >
-                    {exp.company}
-                  </Link>
-                ) : (
-                  exp.company
-                )}
-              </h3>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                {exp.period}
-              </span>
-            </div>
-            <p className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">
-              {exp.position}
-            </p>
-            <p className="text-gray-600 dark:text-gray-400 text-balance">
-              {exp.description}
-            </p>
+      <PageHeader
+        eyebrow="Work"
+        title="Building products that compound agency and trust."
+        description="Highlights from the last decade of shipping: leadership roles, independent work, and the experiments I publish in the open."
+        actions={
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <ButtonLink href="/contact" size="md">
+              Collaborate with me
+            </ButtonLink>
+            <ButtonLink href="/blog" variant="secondary" size="md">
+              Read the blog
+            </ButtonLink>
           </div>
-        ))}
+        }
+      />
+
+      <section className="space-y-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
+          <h2 className="text-lg font-semibold uppercase tracking-[0.28em] text-[var(--color-text-muted)]">
+            Experience
+          </h2>
+          <span className="text-sm text-[var(--color-text-muted)]">
+            From lead roles to founder journeys
+          </span>
+        </div>
+        <div className="grid gap-4">
+          {experiences.map((exp) => (
+            <Surface
+              key={`${exp.company}-${exp.period}`}
+              variant="muted"
+              className="p-5 sm:p-6"
+            >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="space-y-2">
+                  <div className="flex flex-col gap-1">
+                    <div className="inline-flex items-center gap-3">
+                      <h3 className="text-xl font-semibold text-strong">
+                        {exp.link ? (
+                          <Link
+                            href={exp.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="nav-link"
+                          >
+                            {exp.company}
+                          </Link>
+                        ) : (
+                          exp.company
+                        )}
+                      </h3>
+                      <span className="rounded-full border border-subtle px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">
+                        {exp.period}
+                      </span>
+                    </div>
+                    <p className="text-sm font-semibold text-[var(--color-text-muted)]">
+                      {exp.position}
+                    </p>
+                  </div>
+                  <p className="text-[clamp(0.95rem,0.92rem+0.2vw,1.05rem)] text-[var(--color-text-muted)]">
+                    {exp.description}
+                  </p>
+                </div>
+              </div>
+            </Surface>
+          ))}
+        </div>
       </section>
 
-      <section>
-        <h2 className="text-2xl font-bold mb-6">Projects</h2>
-        <div className="space-y-6">
-          {customProjects?.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-600 dark:text-gray-400">
-                Stay tuned! New projects and applications are coming soon.
-              </p>
-            </div>
-          )}
-          {customProjects.map((project, index) => (
-            <div
-              key={index}
-              className="border-t border-gray-200 dark:border-gray-700 pt-6 first:border-t-0 first:pt-0"
+      <section className="space-y-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
+          <h2 className="text-lg font-semibold uppercase tracking-[0.28em] text-[var(--color-text-muted)]">
+            Projects
+          </h2>
+          <span className="text-sm text-[var(--color-text-muted)]">
+            Selected side builds and collaborations
+          </span>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {customProjects.map((project) => (
+            <Surface
+              key={project.name}
+              variant="muted"
+              className="flex flex-col gap-3 p-5"
             >
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-                <h3 className="text-xl font-semibold mb-2 sm:mb-0">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="text-lg font-semibold text-strong">
                   <Link
                     href={project.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:opacity-80 transition-opacity"
+                    className="nav-link"
                   >
                     {project.name}
                   </Link>
@@ -191,64 +228,69 @@ export default async function Work() {
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-gray-500 dark:text-gray-400 hover:opacity-80 transition-opacity"
+                  className="text-xs uppercase tracking-[0.2em] text-[var(--color-text-muted)]"
                 >
                   {extractDomain(project.url)}
                 </Link>
               </div>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-[var(--color-text-muted)]">
                 {project.description}
               </p>
-            </div>
+            </Surface>
           ))}
         </div>
       </section>
 
-      <section>
-        <h2 className="text-2xl font-bold mb-6">GitHub Repositories</h2>
+      <section className="space-y-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
+          <h2 className="text-lg font-semibold uppercase tracking-[0.28em] text-[var(--color-text-muted)]">
+            GitHub Repositories
+          </h2>
+          <span className="text-sm text-[var(--color-text-muted)]">
+            Recent open source and experiments
+          </span>
+        </div>
         {githubRepos ? (
-          <div className="space-y-6">
+          <div className="grid gap-4 sm:grid-cols-2">
             {githubRepos.map((repo) => (
-              <div
+              <Surface
                 key={repo.id}
-                className="border-t border-gray-200 dark:border-gray-700 pt-6 first:border-t-0 first:pt-0"
+                variant="muted"
+                className="flex flex-col gap-3 p-5"
               >
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-                  <h3 className="text-xl font-semibold mb-2 sm:mb-0">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="text-lg font-semibold text-strong">
                     <Link
                       href={repo.html_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:opacity-80 transition-opacity"
+                      className="nav-link"
                     >
                       {repo.name}
                     </Link>
                   </h3>
-                  <Link
-                    href={repo.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:opacity-80 transition-opacity"
-                  >
-                    {repo.full_name}
-                  </Link>
+                  <span className="text-xs uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+                    {repo.language ?? 'TypeScript'}
+                  </span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {repo.description}
+                <p className="text-[var(--color-text-muted)]">
+                  {repo.description ??
+                    'No description yet, just getting started.'}
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                  Last updated: {new Date(repo.updated_at).toLocaleDateString()}
+                <p className="text-xs text-[var(--color-text-muted)]">
+                  Updated {new Date(repo.updated_at).toLocaleDateString()}
                 </p>
-              </div>
+              </Surface>
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-600 dark:text-gray-400">
-              Unable to load GitHub repositories at this time. Please check back
-              later.
-            </p>
-          </div>
+          <Surface
+            variant="muted"
+            className="p-8 text-center text-[var(--color-text-muted)]"
+          >
+            Unable to load GitHub repositories at this time. Please check back
+            later.
+          </Surface>
         )}
       </section>
     </div>
