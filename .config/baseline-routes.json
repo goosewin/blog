@@ -1,0 +1,8 @@
+[
+  { "slug": "home", "path": "/" },
+  { "slug": "blog-index", "path": "/blog" },
+  { "slug": "blog-post", "path": "/blog/adversity-creates-greatness" },
+  { "slug": "about", "path": "/about" },
+  { "slug": "work", "path": "/work" },
+  { "slug": "contact", "path": "/contact" }
+]

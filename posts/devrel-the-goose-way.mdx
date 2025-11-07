@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { siteImages, imageSizes } from '@/lib/images';
 
 export const metadata = {
   title: 'DevRel - The Goose Way',
@@ -14,10 +15,11 @@ Many people think I might have ruined my career by pivoting away from traditiona
 Here are 13 things I've learned about being successful in DevRel—the Goose Way. (I call it the Goose Way because I'm Dan Goosewin, and my friends call me Goose. Felt the urge to clarify in case you don't know who I am.)
 
 <Image
-  src="/images/devrel-the-goose-way.png"
-  alt="DevRel - The Goose Way"
-  width={1616}
-  height={750}
+  src={siteImages.devrelTheGooseWay.src}
+  alt={siteImages.devrelTheGooseWay.alt}
+  placeholder="blur"
+  sizes={imageSizes.article}
+  priority
   className="rounded-lg"
 />
 
@@ -174,4 +176,4 @@ The transition from engineering manager to DevRel has been one of the best decis
 
 ---
 
-_Want to chat about DevRel? Reach out [on X/Twitter](https://x.com/dan_goosewin)._
+_Want to chat about DevRel? Reach out [on X/Twitter](https://x.com/goosewin)._ 

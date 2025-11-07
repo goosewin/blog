@@ -1,9 +1,10 @@
 import Image from 'next/image';
+import { siteImages, imageSizes } from '@/lib/images';
 
 export const metadata = {
   title: 'Wonders of Rubber Duck Debugging',
   date: '2024-10-12',
-  description: 'How a rubber duck can make you a better decision maker. Observations from Dan Goosewin\'s personal experience using rubber duck debugging.',
+  description: "How a rubber duck can make you a better decision maker. Observations from Dan Goosewin's personal experience using rubber duck debugging.",
   image: '/images/pexels-armandoare1-3759364.jpg',
 };
 
@@ -16,10 +17,12 @@ Solving problems is important. Perhaps, the most important skill anyone can have
 **Rubber duck debugging**—_yeah, it's as quirky as it sounds_—is a classic problem-solving trick coming from the niche of software development. The practice is rooted in the idea that articulating your thought process out loud helps you pinpoint the root of the issue you might have been missing all along.
 
 <Image
-  alt="The classic rubber duck debugging companion."
-  src="/images/pexels-armandoare1-3759364.jpg"
-  width={704}
-  height={468}
+  alt={siteImages.pexelsArmandoAre1.alt}
+  src={siteImages.pexelsArmandoAre1.src}
+  placeholder="blur"
+  sizes={imageSizes.article}
+  priority
+  className="rounded-lg"
 />
 *Photo by [Armando
 Are](https://www.pexels.com/photo/close-up-photo-of-a-yellow-rubber-duck-3759364/)*
@@ -88,10 +91,12 @@ Always give your duck the full rundown.
 At the end of the day, rubber duck debugging is a ridiculously simple yet powerful way to improve up your problem-solving. Give it a try—you can become a more effective decision maker in no time.
 
 <Image
-  alt="My personal collection of rubber ducks for debugging purposes."
-  src="/images/rubber-duck-collection.jpg"
-  width={704}
-  height={528}
+  alt={siteImages.rubberDuckCollection.alt}
+  src={siteImages.rubberDuckCollection.src}
+  placeholder="blur"
+  sizes={imageSizes.article}
+  loading="lazy"
+  className="rounded-lg"
 />
 *My personal collection of rubber ducks.*
 
@@ -99,4 +104,4 @@ At the end of the day, rubber duck debugging is a ridiculously simple yet powerf
 
 ---
 
-_Feel free to share your personal rubber duck experiences with me by reaching out [on X/Twitter](https://x.com/dan_goosewin)._
+_Feel free to share your personal rubber duck experiences with me by reaching out [on X/Twitter](https://x.com/goosewin)._ 

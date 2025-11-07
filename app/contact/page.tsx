@@ -1,7 +1,10 @@
-import XLogo from '@/app/components/x-logo';
-import { Github, Linkedin } from 'lucide-react';
+import { Github, Linkedin, Mail } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
+
+import { PageHeader } from '@/app/components/page-header';
+import { Surface } from '@/app/components/ui/surface';
+import XLogo from '@/app/components/x-logo';
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -18,40 +21,55 @@ interface ContactLink {
 const contactLinks: ContactLink[] = [
   {
     name: 'X/Twitter',
-    url: 'https://x.com/dan_goosewin',
-    icon: <XLogo className="w-6 h-6 p-1" />,
+    url: 'https://x.com/goosewin',
+    icon: <XLogo className="h-6 w-6 p-1" />,
   },
-  { name: 'GitHub', url: 'https://github.com/goosewin', icon: <Github /> },
+  {
+    name: 'GitHub',
+    url: 'https://github.com/goosewin',
+    icon: <Github className="h-6 w-6" />,
+  },
   {
     name: 'LinkedIn',
     url: 'https://www.linkedin.com/in/goosewin',
-    icon: <Linkedin />,
+    icon: <Linkedin className="h-6 w-6" />,
+  },
+  {
+    name: 'Email',
+    url: 'mailto:hi@goosewin.com',
+    icon: <Mail className="h-6 w-6" />,
   },
 ];
 
 export default function Contact() {
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl font-bold">Contact</h1>
-      <p className="text-gray-600 dark:text-gray-400 text-balance">
-        I&apos;m open to helping build products that solve real problems. The
-        best way to reach me is via DM on X/Twitter. You can also find me here:
-      </p>
-      <ul className="space-y-4">
+    <div className="space-y-12">
+      <PageHeader
+        eyebrow="Contact"
+        title="Let’s build something useful together."
+        description="I collaborate with founders, product teams, and developer communities. DM me on X/Twitter or pick a channel below—my replies are human, not automated."
+      />
+
+      <Surface variant="muted" className="grid gap-6 p-6 sm:grid-cols-2">
         {contactLinks.map((link) => (
-          <li key={link.name}>
-            <Link
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
-            >
-              <span className="text-2xl">{link.icon}</span>
-              <span className="text-lg group-hover:underline">{link.name}</span>
-            </Link>
-          </li>
+          <Link
+            key={link.name}
+            href={link.url}
+            target={link.url.startsWith('http') ? '_blank' : undefined}
+            rel={
+              link.url.startsWith('http') ? 'noopener noreferrer' : undefined
+            }
+            className="group flex items-center gap-4 rounded-[var(--radius-md)] border border-transparent px-4 py-3 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]/40"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-subtle bg-surface text-[var(--color-text)] shadow-soft">
+              {link.icon}
+            </span>
+            <span className="text-base font-medium text-strong group-hover:underline">
+              {link.name}
+            </span>
+          </Link>
         ))}
-      </ul>
+      </Surface>
     </div>
   );
 }

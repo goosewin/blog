@@ -1,4 +1,7 @@
 import Link from 'next/link';
+
+import { cn } from '@/lib/utils';
+import { Surface } from '@/app/components/ui/surface';
 import { BlogPost } from '@/lib/blog';
 
 interface BlogPostListProps {
@@ -22,25 +25,30 @@ export default function BlogPostList({
   }
 
   return (
-    <div>
-      <h2 className="text-sm text-gray-500 dark:text-gray-400 mb-4 uppercase">
-        Blog
-      </h2>
-      <ul className="border-t border-gray-200 dark:border-gray-700">
+    <Surface variant="muted" className="p-6 sm:p-8">
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-sm font-semibold uppercase tracking-[0.35em] text-[var(--color-text-muted)]">
+          Recent Writing
+        </h2>
+        <Link
+          href="/blog"
+          className="text-sm font-medium text-accent hover:opacity-80"
+        >
+          View all
+        </Link>
+      </div>
+      <ul className="divide-y divide-[var(--color-border)]">
         {posts.map((post) => (
-          <li
-            key={post.slug}
-            className="text-base border-b border-gray-200 dark:border-gray-700"
-          >
+          <li key={post.slug}>
             <Link
               href={`/blog/${post.slug}`}
-              className="group flex flex-col sm:flex-row sm:justify-between sm:items-center py-4"
+              className="group flex items-start gap-4 py-4 transition-colors sm:items-center sm:justify-between"
             >
-              <span className="group-hover:opacity-80 transition-opacity mb-2 sm:mb-0">
+              <span className="text-base font-medium text-strong transition-colors group-hover:text-accent">
                 {post.title}
               </span>
               {showDate && (
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <span className="text-sm text-[var(--color-text-muted)]">
                   {new Date(post.date).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
@@ -52,6 +60,6 @@ export default function BlogPostList({
           </li>
         ))}
       </ul>
-    </div>
+    </Surface>
   );
 }

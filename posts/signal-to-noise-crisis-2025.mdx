@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { siteImages, imageSizes } from '@/lib/images';
 
 export const metadata = {
   title: 'Solving the Signal-to-Noise Crisis in 2025',
@@ -8,10 +9,11 @@ export const metadata = {
 };
 
 <Image
-  src="/images/signal-to-noise-crisis-2025.png"
-  alt="Signal-to-noise ratio optimization guide for 2025"
-  width={1200}
-  height={630}
+  src={siteImages.signalToNoiseCrisis.src}
+  alt={siteImages.signalToNoiseCrisis.alt}
+  placeholder="blur"
+  sizes={imageSizes.article}
+  priority
   className="rounded-lg mb-8"
 />
 
@@ -24,10 +26,11 @@ Every decision you make should optimize for signal over noise. This isn't option
 ## The 2025 Noise Explosion
 
 <Image
-  src="/images/noise-explosion-stats.png"
-  alt="Statistics showing the explosion of AI-generated content in 2025"
-  width={800}
-  height={500}
+  src={siteImages.noiseExplosionStats.src}
+  alt={siteImages.noiseExplosionStats.alt}
+  placeholder="blur"
+  sizes={imageSizes.article}
+  loading="lazy"
   className="rounded-lg my-8"
 />
 *Stats by <a href="https://originality.ai/ai-content-in-google-search-results" target="_blank" rel="nofollow noopener">Originality.ai</a>*
@@ -181,4 +184,4 @@ Pick one source of noise in your life. Cut it today. Feel the difference. Then c
 
 </details>
 
-_Building software to improve signal-to-noise in society? DM me on [X/Twitter @dan_goosewin](https://x.com/dan_goosewin)._
+_Building software to improve signal-to-noise in society? DM me on [X/Twitter @goosewin](https://x.com/goosewin)._ 

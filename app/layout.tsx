@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Space_Grotesk } from 'next/font/google';
 import PageLayout from './components/page-layout';
 import { ThemeProvider } from './components/theme-provider';
+import { ThemeScript } from './components/theme-script';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -31,8 +32,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@dan_goosewin',
-    creator: '@dan_goosewin',
+    site: '@goosewin',
+    creator: '@goosewin',
     creatorId: '1559769056168710144',
   },
 };
@@ -42,10 +43,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const initialTheme = 'light';
+
   return (
-    <html lang="en" className={spaceGrotesk.className + ' dark'}>
-      <body>
-        <ThemeProvider>
+    <html
+      lang="en"
+      className={spaceGrotesk.className}
+      data-theme={initialTheme}
+      suppressHydrationWarning
+    >
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="min-h-screen antialiased">
+        <ThemeProvider defaultTheme={initialTheme} hasUserPreference={false}>
           <PageLayout>
             {children}
             <Analytics />

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { siteImages, imageSizes } from '@/lib/images';
 
 export const metadata = {
   title: 'Adversity Creates Greatness',
@@ -14,10 +15,12 @@ This isn't motivational bullshit. It's observable reality. The most successful p
 Nietzsche was right: "Whatever doesn't kill us, makes us stronger." But he didn't go far enough. What doesn't kill us makes us unstoppable.
 
 <Image
-  src="/images/baby-goose-taking-risks.jpg"
-  alt="Baby Goose taking risks"
-  width={3708}
-  height={2623}
+  src={siteImages.babyGooseTakingRisks.src}
+  alt={siteImages.babyGooseTakingRisks.alt}
+  placeholder="blur"
+  sizes={imageSizes.article}
+  priority
+  className="rounded-lg"
 />
 *Baby Goose taking risks*
 
@@ -136,4 +139,4 @@ But adversity? Adversity creates greatness.
 
 ---
 
-_Want to chat about life? Reach me [on X/Twitter](https://x.com/dan_goosewin)._
+_Want to chat about life? Reach me [on X/Twitter](https://x.com/goosewin)._ 

@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Lint, Accessibility, Lighthouse
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: '1.1.4'
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run lint
+        run: bun run lint
+
+      - name: Start dev server
+        run: bun run dev --hostname 0.0.0.0 --port 3000 &
+
+      - name: Wait for dev server
+        uses: jakejarvis/wait-action@v0.1.0
+        with:
+          time: '20'
+
+      - name: Baseline route probe
+        run: bun run scripts/run-baseline.mjs
+
+      - name: Accessibility audit
+        run: bun run scripts/run-pa11y.mjs
+
+      - name: Lighthouse CI
+        env:
+          BASELINE_ORIGIN: http://127.0.0.1:3000
+        run: bun run baseline:lhci
+
+      - name: Upload Lighthouse artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .baseline/lighthouse
+
+      - name: Upload accessibility results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pa11y-report
+          path: .baseline/a11y
+

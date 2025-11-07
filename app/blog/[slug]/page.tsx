@@ -5,6 +5,11 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import StructuredData from '@/app/components/structured-data';
 import SubscriptionForm from '@/app/components/subscription-form';
+import { Surface } from '@/app/components/ui/surface';
+import { RelatedPosts } from '@/app/components/article/related-posts';
+import { ReadingProgress } from '@/app/components/article/reading-progress';
+import { TableOfContents } from '@/app/components/article/table-of-contents';
+import { ShareActions } from '@/app/components/article/share-actions';
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
@@ -73,102 +78,83 @@ export default async function Article(props: {
     description: post.description || 'A blog post by Dan Goosewin',
   };
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://goosewin.com';
+  const articleUrl = `${baseUrl}/blog/${post.slug}`;
+
   return (
     <>
       <StructuredData data={structuredData} />
-      <article className="prose dark:prose-invert max-w-none">
-        <div className="mb-12">
-          <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 gap-2">
-            <span>
+      <ReadingProgress targetSelector="#article-content" />
+      <div className="mt-4 grid gap-12 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <aside className="hidden lg:block">
+          <Surface variant="muted" className="sticky top-24 space-y-8 p-6">
+            <TableOfContents targetSelector="#article-content" />
+            <ShareActions title={post.title} url={articleUrl} />
+          </Surface>
+        </aside>
+
+        <div className="space-y-12">
+          <div className="lg:hidden">
+            <Surface variant="muted" className="space-y-6 p-6">
+              <TableOfContents targetSelector="#article-content" />
+              <ShareActions title={post.title} url={articleUrl} />
+            </Surface>
+          </div>
+
+          <article
+            id="article-content"
+            data-article
+            className="prose prose-lg max-w-none text-[var(--color-text-muted)] dark:prose-invert"
+          >
+            <div className="mb-10 space-y-4">
+              <span className="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)]">
+                Published{' '}
               {new Date(post.date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
             </span>
-            |
-            <span>
-              <Link
-                href="https://x.com/dan_goosewin"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nav-link"
-              >
-                @dan_goosewin
-              </Link>
-            </span>
-          </div>
+              <h1 className="text-4xl font-semibold text-strong sm:text-[2.75rem]">
+                {post.title}
+              </h1>
         </div>
         <MDXContent slug={params.slug} />
       </article>
 
-      <nav className="mt-12 flex justify-between items-center border-t border-gray-200 dark:border-gray-600 pt-8">
-        <div className="flex-1">
+          <nav className="grid gap-4 sm:grid-cols-2">
           {previousPost && (
-            <Link
-              href={`/blog/${previousPost.slug}`}
-              className="flex items-center gap-3 p-4 rounded-lg hover:opacity-80 transition-opacity duration-200 bg-gray-50 dark:bg-[#1c1c1c]/60"
-            >
-              <svg
-                className="w-5 h-5 text-gray-600 dark:text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              <div className="text-left">
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+              <Surface variant="muted" className="p-4">
+                <span className="text-xs uppercase tracking-[0.25em] text-[var(--color-text-muted)]">
                   Previous
-                </div>
-                <div className="text-base font-medium text-gray-900 dark:text-gray-100">
+                </span>
+                <Link
+                  href={`/blog/${previousPost.slug}`}
+                  className="mt-2 block text-base font-medium text-strong transition hover:text-accent"
+                >
                   {previousPost.title}
-                </div>
-              </div>
             </Link>
+              </Surface>
           )}
-        </div>
-
-        <div className="flex-1 flex justify-end">
           {nextPost && (
-            <Link
-              href={`/blog/${nextPost.slug}`}
-              className="flex items-center gap-3 p-4 rounded-lg hover:opacity-80 transition-opacity duration-200 bg-gray-50 dark:bg-[#1c1c1c]/60"
-            >
-              <div className="text-right">
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+              <Surface variant="muted" className="p-4 text-right">
+                <span className="text-xs uppercase tracking-[0.25em] text-[var(--color-text-muted)]">
                   Next
-                </div>
-                <div className="text-base font-medium text-gray-900 dark:text-gray-100">
+                </span>
+                <Link
+                  href={`/blog/${nextPost.slug}`}
+                  className="mt-2 block text-base font-medium text-strong transition hover:text-accent"
+                >
                   {nextPost.title}
-                </div>
-              </div>
-              <svg
-                className="w-5 h-5 text-gray-600 dark:text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
             </Link>
+              </Surface>
           )}
-        </div>
-      </nav>
+          </nav>
 
-      <div className="mt-12">
-        <SubscriptionForm />
+          <RelatedPosts posts={posts} currentSlug={params.slug} />
+
+          <SubscriptionForm className="mt-12" />
+        </div>
       </div>
     </>
   );
