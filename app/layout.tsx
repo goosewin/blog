@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@dan_goosewin',
-    creator: '@dan_goosewin',
+    site: '@goosewin',
+    creator: '@goosewin',
     creatorId: '1559769056168710144',
   },
 };

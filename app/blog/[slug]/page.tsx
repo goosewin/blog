@@ -1,10 +1,10 @@
-import { getAllBlogPosts, getBlogPost } from '@/lib/blog';
-import { notFound, redirect } from 'next/navigation';
-import dynamic from 'next/dynamic';
-import { Metadata } from 'next';
-import Link from 'next/link';
 import StructuredData from '@/app/components/structured-data';
 import SubscriptionForm from '@/app/components/subscription-form';
+import { getAllBlogPosts, getBlogPost } from '@/lib/blog';
+import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { notFound, redirect } from 'next/navigation';
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
@@ -90,12 +90,12 @@ export default async function Article(props: {
             |
             <span>
               <Link
-                href="https://x.com/dan_goosewin"
+                href="https://x.com/goosewin"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="nav-link"
               >
-                @dan_goosewin
+                @goosewin
               </Link>
             </span>
           </div>
