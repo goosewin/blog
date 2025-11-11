@@ -18,7 +18,7 @@ interface ContactLink {
 const contactLinks: ContactLink[] = [
   {
     name: 'X/Twitter',
-    url: 'https://x.com/dan_goosewin',
+    url: 'https://x.com/goosewin',
     icon: <XLogo className="w-6 h-6 p-1" />,
   },
   { name: 'GitHub', url: 'https://github.com/goosewin', icon: <Github /> },
