@@ -19,9 +19,16 @@ interface ExperienceItem {
 
 const experiences: ExperienceItem[] = [
   {
+    company: 'Stealth Startup',
+    position: 'Founder',
+    period: '2025 - Present',
+    description:
+      "Building the next interface between humans and AI. Occasionally doing selective fractional devrel / engineering and advisory work for startups i love while i'm in stealth.",
+  },
+  {
     company: 'Vapi',
     position: 'DevRel & Partnerships Lead',
-    period: '2025 - Present',
+    period: '2025',
     description:
       "Leading developer relations and community engagement for Vapi's voice AI platform. Building developer experiences, creating technical content, and fostering a thriving developer ecosystem around voice AI technology.",
   },

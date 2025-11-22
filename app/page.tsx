@@ -9,11 +9,9 @@ export default async function Home() {
   return (
     <>
       <p className="mb-12 text-balance">
-        DevRel & Partnerships Lead @{' '}
-        <Link href="https://vapi.ai" className="nav-link" target="_blank">
-          vapi.ai
-        </Link>
-        . Passionate about software, videogames, finance, entrepreneurship, and{' '}
+        Founder working on a stealth startup. Building the next interface
+        between humans and AI. Passionate about software, videogames, finance,
+        entrepreneurship, and{' '}
         <Link
           href="/blog/wonders-of-rubber-duck-debugging"
           rel="noopener noreferrer"
