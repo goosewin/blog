@@ -10,29 +10,27 @@ export const contentType = 'image/png';
 
 export default async function Image() {
   return new ImageResponse(
-    (
-      <div
-        style={{
-          background: '#232323',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '40px',
-          position: 'relative',
-        }}
-      >
-        {}
-        <img
-          src={`${process.env.NEXT_PUBLIC_BASE_URL}/icon.png`}
-          alt="goosewin.com icon"
-          width={240}
-          height={240}
-        />
-      </div>
-    ),
+    <div
+      style={{
+        background: '#232323',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '40px',
+        position: 'relative',
+      }}
+    >
+      {}
+      <img
+        src={`${process.env.NEXT_PUBLIC_BASE_URL}/icon.png`}
+        alt="goosewin.com icon"
+        width={240}
+        height={240}
+      />
+    </div>,
     {
       ...size,
     }
