@@ -1,57 +1,66 @@
 # goosewin.com
 
-Welcome to the repository powering `goosewin.com`.
+Source for goosewin.com. Personal site and writing.
 
-## Tech Stack
+## Contents
 
-- [Next.js](https://nextjs.org/) - React framework for server-side rendering and static site generation
-- [TypeScript](https://www.typescriptlang.org/) - Typed superset of JavaScript
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [MDX](https://mdxjs.com/) - Markdown for the component era
+- MDX-based posts
+- Newsletter signup via Resend
+- Open Graph images and sitemap generation
+- Analytics via Vercel
 
 ## Getting Started
 
-1. Clone the repository:
-
-   ```sh
+1. Clone the repository
+   ```bash
    git clone https://github.com/goosewin/blog.git
+   cd blog
    ```
-
-2. Install dependencies:
-
-   ```sh
+2. Install dependencies
+   ```bash
    bun install
    ```
-
-3. Run the development server:
-   ```sh
+3. Set up environment variables
+   ```bash
+   cp .env.example .env.local
+   ```
+4. Run the development server
+   ```bash
    bun dev
    ```
 
 ## Environment Variables
 
-This project uses environment variables for configuration:
-
-- `GITHUB_TOKEN`: Your GitHub personal access token (required for fetching GitHub repositories)
-
-You can copy the `.env.example` file and replace the values with your own:
-
-```sh
-cp .env.example .env.local
+```env
+GITHUB_TOKEN=
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+RESEND_AUDIENCE_ID=
+RESEND_API_KEY=
+NEWSLETTER_SECRET=
+SITE_URL=http://localhost:3000
 ```
 
-Then edit `.env.local` and replace `your_github_token_here` with your actual GitHub token.
+## Writing Posts
 
-## Writing Blog Posts
-
-Add new MDX files to the `posts/` directory. Each post should include metadata at the top:
+Add new MDX files to `posts/`. Each post includes metadata at the top:
 
 ```mdx
 export const metadata = {
-  title: 'Your Post Title',
-  date: 'YYYY-MM-DD',
-  description: 'A brief description of your post',
+  title: "Your Post Title",
+  date: "YYYY-MM-DD",
+  description: "A brief description of your post",
 };
 
 Your post content goes here...
 ```
+
+## Tech Stack
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- MDX
+
+## License
+
+MIT © Dan Goosewin
