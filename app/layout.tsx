@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: '%s | Dan Goosewin',
   },
   description:
-    'Dan Goosewin is a Founder working on a stealth startup, a software engineer, and a builder. This website is collection of his thoughts and experiences.',
+    'Dan Goosewin builds AI-native systems and publishes signal-first writing on software, execution, and leverage.',
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_BASE_URL ?? 'https://goosewin.com'
   ),
