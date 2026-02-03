@@ -1,7 +1,6 @@
-import Link from 'next/link';
 import { ViewTransition } from 'react';
-import Navigation from './navigation';
 import Footer from './footer';
+import BackLink from './back-link';
 
 export default function PageLayout({
   children,
@@ -9,19 +8,12 @@ export default function PageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-      <header className="flex justify-between items-center py-4">
-        <Link
-          href="/"
-          className="text-2xl items-center h-16 my-auto flex font-bold"
-        >
-          <span className="sm:hidden">G.</span>
-          <span className="hidden sm:inline">Dan Goosewin</span>
-        </Link>
-        <Navigation />
-      </header>
+    <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col">
       <ViewTransition name="main-content">
-        <main>{children}</main>
+        <main className="flex-1 flex flex-col justify-center py-10">
+          <BackLink />
+          {children}
+        </main>
       </ViewTransition>
       <Footer />
     </div>
