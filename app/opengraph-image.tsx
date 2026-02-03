@@ -10,9 +10,21 @@ export const size = {
 
 export const contentType = 'image/png';
 
+let iconSrcPromise: Promise<string> | null = null;
+
+async function getIconSrc(): Promise<string> {
+  if (!iconSrcPromise) {
+    iconSrcPromise = readFile(join(process.cwd(), 'public', 'icon.png')).then(
+      (buffer) =>
+        `data:image/png;base64,${Buffer.from(buffer).toString('base64')}`
+    );
+  }
+
+  return iconSrcPromise;
+}
+
 export default async function Image() {
-  const iconBuffer = await readFile(join(process.cwd(), 'public', 'icon.png'));
-  const iconSrc = `data:image/png;base64,${Buffer.from(iconBuffer).toString('base64')}`;
+  const iconSrc = await getIconSrc();
 
   return new ImageResponse(
     <div

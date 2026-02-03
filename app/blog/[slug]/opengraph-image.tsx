@@ -11,6 +11,41 @@ export const size = {
 
 export const contentType = 'image/png';
 
+let iconSrcPromise: Promise<string> | null = null;
+const imageSrcCache = new Map<string, Promise<string | null>>();
+
+async function getIconSrc(): Promise<string> {
+  if (!iconSrcPromise) {
+    iconSrcPromise = readFile(join(process.cwd(), 'public', 'icon.png')).then(
+      (buffer) =>
+        `data:image/png;base64,${Buffer.from(buffer).toString('base64')}`
+    );
+  }
+
+  return iconSrcPromise;
+}
+
+function getImageSrc(pathname: string): Promise<string | null> {
+  const cached = imageSrcCache.get(pathname);
+  if (cached) return cached;
+
+  const srcPromise = readFile(join(process.cwd(), 'public', pathname))
+    .then((buffer) => {
+      const extension = extname(pathname).toLowerCase();
+      const mimeType =
+        extension === '.png'
+          ? 'image/png'
+          : extension === '.jpg' || extension === '.jpeg'
+            ? 'image/jpeg'
+            : 'image/png';
+      return `data:${mimeType};base64,${Buffer.from(buffer).toString('base64')}`;
+    })
+    .catch(() => null);
+
+  imageSrcCache.set(pathname, srcPromise);
+  return srcPromise;
+}
+
 function truncateText(text: string, maxLength: number) {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength - 3) + '...';
@@ -21,30 +56,9 @@ export default async function Image(props: {
 }) {
   const params = await props.params;
   const post = await getBlogPost(params.slug);
-  const iconBuffer = await readFile(join(process.cwd(), 'public', 'icon.png'));
-  const iconSrc = `data:image/png;base64,${Buffer.from(iconBuffer).toString('base64')}`;
-  let postImageSrc: string | null = null;
-
-  if (post?.image) {
-    try {
-      const imagePath = join(
-        process.cwd(),
-        'public',
-        post.image.replace(/^\//, '')
-      );
-      const imageBuffer = await readFile(imagePath);
-      const extension = extname(imagePath).toLowerCase();
-      const mimeType =
-        extension === '.png'
-          ? 'image/png'
-          : extension === '.jpg' || extension === '.jpeg'
-            ? 'image/jpeg'
-            : 'image/png';
-      postImageSrc = `data:${mimeType};base64,${Buffer.from(imageBuffer).toString('base64')}`;
-    } catch {
-      postImageSrc = null;
-    }
-  }
+  const iconSrc = await getIconSrc();
+  const postImagePath = post?.image?.replace(/^\//, '');
+  const postImageSrc = postImagePath ? await getImageSrc(postImagePath) : null;
 
   return new ImageResponse(
     <div
