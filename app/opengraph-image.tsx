@@ -1,3 +1,5 @@
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 import { ImageResponse } from 'next/og';
 
 export const alt = 'goosewin.com';
@@ -9,6 +11,9 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
+  const iconBuffer = await readFile(join(process.cwd(), 'public', 'icon.png'));
+  const iconSrc = `data:image/png;base64,${Buffer.from(iconBuffer).toString('base64')}`;
+
   return new ImageResponse(
     <div
       style={{
@@ -24,12 +29,7 @@ export default async function Image() {
       }}
     >
       {}
-      <img
-        src={`${process.env.NEXT_PUBLIC_BASE_URL}/icon.png`}
-        alt="goosewin.com icon"
-        width={240}
-        height={240}
-      />
+      <img src={iconSrc} alt="goosewin.com icon" width={240} height={240} />
     </div>,
     {
       ...size,

@@ -1,3 +1,5 @@
+import { readFile } from 'fs/promises';
+import { extname, join } from 'path';
 import { ImageResponse } from 'next/og';
 import { getBlogPost } from '@/lib/blog';
 
@@ -19,7 +21,30 @@ export default async function Image(props: {
 }) {
   const params = await props.params;
   const post = await getBlogPost(params.slug);
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://goosewin.com';
+  const iconBuffer = await readFile(join(process.cwd(), 'public', 'icon.png'));
+  const iconSrc = `data:image/png;base64,${Buffer.from(iconBuffer).toString('base64')}`;
+  let postImageSrc: string | null = null;
+
+  if (post?.image) {
+    try {
+      const imagePath = join(
+        process.cwd(),
+        'public',
+        post.image.replace(/^\//, '')
+      );
+      const imageBuffer = await readFile(imagePath);
+      const extension = extname(imagePath).toLowerCase();
+      const mimeType =
+        extension === '.png'
+          ? 'image/png'
+          : extension === '.jpg' || extension === '.jpeg'
+            ? 'image/jpeg'
+            : 'image/png';
+      postImageSrc = `data:${mimeType};base64,${Buffer.from(imageBuffer).toString('base64')}`;
+    } catch {
+      postImageSrc = null;
+    }
+  }
 
   return new ImageResponse(
     <div
@@ -36,10 +61,10 @@ export default async function Image(props: {
         position: 'relative',
       }}
     >
-      {post?.image && (
+      {postImageSrc && (
         <img
-          src={`${baseUrl}${post.image}`}
-          alt={post.title}
+          src={postImageSrc}
+          alt={post?.title || 'Blog Post'}
           style={{
             position: 'absolute',
             top: 0,
@@ -61,7 +86,7 @@ export default async function Image(props: {
         }}
       >
         <img
-          src={`${baseUrl}/icon.png`}
+          src={iconSrc}
           alt="goosewin.com icon"
           width={80}
           height={80}
