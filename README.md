@@ -46,9 +46,9 @@ Add new MDX files to `posts/`. Each post includes metadata at the top:
 
 ```mdx
 export const metadata = {
-  title: "Your Post Title",
-  date: "YYYY-MM-DD",
-  description: "A brief description of your post",
+  title: 'Your Post Title',
+  date: 'YYYY-MM-DD',
+  description: 'A brief description of your post',
 };
 
 Your post content goes here...
