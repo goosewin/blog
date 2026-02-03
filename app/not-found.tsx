@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface ErrorMessage {
   title: string;
@@ -55,9 +55,12 @@ const errorMessages: ErrorMessage[] = [
 ];
 
 export default function NotFound() {
-  const [randomError] = useState(
-    () => errorMessages[Math.floor(Math.random() * errorMessages.length)]
+  const pathname = usePathname() || '/';
+  const hash = Array.from(pathname).reduce(
+    (acc, char) => acc + char.charCodeAt(0),
+    0
   );
+  const randomError = errorMessages[hash % errorMessages.length];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
