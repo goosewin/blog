@@ -1,11 +1,6 @@
 'use client';
 
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useEffectEvent,
-} from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import { track } from '@vercel/analytics';
 
 type Theme = 'light' | 'dark';
@@ -21,7 +16,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === 'undefined') return 'light';
+    if (typeof window === 'undefined') return 'dark';
     const savedTheme = localStorage.getItem('theme') as Theme | null;
     if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
       return savedTheme;
@@ -30,28 +25,17 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       ? 'dark'
       : 'light';
   });
-  const [mounted, setMounted] = useState(false);
-
-  const trackThemeChange = useEffectEvent(() => {
-    if (typeof window !== 'undefined' && mounted) {
-      track('theme_change', { theme });
-    }
-  });
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-  }, []);
+  const hasTrackedRef = useRef(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
-    trackThemeChange();
+    if (hasTrackedRef.current) {
+      track('theme_change', { theme });
+    } else {
+      hasTrackedRef.current = true;
+    }
   }, [theme]);
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

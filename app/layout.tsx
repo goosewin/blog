@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { Space_Grotesk } from 'next/font/google';
+import Script from 'next/script';
 import PageLayout from './components/page-layout';
 import { ThemeProvider } from './components/theme-provider';
 import './globals.css';
@@ -40,8 +41,35 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={spaceGrotesk.className + ' dark'}>
+    <html
+      lang="en"
+      className={`${spaceGrotesk.className} dark`}
+      suppressHydrationWarning
+      style={{ backgroundColor: '#232323' }}
+    >
       <body>
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+  try {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = savedTheme === 'light' || savedTheme === 'dark'
+      ? savedTheme
+      : prefersDark
+        ? 'dark'
+        : 'light';
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.style.colorScheme = theme;
+    localStorage.setItem('theme', theme);
+  } catch {
+    document.documentElement.classList.add('dark');
+  }
+})();`,
+          }}
+        />
         <ThemeProvider>
           <PageLayout>
             {children}
