@@ -40,13 +40,16 @@ export default function BlogPostList({
                 {post.title}
               </span>
               {showDate && (
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <time
+                  dateTime={post.date}
+                  className="text-sm text-gray-500 dark:text-gray-400"
+                >
                   {new Date(post.date).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric',
                   })}
-                </span>
+                </time>
               )}
             </Link>
           </li>

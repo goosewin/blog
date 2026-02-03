@@ -1,8 +1,8 @@
 import StructuredData from '@/app/components/structured-data';
 import SubscriptionForm from '@/app/components/subscription-form';
+import BackLink from '@/app/components/back-link';
 import { getAllBlogPosts, getBlogPost } from '@/lib/blog';
 import { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
@@ -25,11 +25,19 @@ export async function generateMetadata(props: {
       type: 'article',
       publishedTime: post.date,
       authors: ['Dan Goosewin'],
+      images: [
+        {
+          url: `/blog/${post.slug}/opengraph-image`,
+          width: 1200,
+          height: 630,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description || 'A blog post by Dan Goosewin',
+      images: [`/blog/${post.slug}/opengraph-image`],
     },
   };
 }
@@ -40,10 +48,6 @@ export async function generateStaticParams() {
     slug: post.slug,
   }));
 }
-
-const MDXContent = dynamic(() => import('@/app/components/mdx-content'), {
-  ssr: true,
-});
 
 export default async function Article(props: {
   params: Promise<{ slug: string }>;
@@ -74,22 +78,32 @@ export default async function Article(props: {
       name: 'Dan Goosewin',
     },
     description: post.description || 'A blog post by Dan Goosewin',
+    image: post.image
+      ? `${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://goosewin.com'}${post.image}`
+      : undefined,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://goosewin.com'}/blog/${post.slug}`,
+    },
   };
+
+  const PostContent = (await import(`@/posts/${params.slug}.mdx`)).default;
 
   return (
     <>
+      <BackLink />
       <StructuredData data={structuredData} />
       <article className="prose dark:prose-invert max-w-none">
         <div className="mb-12">
           <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
           <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 gap-2">
-            <span>
+            <time dateTime={post.date}>
               {new Date(post.date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
-            </span>
+            </time>
             |
             <span>
               <Link
@@ -103,7 +117,7 @@ export default async function Article(props: {
             </span>
           </div>
         </div>
-        <MDXContent slug={params.slug} />
+        <PostContent />
       </article>
 
       <nav className="mt-12 flex justify-between items-center border-t border-gray-200 dark:border-gray-600 pt-8">

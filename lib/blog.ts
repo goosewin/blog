@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { cacheLife } from 'next/cache';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
 
@@ -15,6 +16,9 @@ export interface BlogPost extends BlogPostMetadata {
 }
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
+  'use cache';
+  cacheLife('days');
+
   if (!fs.existsSync(postsDirectory)) {
     return [];
   }
@@ -48,6 +52,9 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  'use cache';
+  cacheLife('days');
+
   const fullPath = path.join(postsDirectory, `${slug}.mdx`);
   if (!fs.existsSync(fullPath)) {
     return null;
