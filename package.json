@@ -20,8 +20,6 @@
     "@tailwindcss/typography": "^0.5.19",
     "@types/mdx": "^2.0.13",
     "@vercel/analytics": "^1.6.1",
-    "canvas-confetti": "^1.9.4",
-    "framer-motion": "^12.30.0",
     "lucide-react": "^0.563.0",
     "next": "^16.1.6",
     "next-sitemap": "^4.2.3",
@@ -31,7 +29,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
-    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^25.2.0",
     "@types/react": "19.2.2",
     "babel-plugin-react-compiler": "^1.0.0",
