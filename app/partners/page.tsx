@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import StructuredData from '@/app/components/structured-data';
+import { ArrowUpRightIcon } from '@/app/components/icons';
+import BackLink from '@/app/components/back-link';
 
 export const metadata: Metadata = {
   title: 'Partners',
@@ -61,6 +63,7 @@ export default function Partners() {
 
   return (
     <div className="space-y-10">
+      <BackLink />
       <StructuredData data={structuredData} />
       <header className="space-y-2">
         <h1 className="text-3xl font-bold">Partners</h1>
@@ -101,6 +104,7 @@ export default function Partners() {
                     {client.description}
                   </p>
                 </div>
+                <ArrowUpRightIcon className="ml-auto text-gray-400" />
               </div>
             </Link>
           ))}
@@ -138,6 +142,7 @@ export default function Partners() {
                     {client.description}
                   </p>
                 </div>
+                <ArrowUpRightIcon className="ml-auto text-gray-400" />
               </div>
             </Link>
           ))}

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
+import BackLink from '@/app/components/back-link';
 
 export const metadata: Metadata = {
   title: 'About Dan Goosewin',
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default function About() {
   return (
     <div className="space-y-8">
+      <BackLink />
       <h1 className="text-3xl font-bold">About</h1>
       <div className="relative">
         <Image

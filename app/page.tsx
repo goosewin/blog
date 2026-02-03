@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import ThemeToggle from '@/app/components/theme-toggle';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRightIcon } from '@/app/components/icons';
 
 export const metadata: Metadata = {
   alternates: {
@@ -39,7 +39,7 @@ export default async function Home() {
                 className="underline-link inline-flex items-center gap-1"
               >
                 X
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                <ArrowUpRightIcon />
               </Link>
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 {' '}
@@ -55,7 +55,7 @@ export default async function Home() {
                 className="underline-link inline-flex items-center gap-1"
               >
                 LinkedIn
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                <ArrowUpRightIcon />
               </Link>
             </li>
             <li>
@@ -66,7 +66,7 @@ export default async function Home() {
                 className="underline-link inline-flex items-center gap-1"
               >
                 YouTube
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                <ArrowUpRightIcon />
               </Link>
             </li>
             <li>
