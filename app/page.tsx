@@ -36,7 +36,8 @@ export default async function Home() {
               </Link>
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 {' '}
-                (previously known as Twitter, a subsidiary of xAI)
+                (previously known as Twitter, a subsidiary of xAI, subsidiary of
+                SpaceX)
               </span>
             </li>
             <li>
