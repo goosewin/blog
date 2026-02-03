@@ -34,6 +34,12 @@ const currentClients: ClientEntry[] = [
     logo: '/images/clients/mastra.png',
     url: 'https://mastra.ai/',
   },
+  {
+    name: 'CodeRabbit',
+    description: 'AI code reviews that catch issues before you merge.',
+    logo: '/images/clients/coderabbit.jpg',
+    url: 'https://coderabbit.ai',
+  },
 ];
 
 const pastClients: ClientEntry[] = [
