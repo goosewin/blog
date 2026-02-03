@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'About Dan Goosewin',
   description:
     "I'm a software engineer and founder building AI-native products in San Francisco. I focus on systems, execution, and product narratives that matter in AI.",
+  alternates: {
+    canonical: '/about',
+  },
 };
 
 export default function About() {

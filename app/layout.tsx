@@ -20,9 +20,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_BASE_URL ?? 'https://goosewin.com'
   ),
-  alternates: {
-    canonical: './',
-  },
   openGraph: {
     type: 'website',
     locale: 'en_US',

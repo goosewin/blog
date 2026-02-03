@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import StructuredData from '@/app/components/structured-data';
 
 export const metadata: Metadata = {
   title: 'Partners',
   description:
     'A running list of customers and collaborators across past, current, and future work.',
+  alternates: {
+    canonical: '/partners',
+  },
 };
 
 interface ClientEntry {
@@ -40,8 +44,24 @@ const pastClients: ClientEntry[] = [
 ];
 
 export default function Partners() {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Partners',
+    itemListElement: [...currentClients, ...pastClients].map(
+      (client, index) => ({
+        '@type': 'Organization',
+        position: index + 1,
+        name: client.name,
+        url: client.url,
+        description: client.description,
+      })
+    ),
+  };
+
   return (
     <div className="space-y-10">
+      <StructuredData data={structuredData} />
       <header className="space-y-2">
         <h1 className="text-3xl font-bold">Partners</h1>
         <p className="text-gray-600 dark:text-gray-400 text-balance">

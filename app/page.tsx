@@ -1,6 +1,13 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import ThemeToggle from '@/app/components/theme-toggle';
 import { ArrowUpRight } from 'lucide-react';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
 
 export default async function Home() {
   return (

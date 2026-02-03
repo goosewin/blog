@@ -1,6 +1,15 @@
 import { getAllBlogPosts } from '@/lib/blog';
 import BlogPostList from '@/app/components/blog-post-list';
 import SubscriptionForm from '@/app/components/subscription-form';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: 'Opinionated writing on software, execution, and leverage.',
+  alternates: {
+    canonical: '/blog',
+  },
+};
 
 export default async function Blog() {
   const posts = await getAllBlogPosts();
