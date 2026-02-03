@@ -14,10 +14,23 @@ let iconSrcPromise: Promise<string> | null = null;
 
 async function getIconSrc(): Promise<string> {
   if (!iconSrcPromise) {
-    iconSrcPromise = readFile(join(process.cwd(), 'public', 'icon.png')).then(
-      (buffer) =>
-        `data:image/png;base64,${Buffer.from(buffer).toString('base64')}`
-    );
+    iconSrcPromise = (async () => {
+      const candidates = [
+        join(process.cwd(), 'app', 'icon.png'),
+        join(process.cwd(), 'public', 'icon.png'),
+      ];
+
+      for (const candidate of candidates) {
+        try {
+          const buffer = await readFile(candidate);
+          return `data:image/png;base64,${Buffer.from(buffer).toString('base64')}`;
+        } catch {
+          continue;
+        }
+      }
+
+      return '';
+    })();
   }
 
   return iconSrcPromise;
