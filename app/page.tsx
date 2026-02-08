@@ -70,6 +70,11 @@ export default async function Home() {
               </Link>
             </li>
             <li>
+              <Link href="/work" className="underline-link">
+                My Work
+              </Link>
+            </li>
+            <li>
               <Link href="/partners" className="underline-link">
                 Partners
               </Link>
