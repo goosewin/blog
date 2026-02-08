@@ -43,9 +43,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.className} dark`}
+      className={spaceGrotesk.className}
       suppressHydrationWarning
-      style={{ backgroundColor: '#232323' }}
+      style={{ backgroundColor: '#fefdf8' }}
     >
       <body>
         <Script
@@ -62,10 +62,11 @@ export default function RootLayout({
         ? 'dark'
         : 'light';
     document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.style.backgroundColor = theme === 'dark' ? '#232323' : '#fefdf8';
     document.documentElement.style.colorScheme = theme;
     localStorage.setItem('theme', theme);
   } catch {
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('dark');
   }
 })();`,
           }}
