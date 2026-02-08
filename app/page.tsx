@@ -70,6 +70,17 @@ export default async function Home() {
               </Link>
             </li>
             <li>
+              <Link
+                href="https://twitch.tv/goosewin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline-link inline-flex items-center gap-1"
+              >
+                Twitch
+                <ArrowUpRightIcon />
+              </Link>
+            </li>
+            <li>
               <Link href="/work" className="underline-link">
                 My Work
               </Link>
