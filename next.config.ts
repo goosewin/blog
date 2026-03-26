@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    sri: {
+      algorithm: 'sha256',
+    },
+    prefetchInlining: true,
+    cachedNavigations: true,
+  },
   redirects: async () => {
     return [
       {
