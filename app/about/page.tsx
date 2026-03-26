@@ -1,6 +1,6 @@
+import BackLink from '@/app/components/back-link';
 import { Metadata } from 'next';
 import Image from 'next/image';
-import BackLink from '@/app/components/back-link';
 
 export const metadata: Metadata = {
   title: 'About Dan Goosewin',
@@ -30,7 +30,7 @@ export default function About() {
           output.
         </p>
         <p className="text-gray-600 dark:text-gray-400 text-balance">
-          Based in San Francisco, California.
+          Based in California.
         </p>
         <p className="text-gray-600 dark:text-gray-400 text-balance">
           I care about leverage, speed, and clarity. I love products and teams
