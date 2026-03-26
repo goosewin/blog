@@ -1,0 +1,25 @@
+package.json
+  a75b834978a9c0d2 7,33,41,44,46
+next.config.ts
+  a75b834978a9c0d2 20-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.20",
+  "base_commit_sha": "84aa00e38489bf88a1df33e308a6b28132fdf569",
+  "prompts": {
+    "a75b834978a9c0d2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "90bc8238-e0e4-469c-921a-b5a799381056",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>",
+      "messages": [],
+      "total_additions": 16,
+      "total_deletions": 9,
+      "accepted_lines": 12,
+      "overriden_lines": 0
+    }
+  }
+}
