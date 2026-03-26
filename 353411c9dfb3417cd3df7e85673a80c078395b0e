@@ -1,0 +1,23 @@
+posts/leaving-san-francisco.mdx
+  1cc9bf42ccb9c6e3 11,74,76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.20",
+  "base_commit_sha": "353411c9dfb3417cd3df7e85673a80c078395b0e",
+  "prompts": {
+    "1cc9bf42ccb9c6e3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f8b0a3e6-555f-40a5-b9a1-a60241e74d55",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 3,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}
