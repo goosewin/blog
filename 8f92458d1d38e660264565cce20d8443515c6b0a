@@ -1,0 +1,23 @@
+package.json
+  a75b834978a9c0d2 31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.20",
+  "base_commit_sha": "8f92458d1d38e660264565cce20d8443515c6b0a",
+  "prompts": {
+    "a75b834978a9c0d2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "90bc8238-e0e4-469c-921a-b5a799381056",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
