@@ -2,8 +2,12 @@
 
 import React, { createContext, useEffect, useState } from 'react';
 import { track } from '@vercel/analytics';
-
-type Theme = 'light' | 'dark';
+import {
+  DEFAULT_THEME,
+  isTheme,
+  THEME_STORAGE_KEY,
+  type Theme,
+} from './theme-config';
 
 interface ThemeContextType {
   theme: Theme;
@@ -13,10 +17,12 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 function getPreferredTheme(): Theme {
-  if (typeof window === 'undefined') return 'dark';
+  if (typeof window === 'undefined') return DEFAULT_THEME;
 
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'light' || savedTheme === 'dark') {
+  // Keep this browser-side resolution logic in sync with the beforeInteractive
+  // script in app/layout.tsx so SSR hydration and client toggles agree.
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+  if (isTheme(savedTheme)) {
     return savedTheme;
   }
 
@@ -31,13 +37,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const [theme, setTheme] = useState<Theme>(getPreferredTheme);
 
   const updateTheme = (nextTheme: Theme) => {
-    setTheme((currentTheme) => {
-      if (currentTheme !== nextTheme) {
-        track('theme_change', { theme: nextTheme });
-      }
+    if (theme === nextTheme) return;
 
-      return nextTheme;
-    });
+    setTheme(nextTheme);
+    track('theme_change', { theme: nextTheme });
   };
 
   useEffect(() => {
@@ -45,7 +48,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
     root.classList.toggle('dark', theme === 'dark');
     root.style.colorScheme = theme;
-    localStorage.setItem('theme', theme);
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
   }, [theme]);
 
   return (

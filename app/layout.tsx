@@ -3,6 +3,10 @@ import type { Metadata } from 'next';
 import { Space_Grotesk } from 'next/font/google';
 import Script from 'next/script';
 import PageLayout from './components/page-layout';
+import {
+  DEFAULT_THEME,
+  THEME_STORAGE_KEY,
+} from './components/theme-config';
 import { ThemeProvider } from './components/theme-provider';
 import './globals.css';
 
@@ -40,10 +44,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const defaultHtmlClassName =
+    DEFAULT_THEME === 'dark'
+      ? `${spaceGrotesk.className} dark`
+      : spaceGrotesk.className;
+
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.className} dark`}
+      className={defaultHtmlClassName}
       suppressHydrationWarning
       style={{ backgroundColor: '#232323' }}
     >
@@ -54,7 +63,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `(() => {
   try {
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = localStorage.getItem('${THEME_STORAGE_KEY}');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const theme = savedTheme === 'light' || savedTheme === 'dark'
       ? savedTheme
@@ -63,9 +72,10 @@ export default function RootLayout({
         : 'light';
     document.documentElement.classList.toggle('dark', theme === 'dark');
     document.documentElement.style.colorScheme = theme;
-    localStorage.setItem('theme', theme);
+    localStorage.setItem('${THEME_STORAGE_KEY}', theme);
   } catch {
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.toggle('dark', '${DEFAULT_THEME}' === 'dark');
+    document.documentElement.style.colorScheme = '${DEFAULT_THEME}';
   }
 })();`,
           }}
