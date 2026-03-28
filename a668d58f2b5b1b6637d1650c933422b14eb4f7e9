@@ -1,0 +1,25 @@
+app/components/theme-toggle.tsx
+  e5521e4376c42431 15,23,25,31,36
+app/components/theme-provider.tsx
+  e5521e4376c42431 15-27,32-41,44-47,52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.20",
+  "base_commit_sha": "a668d58f2b5b1b6637d1650c933422b14eb4f7e9",
+  "prompts": {
+    "e5521e4376c42431": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019d31c5-d7c2-7da2-b85e-0a7f0d332139",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>",
+      "messages": [],
+      "total_additions": 49,
+      "total_deletions": 38,
+      "accepted_lines": 36,
+      "overriden_lines": 1
+    }
+  }
+}
