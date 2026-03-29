@@ -1,18 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
+import { DEFAULT_THEME } from './theme-config';
 import { useTheme } from './theme-provider';
 import { MoonIcon, SunIcon } from './icons';
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [isHovered, setIsHovered] = useState(false);
+  const isHydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
-  const nextTheme = theme === 'light' ? 'dark' : 'light';
+  const displayTheme = isHydrated ? theme : DEFAULT_THEME;
+  const nextTheme = displayTheme === 'light' ? 'dark' : 'light';
 
   return (
     <button
@@ -21,11 +28,10 @@ export default function ThemeToggle() {
       onMouseLeave={() => setIsHovered(false)}
       className="p-2 rounded-full bg-gray-200 dark:bg-[#1c1c1c]/60 hover:opacity-80 transition-opacity duration-200 focus:outline-none cursor-pointer"
       aria-label={`Switch to ${nextTheme} mode`}
-      suppressHydrationWarning
       type="button"
     >
       <div className="flex items-center justify-center relative">
-        {theme === 'light' ? (
+        {displayTheme === 'light' ? (
           <MoonIcon />
         ) : (
           <SunIcon />

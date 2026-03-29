@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import { track } from '@vercel/analytics';
 import {
   DEFAULT_THEME,
@@ -35,12 +35,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setTheme] = useState<Theme>(getPreferredTheme);
+  const shouldTrackThemeChangeRef = useRef(false);
 
   const updateTheme = (nextTheme: Theme) => {
     if (theme === nextTheme) return;
 
+    shouldTrackThemeChangeRef.current = true;
     setTheme(nextTheme);
-    track('theme_change', { theme: nextTheme });
   };
 
   useEffect(() => {
@@ -49,6 +50,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     root.classList.toggle('dark', theme === 'dark');
     root.style.colorScheme = theme;
     localStorage.setItem(THEME_STORAGE_KEY, theme);
+
+    if (shouldTrackThemeChangeRef.current) {
+      shouldTrackThemeChangeRef.current = false;
+      track('theme_change', { theme });
+    }
   }, [theme]);
 
   return (
