@@ -236,17 +236,17 @@
 }
 
 @layer base {
-  ::view-transition-old(main-content),
-  ::view-transition-new(main-content) {
+  ::view-transition-old(.main-content-transition),
+  ::view-transition-new(.main-content-transition) {
     animation-duration: 0.4s;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  ::view-transition-old(main-content) {
+  ::view-transition-old(.main-content-transition) {
     animation: slide-out-to-left 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
-  ::view-transition-new(main-content) {
+  ::view-transition-new(.main-content-transition) {
     animation: slide-in-from-right 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
@@ -275,8 +275,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    ::view-transition-old(main-content),
-    ::view-transition-new(main-content) {
+    ::view-transition-old(.main-content-transition),
+    ::view-transition-new(.main-content-transition) {
       animation-duration: 0.01ms !important;
     }
   }

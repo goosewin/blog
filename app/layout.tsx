@@ -3,10 +3,7 @@ import type { Metadata } from 'next';
 import { Space_Grotesk } from 'next/font/google';
 import Script from 'next/script';
 import PageLayout from './components/page-layout';
-import {
-  DEFAULT_THEME,
-  THEME_STORAGE_KEY,
-} from './components/theme-config';
+import { DEFAULT_THEME, THEME_STORAGE_KEY } from './components/theme-config';
 import { ThemeProvider } from './components/theme-provider';
 import './globals.css';
 

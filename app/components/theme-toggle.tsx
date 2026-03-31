@@ -31,11 +31,7 @@ export default function ThemeToggle() {
       type="button"
     >
       <div className="flex items-center justify-center relative">
-        {displayTheme === 'light' ? (
-          <MoonIcon />
-        ) : (
-          <SunIcon />
-        )}
+        {displayTheme === 'light' ? <MoonIcon /> : <SunIcon />}
         <div
           className={`absolute z-50 right-[-250%] w-8 text-center transition-opacity duration-150 ${isHovered ? 'opacity-100' : 'opacity-0'} sm:bottom-[-200%] sm:right-0 sm:w-16`}
         >
