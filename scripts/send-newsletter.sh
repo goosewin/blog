@@ -70,53 +70,25 @@ else
   echo "$NEW_POSTS"
 fi
 
-# Create JSON array of new posts with metadata using jq
-POSTS_ARRAY=()
+# Create JSON array of post slugs using jq
+SLUGS_ARRAY=()
 
 for POST_FILE in $NEW_POSTS; do
   # Extract slug from filename
   SLUG=$(basename "$POST_FILE" .mdx)
-  
-  # Extract metadata from the MDX file (handle multi-line values and escaped quotes)
-  TITLE=$(grep "title:" "$POST_FILE" | head -1 | sed -E "s/.*title:[[:space:]]*['\"](.+)['\"].*/\1/")
-  DATE=$(grep "date:" "$POST_FILE" | head -1 | sed -E "s/.*date:[[:space:]]*['\"](.+)['\"].*/\1/")
-  
-  # Extract description (may span multiple lines)
-  DESCRIPTION=$(sed -n '/description:/,/[;}]/p' "$POST_FILE" | sed -n '/description:/,$p' | sed -E "s/.*description:[[:space:]]*['\"](.+)['\"].*/\1/" | head -1 | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
-  
-  # Extract image from metadata (if exists)
-  IMAGE=$(grep "image:" "$POST_FILE" | head -1 | sed -E 's/.*["'\'']([^"'\'']+)["'\''].*/\1/' || echo "")
-  
-  # Build individual post JSON using jq (handles all escaping automatically)
-  if [ -n "$IMAGE" ]; then
-    POST_OBJ=$(jq -n \
-      --arg title "$TITLE" \
-      --arg slug "$SLUG" \
-      --arg description "$DESCRIPTION" \
-      --arg date "$DATE" \
-      --arg image "$IMAGE" \
-      '{title: $title, slug: $slug, description: $description, date: $date, image: $image}')
-  else
-    POST_OBJ=$(jq -n \
-      --arg title "$TITLE" \
-      --arg slug "$SLUG" \
-      --arg description "$DESCRIPTION" \
-      --arg date "$DATE" \
-      '{title: $title, slug: $slug, description: $description, date: $date}')
-  fi
-  
+
   # Add to array
-  POSTS_ARRAY+=("$POST_OBJ")
+  SLUGS_ARRAY+=("$SLUG")
 done
 
-# Build final JSON array from all posts
-POSTS_JSON=$(printf '%s\n' "${POSTS_ARRAY[@]}" | jq -s '.')
+# Build final JSON array from all slugs
+SLUGS_JSON=$(printf '%s\n' "${SLUGS_ARRAY[@]}" | jq -R . | jq -s '.')
 
-echo "Sending newsletter with posts: $POSTS_JSON"
+echo "Sending newsletter with slugs: $SLUGS_JSON"
 echo "API URL: $SITE_URL/api/send-newsletter"
 
 # Build full payload with jq
-PAYLOAD=$(echo "$POSTS_JSON" | jq -c '{posts: .}')
+PAYLOAD=$(echo "$SLUGS_JSON" | jq -c '{slugs: .}')
 
 # Send newsletter via API
 RESPONSE=$(curl -L -X POST "$SITE_URL/api/send-newsletter" \
@@ -138,4 +110,3 @@ else
   echo "Error: Newsletter sending failed with code $HTTP_CODE"
   exit 1
 fi
-

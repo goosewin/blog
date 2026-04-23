@@ -1,66 +1,59 @@
 # goosewin.com
 
-Source for goosewin.com. Personal site and writing.
+TanStack Start blog for goosewin.com.
 
-## Contents
+## Commands
 
-- MDX-based posts
-- Newsletter signup via Resend
-- Open Graph images and sitemap generation
-- Analytics via Vercel
+```bash
+bun install
+bun dev
+bun run build
+bun run lint
+bun run format
+```
 
-## Getting Started
+Send a newsletter for a post:
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/goosewin/blog.git
-   cd blog
-   ```
-2. Install dependencies
-   ```bash
-   bun install
-   ```
-3. Set up environment variables
-   ```bash
-   cp .env.example .env.local
-   ```
-4. Run the development server
-   ```bash
-   bun dev
-   ```
+```bash
+bun run newsletter -- <post-slug>
+```
 
-## Environment Variables
+Requires `jq`, `curl`, `SITE_URL`, and `NEWSLETTER_SECRET`.
+
+## Stack
+
+- TanStack Start and TanStack Router
+- React 19
+- Bun
+- Tailwind CSS v4
+- MDX posts from `posts/*.mdx`
+- Resend newsletter endpoints
+- Vercel Analytics
+- Dynamic Open Graph images with `@vercel/og`
+
+## Environment
+
+Create `.env.local` from `.env.example`.
 
 ```env
-GITHUB_TOKEN=
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
+VITE_PUBLIC_BASE_URL=https://goosewin.com
 RESEND_AUDIENCE_ID=
 RESEND_API_KEY=
 NEWSLETTER_SECRET=
-SITE_URL=http://localhost:3000
+SITE_URL=https://goosewin.com
 ```
 
-## Writing Posts
+`VITE_` values are public. Keep secrets server-only.
 
-Add new MDX files to `posts/`. Each post includes metadata at the top:
+## Deployment
 
-```mdx
-export const metadata = {
-  title: 'Your Post Title',
-  date: 'YYYY-MM-DD',
-  description: 'A brief description of your post',
-};
+Deploy on Vercel from `main`. The app uses TanStack Start with Nitro's Vercel
+preset on Vercel and Bun preset for local Bun builds. `vercel.json` sets
+Vercel's TanStack Start framework preset plus Bun runtime selection. Enable Web
+Analytics in the Vercel dashboard.
 
-Your post content goes here...
+Manual deploy:
+
+```bash
+bun run deploy
 ```
-
-## Tech Stack
-
-- Next.js
-- TypeScript
-- Tailwind CSS
-- MDX
-
-## License
-
-MIT © Dan Goosewin
