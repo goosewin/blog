@@ -14,6 +14,30 @@ function getEmailFromBody(body: unknown) {
   return typeof email === 'string' ? email.trim() : null;
 }
 
+function getResendErrorMessage(error: unknown) {
+  if (error instanceof Error) return error.message;
+  if (
+    typeof error === 'object' &&
+    error !== null &&
+    'message' in error &&
+    typeof error.message === 'string'
+  ) {
+    return error.message;
+  }
+
+  return '';
+}
+
+function isDuplicateSubscriberError(error: unknown) {
+  const message = getResendErrorMessage(error).toLowerCase();
+  return (
+    message.includes('already exists') ||
+    message.includes('already subscribed') ||
+    message.includes('duplicate') ||
+    message.includes('contact already')
+  );
+}
+
 export const Route = createFileRoute('/api/subscribe')({
   server: {
     handlers: {
@@ -57,22 +81,37 @@ export const Route = createFileRoute('/api/subscribe')({
 
           const resend = new Resend(apiKey);
 
-          await resend.contacts.create({
+          const createContactResponse = await resend.contacts.create({
             email,
             audienceId,
           });
+
+          if (createContactResponse.error) {
+            if (isDuplicateSubscriberError(createContactResponse.error)) {
+              return Response.json(
+                { message: 'Subscription successful' },
+                { status: 200 }
+              );
+            }
+
+            throw new Error(getResendErrorMessage(createContactResponse.error));
+          }
 
           const baseUrl = getServerBaseUrl();
           const emailHtml = await render(
             createElement(WelcomeEmail, { baseUrl })
           );
 
-          await resend.emails.send({
+          const welcomeEmailResponse = await resend.emails.send({
             from: 'Dan Goosewin <dan@goosewin.com>',
             to: email,
             subject: 'Thanks for subscribing to my blog!',
             html: emailHtml,
           });
+
+          if (welcomeEmailResponse.error) {
+            throw new Error(getResendErrorMessage(welcomeEmailResponse.error));
+          }
 
           return Response.json(
             { message: 'Subscription successful' },
@@ -81,10 +120,7 @@ export const Route = createFileRoute('/api/subscribe')({
         } catch (error) {
           console.error('Subscription error:', error);
 
-          if (
-            error instanceof Error &&
-            error.message.includes('already exists')
-          ) {
+          if (isDuplicateSubscriberError(error)) {
             return Response.json(
               { message: 'Subscription successful' },
               { status: 200 }

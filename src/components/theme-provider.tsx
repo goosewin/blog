@@ -10,19 +10,41 @@ interface ThemeContextType {
   setTheme: (theme: Theme) => void;
 }
 
+interface StoredThemeState {
+  available: boolean;
+  theme: Theme | null;
+}
+
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+function readStoredTheme(): StoredThemeState {
+  if (typeof window === 'undefined') {
+    return { available: false, theme: null };
+  }
+
+  try {
+    const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+    if (isTheme(savedTheme)) {
+      return { available: true, theme: savedTheme };
+    }
+
+    return { available: true, theme: null };
+  } catch {
+    return { available: false, theme: null };
+  }
+}
+
+function getStoredTheme() {
+  return readStoredTheme().theme;
+}
 
 function getPreferredTheme(): Theme {
   if (typeof window === 'undefined') return DEFAULT_THEME;
 
-  try {
-    // Keep this browser-side resolution logic in sync with the root theme script
-    // so SSR hydration and client toggles agree.
-    const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-    if (isTheme(savedTheme)) {
-      return savedTheme;
-    }
+  const storedTheme = getStoredTheme();
+  if (storedTheme) return storedTheme;
 
+  try {
     return window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
       : 'light';
@@ -36,23 +58,82 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [theme, setTheme] = useState<Theme>(getPreferredTheme);
   const shouldTrackThemeChangeRef = useRef(false);
+  const userSelectedThemeRef = useRef(false);
+  const storageAvailableRef = useRef(readStoredTheme().available);
 
   const updateTheme = (nextTheme: Theme) => {
     if (theme === nextTheme) return;
 
+    userSelectedThemeRef.current = true;
     shouldTrackThemeChangeRef.current = true;
     setTheme(nextTheme);
   };
+
+  useEffect(() => {
+    let attempts = 0;
+
+    const reconcileStoredTheme = () => {
+      attempts += 1;
+      const storedThemeState = readStoredTheme();
+
+      if (storedThemeState.available) {
+        storageAvailableRef.current = true;
+      }
+
+      if (storedThemeState.theme && !userSelectedThemeRef.current) {
+        const storedTheme = storedThemeState.theme;
+        setTheme((currentTheme) =>
+          currentTheme === storedTheme ? currentTheme : storedTheme
+        );
+      }
+
+      if (attempts >= 8) {
+        window.clearInterval(reconcileInterval);
+      }
+    };
+
+    const reconcileInterval = window.setInterval(reconcileStoredTheme, 250);
+    const reconcileTimeout = window.setTimeout(reconcileStoredTheme, 0);
+
+    window.addEventListener('focus', reconcileStoredTheme);
+    window.addEventListener('storage', reconcileStoredTheme);
+
+    return () => {
+      window.clearInterval(reconcileInterval);
+      window.clearTimeout(reconcileTimeout);
+      window.removeEventListener('focus', reconcileStoredTheme);
+      window.removeEventListener('storage', reconcileStoredTheme);
+    };
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
 
     root.classList.toggle('dark', theme === 'dark');
     root.style.colorScheme = theme;
-    try {
-      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-    } catch {
-      // Keep the selected theme in memory when storage is unavailable.
+
+    const storedThemeState = readStoredTheme();
+
+    if (!storageAvailableRef.current && storedThemeState.available) {
+      storageAvailableRef.current = true;
+
+      if (
+        storedThemeState.theme &&
+        storedThemeState.theme !== theme &&
+        !userSelectedThemeRef.current
+      ) {
+        const storedTheme = storedThemeState.theme;
+        setTheme(storedTheme);
+        return;
+      }
+    }
+
+    if (storedThemeState.available) {
+      try {
+        window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+      } catch {
+        // Keep the selected theme in memory when storage is unavailable.
+      }
     }
 
     if (shouldTrackThemeChangeRef.current) {

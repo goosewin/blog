@@ -39,9 +39,7 @@ export const Route = createFileRoute('/blog/$slug')({
     if (!post) return {};
 
     const baseUrl = getPublicBaseUrl();
-    const image = post.image
-      ? `${baseUrl}${post.image}`
-      : `${baseUrl}/blog/${post.slug}/opengraph-image`;
+    const image = `${baseUrl}/blog/${post.slug}/opengraph-image`;
     const description = getBlogPostDescription(post);
 
     return {
