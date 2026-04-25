@@ -14,11 +14,7 @@ import { getPublicBaseUrl } from '../lib/site';
 
 const defaultBlogPostDescription = 'A blog post by Dan Goosewin';
 
-function getBlogPostDescription(post: {
-  description?: string;
-  image?: string;
-}) {
-  if (!post.image) return defaultBlogPostDescription;
+function getBlogPostDescription(post: { description?: string }) {
   return post.description || defaultBlogPostDescription;
 }
 

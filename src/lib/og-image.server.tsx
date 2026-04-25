@@ -15,10 +15,7 @@ const publicDir = resolve(process.cwd(), 'public');
 async function getIconSrc(): Promise<string> {
   if (!iconSrcPromise) {
     iconSrcPromise = (async () => {
-      const candidates = [
-        join(process.cwd(), 'app', 'icon.png'),
-        join(process.cwd(), 'public', 'icon.png'),
-      ];
+      const candidates = [join(publicDir, 'icon.png')];
 
       for (const candidate of candidates) {
         try {

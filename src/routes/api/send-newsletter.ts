@@ -1,4 +1,5 @@
-import { createHash } from 'node:crypto';
+import { Buffer } from 'node:buffer';
+import { createHash, timingSafeEqual } from 'node:crypto';
 import { createFileRoute } from '@tanstack/react-router';
 import { render } from '@react-email/render';
 import { Resend } from 'resend';
@@ -47,6 +48,23 @@ function isNonEmptyString(value: unknown) {
 
 function isSlugArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every(isNonEmptyString);
+}
+
+function isExpectedAuthHeader(authHeader: string | null, expectedAuth: string) {
+  if (!authHeader) return false;
+
+  const authHeaderBuffer = Buffer.from(authHeader);
+  const expectedAuthBuffer = Buffer.from(expectedAuth);
+
+  if (authHeaderBuffer.length !== expectedAuthBuffer.length) {
+    timingSafeEqual(
+      Buffer.alloc(expectedAuthBuffer.length),
+      expectedAuthBuffer
+    );
+    return false;
+  }
+
+  return timingSafeEqual(authHeaderBuffer, expectedAuthBuffer);
 }
 
 function dedupeSlugs(slugs: string[]) {
@@ -119,6 +137,13 @@ function rememberNewsletterSend(
   sendKey: string,
   promise: Promise<NewsletterSendResult>
 ) {
+  promise.catch(() => {
+    const cachedSend = newsletterSendCache.get(sendKey);
+    if (cachedSend?.promise === promise) {
+      newsletterSendCache.delete(sendKey);
+    }
+  });
+
   newsletterSendCache.set(sendKey, {
     expiresAt: Date.now() + newsletterSendCacheTtlMs,
     promise,
@@ -207,7 +232,7 @@ export const Route = createFileRoute('/api/send-newsletter')({
 
           const expectedAuth = `Bearer ${newsletterSecret}`;
 
-          if (!authHeader || authHeader !== expectedAuth) {
+          if (!isExpectedAuthHeader(authHeader, expectedAuth)) {
             return Response.json({ error: 'Unauthorized' }, { status: 401 });
           }
 
