@@ -1,10 +1,45 @@
+import { createHash } from 'node:crypto';
 import { createFileRoute } from '@tanstack/react-router';
 import { render } from '@react-email/render';
 import { Resend } from 'resend';
 import { createElement } from 'react';
 import NewsletterEmail from '../../emails/newsletter';
 import { getBlogPost } from '../../lib/blog';
+import type { BlogPost } from '../../lib/blog';
 import { getServerBaseUrl } from '../../lib/site.server';
+
+const newsletterSendCacheTtlSeconds = 10 * 60;
+const newsletterSendCacheTtlMs = newsletterSendCacheTtlSeconds * 1000;
+
+interface NewsletterSendResult {
+  broadcastId: string;
+  postsCount: number;
+}
+
+interface CachedNewsletterSend {
+  expiresAt: number;
+  promise: Promise<NewsletterSendResult>;
+}
+
+interface NewsletterBroadcastOptions {
+  resend: Resend;
+  audienceId: string;
+  posts: BlogPost[];
+  baseUrl: string;
+  subject: string;
+}
+
+class NewsletterBroadcastError extends Error {
+  details: unknown;
+
+  constructor(details: unknown) {
+    super('Failed to create broadcast');
+    this.details = details;
+  }
+}
+
+// Resend broadcasts do not expose idempotency, so keep a warm-instance send guard without adding a database.
+const newsletterSendCache = new Map<string, CachedNewsletterSend>();
 
 function isNonEmptyString(value: unknown) {
   return typeof value === 'string' && value.trim().length > 0;
@@ -14,29 +49,144 @@ function isSlugArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every(isNonEmptyString);
 }
 
+function dedupeSlugs(slugs: string[]) {
+  const seen = new Set<string>();
+  const dedupedSlugs: string[] = [];
+
+  for (const slug of slugs) {
+    const normalizedSlug = slug.trim();
+
+    if (seen.has(normalizedSlug)) continue;
+
+    seen.add(normalizedSlug);
+    dedupedSlugs.push(normalizedSlug);
+  }
+
+  return dedupedSlugs;
+}
+
 function getRequestedSlugs(body: Record<string, unknown>) {
-  if (isSlugArray(body.slugs)) {
-    return body.slugs;
+  if (Object.hasOwn(body, 'slugs')) {
+    return isSlugArray(body.slugs) ? dedupeSlugs(body.slugs) : [];
   }
 
   if (!Array.isArray(body.posts)) {
     return [];
   }
 
-  return body.posts
-    .map((post) =>
-      typeof post === 'object' &&
-      post !== null &&
-      isNonEmptyString((post as { slug?: unknown }).slug)
-        ? (post as { slug: string }).slug
-        : null
-    )
-    .filter((slug): slug is string => slug !== null);
+  const slugs: string[] = [];
+
+  for (const post of body.posts) {
+    if (
+      typeof post !== 'object' ||
+      post === null ||
+      !isNonEmptyString((post as { slug?: unknown }).slug)
+    ) {
+      return [];
+    }
+
+    slugs.push((post as { slug: string }).slug);
+  }
+
+  return dedupeSlugs(slugs);
 }
 
 async function resolveNewsletterPosts(slugs: string[]) {
   const posts = await Promise.all(slugs.map((slug) => getBlogPost(slug)));
   return posts.filter((post) => post !== null);
+}
+
+function createNewsletterSendKey(audienceId: string, slugs: string[]) {
+  return createHash('sha256')
+    .update(JSON.stringify({ audienceId, slugs: [...slugs].sort() }))
+    .digest('hex');
+}
+
+function pruneExpiredNewsletterSends(now = Date.now()) {
+  for (const [sendKey, cachedSend] of newsletterSendCache) {
+    if (cachedSend.expiresAt <= now) {
+      newsletterSendCache.delete(sendKey);
+    }
+  }
+}
+
+function getCachedNewsletterSend(sendKey: string) {
+  pruneExpiredNewsletterSends();
+  return newsletterSendCache.get(sendKey)?.promise ?? null;
+}
+
+function rememberNewsletterSend(
+  sendKey: string,
+  promise: Promise<NewsletterSendResult>
+) {
+  newsletterSendCache.set(sendKey, {
+    expiresAt: Date.now() + newsletterSendCacheTtlMs,
+    promise,
+  });
+
+  return promise;
+}
+
+async function createNewsletterBroadcast({
+  resend,
+  audienceId,
+  posts,
+  baseUrl,
+  subject,
+}: NewsletterBroadcastOptions): Promise<NewsletterSendResult> {
+  const emailHtml = await render(
+    createElement(NewsletterEmail, { posts, baseUrl })
+  );
+
+  const createResponse = await resend.broadcasts.create({
+    audienceId,
+    from: 'Dan Goosewin <dan@goosewin.com>',
+    subject,
+    html: emailHtml,
+    send: true,
+  });
+
+  if (createResponse.error) {
+    throw new NewsletterBroadcastError(createResponse.error);
+  }
+
+  const broadcastId = createResponse.data.id;
+
+  if (!broadcastId) {
+    throw new NewsletterBroadcastError('Missing broadcast id from Resend');
+  }
+
+  return {
+    broadcastId,
+    postsCount: posts.length,
+  };
+}
+
+function createNewsletterErrorResponse(error: unknown, deduped: boolean) {
+  if (error instanceof NewsletterBroadcastError) {
+    console.error('Error creating broadcast:', error.details);
+    return Response.json(
+      {
+        error: error.message,
+        details: error.details,
+        deduped,
+        retrySafe: true,
+        retryAfterSeconds: newsletterSendCacheTtlSeconds,
+      },
+      { status: 500 }
+    );
+  }
+
+  console.error('Newsletter error:', error);
+  return Response.json(
+    {
+      error: 'Failed to send newsletter',
+      deduped,
+      retrySafe: true,
+      retryAfterSeconds: newsletterSendCacheTtlSeconds,
+    },
+    { status: 500 }
+  );
 }
 
 export const Route = createFileRoute('/api/send-newsletter')({
@@ -113,37 +263,34 @@ export const Route = createFileRoute('/api/send-newsletter')({
             posts.length === 1
               ? `New post: ${posts[0].title}`
               : `${posts.length} new posts from Dan's blog`;
+          const sendKey = createNewsletterSendKey(audienceId, requestedSlugs);
+          const cachedSend = getCachedNewsletterSend(sendKey);
+          const deduped = cachedSend !== null;
 
-          const emailHtml = await render(
-            createElement(NewsletterEmail, { posts, baseUrl })
-          );
+          let sendResult: NewsletterSendResult;
 
-          const createResponse = await resend.broadcasts.create({
-            audienceId,
-            from: 'Dan Goosewin <dan@goosewin.com>',
-            subject,
-            html: emailHtml,
-            send: true,
-          });
-
-          if (createResponse.error) {
-            console.error('Error creating broadcast:', createResponse.error);
-            return Response.json(
-              {
-                error: 'Failed to create broadcast',
-                details: createResponse.error,
-              },
-              { status: 500 }
-            );
+          try {
+            sendResult = await (cachedSend ??
+              rememberNewsletterSend(
+                sendKey,
+                createNewsletterBroadcast({
+                  resend,
+                  audienceId,
+                  posts,
+                  baseUrl,
+                  subject,
+                })
+              ));
+          } catch (error) {
+            return createNewsletterErrorResponse(error, deduped);
           }
-
-          const broadcastId = createResponse.data.id;
 
           return Response.json(
             {
               message: 'Newsletter broadcast sent successfully',
-              broadcastId,
-              postsCount: posts.length,
+              broadcastId: sendResult.broadcastId,
+              postsCount: sendResult.postsCount,
+              deduped,
             },
             { status: 200 }
           );

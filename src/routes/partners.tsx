@@ -67,11 +67,14 @@ function Partners() {
     name: 'Partners',
     itemListElement: [...currentClients, ...pastClients].map(
       (client, index) => ({
-        '@type': 'Organization',
+        '@type': 'ListItem',
         position: index + 1,
-        name: client.name,
-        url: client.url,
-        description: client.description,
+        item: {
+          '@type': 'Organization',
+          name: client.name,
+          url: client.url,
+          description: client.description,
+        },
       })
     ),
   };
@@ -138,6 +141,8 @@ function ClientSection({
                   alt={`${client.name} logo`}
                   width={36}
                   height={36}
+                  loading="lazy"
+                  decoding="async"
                   className="h-9 w-9 rounded-md object-contain"
                 />
               </div>

@@ -18,11 +18,29 @@ function toUtcDate(date: string) {
   const match = dateOnlyPattern.exec(date);
 
   if (!match) {
-    return new Date(date);
+    const parsed = new Date(date);
+    if (Number.isNaN(parsed.getTime())) {
+      throw new Error(`Invalid date: ${date}`);
+    }
+
+    return parsed;
   }
 
   const [, year, month, day] = match;
-  return new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
+  const numericYear = Number(year);
+  const numericMonth = Number(month);
+  const numericDay = Number(day);
+  const parsed = new Date(Date.UTC(numericYear, numericMonth - 1, numericDay));
+
+  if (
+    parsed.getUTCFullYear() !== numericYear ||
+    parsed.getUTCMonth() !== numericMonth - 1 ||
+    parsed.getUTCDate() !== numericDay
+  ) {
+    throw new Error(`Invalid calendar date: ${date}`);
+  }
+
+  return parsed;
 }
 
 export function formatPostDate(date: string, style: 'long' | 'short' = 'long') {

@@ -12,6 +12,16 @@ import { getAllBlogPosts, getBlogPost, getBlogPostContent } from '../lib/blog';
 import { formatPostDate } from '../lib/dates';
 import { getPublicBaseUrl } from '../lib/site';
 
+const defaultBlogPostDescription = 'A blog post by Dan Goosewin';
+
+function getBlogPostDescription(post: {
+  description?: string;
+  image?: string;
+}) {
+  if (!post.image) return defaultBlogPostDescription;
+  return post.description || defaultBlogPostDescription;
+}
+
 export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
     const posts = await getAllBlogPosts();
@@ -36,18 +46,19 @@ export const Route = createFileRoute('/blog/$slug')({
     const image = post.image
       ? `${baseUrl}${post.image}`
       : `${baseUrl}/blog/${post.slug}/opengraph-image`;
+    const description = getBlogPostDescription(post);
 
     return {
       meta: [
         { title: `${post.title} | Dan Goosewin` },
         {
           name: 'description',
-          content: post.description || 'A blog post by Dan Goosewin',
+          content: description,
         },
         { property: 'og:title', content: post.title },
         {
           property: 'og:description',
-          content: post.description || 'A blog post by Dan Goosewin',
+          content: description,
         },
         { property: 'og:type', content: 'article' },
         { property: 'article:published_time', content: post.date },
@@ -57,7 +68,7 @@ export const Route = createFileRoute('/blog/$slug')({
         { name: 'twitter:title', content: post.title },
         {
           name: 'twitter:description',
-          content: post.description || 'A blog post by Dan Goosewin',
+          content: description,
         },
         { name: 'twitter:image', content: image },
       ],
@@ -86,7 +97,7 @@ function Article() {
       '@type': 'Person',
       name: 'Dan Goosewin',
     },
-    description: post.description || 'A blog post by Dan Goosewin',
+    description: getBlogPostDescription(post),
     image: post.image ? `${baseUrl}${post.image}` : undefined,
     mainEntityOfPage: {
       '@type': 'WebPage',
