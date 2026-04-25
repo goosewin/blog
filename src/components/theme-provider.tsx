@@ -38,6 +38,15 @@ function getStoredTheme() {
   return readStoredTheme().theme;
 }
 
+function writeStoredTheme(theme: Theme) {
+  try {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function getPreferredTheme(): Theme {
   if (typeof window === 'undefined') return DEFAULT_THEME;
 
@@ -57,6 +66,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setTheme] = useState<Theme>(getPreferredTheme);
+  const currentThemeRef = useRef(theme);
   const shouldTrackThemeChangeRef = useRef(false);
   const userSelectedThemeRef = useRef(false);
   const storageAvailableRef = useRef(readStoredTheme().available);
@@ -64,6 +74,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const updateTheme = (nextTheme: Theme) => {
     if (theme === nextTheme) return;
 
+    currentThemeRef.current = nextTheme;
     userSelectedThemeRef.current = true;
     shouldTrackThemeChangeRef.current = true;
     setTheme(nextTheme);
@@ -80,7 +91,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
         storageAvailableRef.current = true;
       }
 
-      if (storedThemeState.theme && !userSelectedThemeRef.current) {
+      if (userSelectedThemeRef.current) {
+        if (storedThemeState.theme !== currentThemeRef.current) {
+          writeStoredTheme(currentThemeRef.current);
+        }
+        return;
+      }
+
+      if (storedThemeState.theme) {
         const storedTheme = storedThemeState.theme;
         setTheme((currentTheme) =>
           currentTheme === storedTheme ? currentTheme : storedTheme
@@ -107,6 +125,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   useEffect(() => {
+    currentThemeRef.current = theme;
+
     const root = document.documentElement;
 
     root.classList.toggle('dark', theme === 'dark');
@@ -129,9 +149,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     if (storedThemeState.available) {
-      try {
-        window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-      } catch {
+      if (!writeStoredTheme(theme)) {
         // Keep the selected theme in memory when storage is unavailable.
       }
     }

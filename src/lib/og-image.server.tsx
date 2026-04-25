@@ -76,7 +76,10 @@ function getImageSrc(pathname: string): Promise<string | null> {
 
       return `data:${mimeType};base64,${Buffer.from(buffer).toString('base64')}`;
     })
-    .catch(() => null);
+    .catch(() => {
+      imageSrcCache.delete(publicImagePath.publicPathname);
+      return null;
+    });
 
   imageSrcCache.set(publicImagePath.publicPathname, srcPromise);
   return srcPromise;
