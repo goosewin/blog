@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 import { createElement } from 'react';
 import NewsletterEmail from '../../emails/newsletter';
 import { getBlogPost } from '../../lib/blog';
-import { getServerBaseUrl } from '../../lib/site.server';
+import { EMAIL_FROM, getServerBaseUrl } from '../../lib/site.server';
 
 function isNonEmptyString(value: unknown) {
   return typeof value === 'string' && value.trim().length > 0;
@@ -139,7 +139,7 @@ export const Route = createFileRoute('/api/send-newsletter')({
           const resend = new Resend(apiKey);
           const createResponse = await resend.broadcasts.create({
             audienceId,
-            from: 'Dan Goosewin <dan@goosewin.com>',
+            from: EMAIL_FROM,
             subject,
             html: emailHtml,
             send: true,

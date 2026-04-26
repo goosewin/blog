@@ -34,11 +34,11 @@ Scripts use `bun --bun` so local commands do not depend on PATH `node`.
 ## Env
 
 ```env
-VITE_PUBLIC_BASE_URL=https://goosewin.com
+VITE_PUBLIC_BASE_URL=https://goose.dev
 RESEND_AUDIENCE_ID=
 RESEND_API_KEY=
 NEWSLETTER_SECRET=
-SITE_URL=https://goosewin.com
+SITE_URL=https://goose.dev
 ```
 
 `VITE_` values are public. Keep secrets server-only.

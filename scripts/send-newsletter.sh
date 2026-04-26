@@ -16,7 +16,7 @@
 #   ./scripts/send-newsletter.sh post1 post2 post3
 #
 # Environment variables required:
-#   SITE_URL - Your site URL (e.g., https://goosewin.com)
+#   SITE_URL - Your site URL (e.g., https://goose.dev)
 #   NEWSLETTER_SECRET - Secret for API authentication
 #
 

@@ -107,7 +107,7 @@ export async function createSiteOgImageResponse() {
         position: 'relative',
       }}
     >
-      <img src={iconSrc} alt="goosewin.com icon" width={240} height={240} />
+      <img src={iconSrc} alt="goose.dev icon" width={240} height={240} />
     </div>,
     {
       ...size,
@@ -158,7 +158,7 @@ export async function createBlogPostOgImageResponse(post: BlogPost | null) {
       >
         <img
           src={iconSrc}
-          alt="goosewin.com icon"
+          alt="goose.dev icon"
           width={80}
           height={80}
           style={{ marginRight: 20 }}
@@ -189,7 +189,7 @@ export async function createBlogPostOgImageResponse(post: BlogPost | null) {
         <p style={{ fontSize: 24, opacity: 0.8 }}>
           Collection of thoughts by Dan Goosewin
         </p>
-        <p style={{ fontSize: 24, opacity: 0.8 }}>Read more at goosewin.com</p>
+        <p style={{ fontSize: 24, opacity: 0.8 }}>Read more at goose.dev</p>
       </div>
     </div>,
     {
