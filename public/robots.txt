@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://goosewin.com
+Host: https://goose.dev
 
 # Sitemaps
-Sitemap: https://goosewin.com/sitemap.xml
+Sitemap: https://goose.dev/sitemap.xml

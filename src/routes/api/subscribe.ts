@@ -3,7 +3,7 @@ import { render } from '@react-email/render';
 import { Resend } from 'resend';
 import { createElement } from 'react';
 import WelcomeEmail from '../../emails/welcome';
-import { getServerBaseUrl } from '../../lib/site.server';
+import { EMAIL_FROM, getServerBaseUrl } from '../../lib/site.server';
 
 function getEmailFromBody(body: unknown) {
   if (typeof body !== 'object' || body === null || !('email' in body)) {
@@ -103,7 +103,7 @@ export const Route = createFileRoute('/api/subscribe')({
           );
 
           const welcomeEmailResponse = await resend.emails.send({
-            from: 'Dan Goosewin <dan@goosewin.com>',
+            from: EMAIL_FROM,
             to: email,
             subject: 'Thanks for subscribing to my blog!',
             html: emailHtml,

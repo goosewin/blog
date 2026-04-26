@@ -1,6 +1,6 @@
-# goosewin.com
+# goose.dev
 
-TanStack Start blog for goosewin.com.
+TanStack Start blog for goose.dev.
 
 ## Commands
 
@@ -36,11 +36,11 @@ Requires `jq`, `curl`, `SITE_URL`, and `NEWSLETTER_SECRET`.
 Create `.env.local` from `.env.example`.
 
 ```env
-VITE_PUBLIC_BASE_URL=https://goosewin.com
+VITE_PUBLIC_BASE_URL=https://goose.dev
 RESEND_AUDIENCE_ID=
 RESEND_API_KEY=
 NEWSLETTER_SECRET=
-SITE_URL=https://goosewin.com
+SITE_URL=https://goose.dev
 ```
 
 `VITE_` values are public. Keep secrets server-only.
