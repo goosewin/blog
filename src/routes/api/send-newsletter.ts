@@ -69,17 +69,6 @@ export const Route = createFileRoute('/api/send-newsletter')({
             );
           }
 
-          const apiKey = process.env.RESEND_API_KEY;
-          const audienceId = process.env.RESEND_AUDIENCE_ID;
-
-          if (!apiKey || !audienceId) {
-            console.error('Resend newsletter environment is not configured');
-            return Response.json(
-              { error: 'Newsletter service not configured' },
-              { status: 500 }
-            );
-          }
-
           const resolvedPosts = posts.filter((post) => post !== null);
           const baseUrl = getServerBaseUrl();
           const subject =
@@ -100,6 +89,17 @@ export const Route = createFileRoute('/api/send-newsletter')({
                 htmlLength: emailHtml.length,
               },
               { status: 200 }
+            );
+          }
+
+          const apiKey = process.env.RESEND_API_KEY;
+          const audienceId = process.env.RESEND_AUDIENCE_ID;
+
+          if (!apiKey || !audienceId) {
+            console.error('Resend newsletter environment is not configured');
+            return Response.json(
+              { error: 'Newsletter service not configured' },
+              { status: 500 }
             );
           }
 

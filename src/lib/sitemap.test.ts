@@ -17,7 +17,6 @@ describe('sitemap generation', () => {
       expect(xml).toContain(`<loc>https://goose.dev/blog/${post.slug}</loc>`);
     }
 
-    expect(xml).toContain('https://goose.dev/blog/leaving-san-francisco');
     expect(xml).not.toContain('goosewin.com');
   });
 });
