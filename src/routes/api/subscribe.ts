@@ -4,39 +4,12 @@ import { Resend } from 'resend';
 import { createElement } from 'react';
 import WelcomeEmail from '../../emails/welcome';
 import { EMAIL_FROM, getServerBaseUrl } from '../../lib/site.server';
-
-function getEmailFromBody(body: unknown) {
-  if (typeof body !== 'object' || body === null || !('email' in body)) {
-    return null;
-  }
-
-  const email = body.email;
-  return typeof email === 'string' ? email.trim() : null;
-}
-
-function getResendErrorMessage(error: unknown) {
-  if (error instanceof Error) return error.message;
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
-    return error.message;
-  }
-
-  return '';
-}
-
-function isDuplicateSubscriberError(error: unknown) {
-  const message = getResendErrorMessage(error).toLowerCase();
-  return (
-    message.includes('already exists') ||
-    message.includes('already subscribed') ||
-    message.includes('duplicate') ||
-    message.includes('contact already')
-  );
-}
+import {
+  getEmailFromBody,
+  getResendErrorMessage,
+  isDuplicateSubscriberError,
+  isValidEmail,
+} from '../../lib/subscription';
 
 export const Route = createFileRoute('/api/subscribe')({
   server: {
@@ -60,8 +33,7 @@ export const Route = createFileRoute('/api/subscribe')({
             );
           }
 
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(email)) {
+          if (!isValidEmail(email)) {
             return Response.json(
               { error: 'Invalid email format' },
               { status: 400 }

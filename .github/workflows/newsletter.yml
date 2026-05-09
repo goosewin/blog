@@ -4,6 +4,17 @@ on:
   push:
     branches: [main]
     paths: ['posts/*.mdx']
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Validate the newsletter without sending a Resend broadcast
+        required: true
+        type: boolean
+        default: true
+      slugs:
+        description: Optional space-separated post slugs to send or validate
+        required: false
+        type: string
 
 jobs:
   send-newsletter:
@@ -11,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 2 # Fetch current and previous commit to compare changes
 
@@ -19,4 +30,12 @@ jobs:
         env:
           SITE_URL: ${{ secrets.SITE_URL }}
           NEWSLETTER_SECRET: ${{ secrets.NEWSLETTER_SECRET }}
-        run: bash scripts/send-newsletter.sh
+          NEWSLETTER_DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          NEWSLETTER_SLUGS: ${{ inputs.slugs || '' }}
+        run: |
+          if [ -n "$NEWSLETTER_SLUGS" ]; then
+            read -r -a slugs <<< "$NEWSLETTER_SLUGS"
+            bash scripts/send-newsletter.sh "${slugs[@]}"
+          else
+            bash scripts/send-newsletter.sh
+          fi
