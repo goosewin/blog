@@ -18,9 +18,24 @@
 # Environment variables required:
 #   SITE_URL - Your site URL (e.g., https://goose.dev)
 #   NEWSLETTER_SECRET - Secret for API authentication
+#   NEWSLETTER_DRY_RUN - Optional. Set to true to validate without sending
 #
 
 set -e
+
+require_command() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Error: Required command not found: $1"
+    exit 1
+  fi
+}
+
+require_env() {
+  if [ -z "${!1:-}" ]; then
+    echo "Error: Required environment variable is not set: $1"
+    exit 1
+  fi
+}
 
 # Load environment variables from .env file if it exists
 if [ -f .env.local ]; then
@@ -34,6 +49,12 @@ elif [ -f .env ]; then
   source .env
   set +a
 fi
+
+require_command git
+require_command jq
+require_command curl
+require_env SITE_URL
+require_env NEWSLETTER_SECRET
 
 # Check if manual post slugs were provided as arguments
 if [ $# -gt 0 ]; then
@@ -88,7 +109,12 @@ echo "Sending newsletter with slugs: $SLUGS_JSON"
 echo "API URL: $SITE_URL/api/send-newsletter"
 
 # Build full payload with jq
-PAYLOAD=$(echo "$SLUGS_JSON" | jq -c '{slugs: .}')
+if [ "${NEWSLETTER_DRY_RUN:-}" = "true" ]; then
+  echo "Dry run mode enabled"
+  PAYLOAD=$(echo "$SLUGS_JSON" | jq -c '{slugs: ., dryRun: true}')
+else
+  PAYLOAD=$(echo "$SLUGS_JSON" | jq -c '{slugs: .}')
+fi
 
 # Send newsletter via API
 RESPONSE=$(curl -L -X POST "$SITE_URL/api/send-newsletter" \
@@ -105,7 +131,11 @@ echo "Response code: $HTTP_CODE"
 echo "Response body: $BODY"
 
 if [ "$HTTP_CODE" = "200" ]; then
-  echo "Newsletter sent successfully!"
+  if [ "${NEWSLETTER_DRY_RUN:-}" = "true" ]; then
+    echo "Newsletter dry run succeeded!"
+  else
+    echo "Newsletter sent successfully!"
+  fi
 else
   echo "Error: Newsletter sending failed with code $HTTP_CODE"
   exit 1

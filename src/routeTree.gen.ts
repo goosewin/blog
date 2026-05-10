@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as OpengraphImageRouteImport } from './routes/opengraph-image'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -20,6 +21,11 @@ import { Route as ApiSubscribeRouteImport } from './routes/api/subscribe'
 import { Route as ApiSendNewsletterRouteImport } from './routes/api/send-newsletter'
 import { Route as BlogSlugOpengraphImageRouteImport } from './routes/blog.$slug.opengraph-image'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PartnersRoute = PartnersRouteImport.update({
   id: '/partners',
   path: '/partners',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/opengraph-image': typeof OpengraphImageRoute
   '/partners': typeof PartnersRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/send-newsletter': typeof ApiSendNewsletterRoute
   '/api/subscribe': typeof ApiSubscribeRoute
   '/blog/$slug': typeof BlogSlugRouteWithChildren
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/opengraph-image': typeof OpengraphImageRoute
   '/partners': typeof PartnersRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/send-newsletter': typeof ApiSendNewsletterRoute
   '/api/subscribe': typeof ApiSubscribeRoute
   '/blog/$slug': typeof BlogSlugRouteWithChildren
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/opengraph-image': typeof OpengraphImageRoute
   '/partners': typeof PartnersRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/send-newsletter': typeof ApiSendNewsletterRoute
   '/api/subscribe': typeof ApiSubscribeRoute
   '/blog/$slug': typeof BlogSlugRouteWithChildren
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/opengraph-image'
     | '/partners'
+    | '/sitemap.xml'
     | '/api/send-newsletter'
     | '/api/subscribe'
     | '/blog/$slug'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/opengraph-image'
     | '/partners'
+    | '/sitemap.xml'
     | '/api/send-newsletter'
     | '/api/subscribe'
     | '/blog/$slug'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/opengraph-image'
     | '/partners'
+    | '/sitemap.xml'
     | '/api/send-newsletter'
     | '/api/subscribe'
     | '/blog/$slug'
@@ -151,12 +163,20 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   OpengraphImageRoute: typeof OpengraphImageRoute
   PartnersRoute: typeof PartnersRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiSendNewsletterRoute: typeof ApiSendNewsletterRoute
   ApiSubscribeRoute: typeof ApiSubscribeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/partners': {
       id: '/partners'
       path: '/partners'
@@ -260,6 +280,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRouteWithChildren,
   OpengraphImageRoute: OpengraphImageRoute,
   PartnersRoute: PartnersRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiSendNewsletterRoute: ApiSendNewsletterRoute,
   ApiSubscribeRoute: ApiSubscribeRoute,
 }

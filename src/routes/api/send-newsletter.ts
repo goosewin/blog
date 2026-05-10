@@ -4,57 +4,11 @@ import { Resend } from 'resend';
 import { createElement } from 'react';
 import NewsletterEmail from '../../emails/newsletter';
 import { getBlogPost } from '../../lib/blog';
+import {
+  getRequestedNewsletterSlugs,
+  isNewsletterDryRun,
+} from '../../lib/newsletter';
 import { EMAIL_FROM, getServerBaseUrl } from '../../lib/site.server';
-
-function isNonEmptyString(value: unknown) {
-  return typeof value === 'string' && value.trim().length > 0;
-}
-
-function isSlugArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every(isNonEmptyString);
-}
-
-function dedupeSlugs(slugs: string[]) {
-  const seen = new Set<string>();
-  const dedupedSlugs: string[] = [];
-
-  for (const slug of slugs) {
-    const normalizedSlug = slug.trim();
-
-    if (seen.has(normalizedSlug)) continue;
-
-    seen.add(normalizedSlug);
-    dedupedSlugs.push(normalizedSlug);
-  }
-
-  return dedupedSlugs;
-}
-
-function getRequestedSlugs(body: Record<string, unknown>) {
-  if (Object.hasOwn(body, 'slugs')) {
-    return isSlugArray(body.slugs) ? dedupeSlugs(body.slugs) : [];
-  }
-
-  if (!Array.isArray(body.posts)) {
-    return [];
-  }
-
-  const slugs: string[] = [];
-
-  for (const post of body.posts) {
-    if (
-      typeof post !== 'object' ||
-      post === null ||
-      !isNonEmptyString((post as { slug?: unknown }).slug)
-    ) {
-      return [];
-    }
-
-    slugs.push((post as { slug: string }).slug);
-  }
-
-  return dedupeSlugs(slugs);
-}
 
 export const Route = createFileRoute('/api/send-newsletter')({
   server: {
@@ -93,9 +47,9 @@ export const Route = createFileRoute('/api/send-newsletter')({
             );
           }
 
-          const requestedSlugs = getRequestedSlugs(
-            body as Record<string, unknown>
-          );
+          const requestBody = body as Record<string, unknown>;
+          const requestedSlugs = getRequestedNewsletterSlugs(requestBody);
+          const dryRun = isNewsletterDryRun(requestBody);
 
           if (requestedSlugs.length === 0) {
             return Response.json(
@@ -115,6 +69,29 @@ export const Route = createFileRoute('/api/send-newsletter')({
             );
           }
 
+          const resolvedPosts = posts.filter((post) => post !== null);
+          const baseUrl = getServerBaseUrl();
+          const subject =
+            resolvedPosts.length === 1
+              ? `New post: ${resolvedPosts[0].title}`
+              : `${resolvedPosts.length} new posts from Dan's blog`;
+          const emailHtml = await render(
+            createElement(NewsletterEmail, { posts: resolvedPosts, baseUrl })
+          );
+
+          if (dryRun) {
+            return Response.json(
+              {
+                message: 'Newsletter dry run successful',
+                postsCount: resolvedPosts.length,
+                slugs: requestedSlugs,
+                subject,
+                htmlLength: emailHtml.length,
+              },
+              { status: 200 }
+            );
+          }
+
           const apiKey = process.env.RESEND_API_KEY;
           const audienceId = process.env.RESEND_AUDIENCE_ID;
 
@@ -125,16 +102,6 @@ export const Route = createFileRoute('/api/send-newsletter')({
               { status: 500 }
             );
           }
-
-          const resolvedPosts = posts.filter((post) => post !== null);
-          const baseUrl = getServerBaseUrl();
-          const subject =
-            resolvedPosts.length === 1
-              ? `New post: ${resolvedPosts[0].title}`
-              : `${resolvedPosts.length} new posts from Dan's blog`;
-          const emailHtml = await render(
-            createElement(NewsletterEmail, { posts: resolvedPosts, baseUrl })
-          );
 
           const resend = new Resend(apiKey);
           const createResponse = await resend.broadcasts.create({
