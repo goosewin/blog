@@ -48,10 +48,6 @@ function About() {
           that ship, work, and earn trust. Throughout my career I have shipped
           software in web, IoT, automation, videogames, and more.
         </p>
-        <p className="text-balance text-gray-600 dark:text-gray-400">
-          I write about AI, software, and execution. What scales, what breaks,
-          and what changes outcomes.
-        </p>
       </div>
     </div>
   );
