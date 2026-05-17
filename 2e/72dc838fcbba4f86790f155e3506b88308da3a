@@ -1,0 +1,32 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "2e72dc838fcbba4f86790f155e3506b88308da3a",
+  "prompts": {
+    "923fb1baa2593a24": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019dbc19-ec08-7f60-ac00-df17ba0f7c9d",
+        "model": "unknown"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>",
+      "total_additions": 11,
+      "total_deletions": 11,
+      "accepted_lines": 0,
+      "overriden_lines": 10
+    },
+    "c406a4dcafb94042": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "418b923f-d732-4b27-9615-583c9ef09d43",
+        "model": "gpt-5.4-high-fast"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>",
+      "total_additions": 238,
+      "total_deletions": 10,
+      "accepted_lines": 231,
+      "overriden_lines": 0
+    }
+  }
+}
