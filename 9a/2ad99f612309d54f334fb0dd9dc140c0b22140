@@ -1,0 +1,21 @@
+src/components/footer.tsx
+  s_e2ff7a092dc8fd::t_725805087aea93 2
+src/styles.css
+  s_e2ff7a092dc8fd::t_da563c82d085bf 62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "9a2ad99f612309d54f334fb0dd9dc140c0b22140",
+  "prompts": {},
+  "sessions": {
+    "s_e2ff7a092dc8fd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b4a44e85-0449-4530-b66b-024764a26e0c",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
