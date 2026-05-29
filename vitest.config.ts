@@ -2,7 +2,7 @@ import mdx from '@mdx-js/rollup';
 import { defineConfig } from 'vitest/config';
 import { postHeroManifest } from './post-hero-manifest';
 
-const srcPath = decodeURIComponent(new URL('./src', import.meta.url).pathname);
+const srcPath = Bun.fileURLToPath(new URL('./src', import.meta.url));
 
 export default defineConfig({
   plugins: [postHeroManifest(), mdx({ providerImportSource: '@mdx-js/react' })],

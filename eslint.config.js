@@ -38,7 +38,7 @@ export default [
           ],
           patterns: [
             {
-              group: ['node:*'],
+              regex: '^node:',
               message:
                 'Prefer Bun-native APIs or Web APIs when the runtime allows it.',
             },

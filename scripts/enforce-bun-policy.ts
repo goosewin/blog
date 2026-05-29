@@ -3,14 +3,16 @@
 
 const requiredBunVersion = '1.3.14';
 const repoRootUrl = new URL('../', import.meta.url);
-const repoRootPath = decodeURIComponent(repoRootUrl.pathname);
+const repoRootPath = Bun.fileURLToPath(repoRootUrl);
 const preinstallMode = Bun.argv.includes('--preinstall');
 
 const forbiddenLockfiles = [
+  // Non-Bun package manager lockfiles.
   'package-lock.json',
   'npm-shrinkwrap.json',
   'pnpm-lock.yaml',
   'yarn.lock',
+  // Bun's binary lockfile is disallowed because this repo standardizes on bun.lock.
   'bun.lockb',
 ];
 
@@ -43,16 +45,23 @@ const ignoredPathFragments = [
   '/.claude/',
   '/.codex/',
   '/.cursor/',
+  '/.git/',
   '/convex/_generated/',
   '/legacy-source/',
   '/node_modules/',
 ];
 
+// Matches authored npm/pnpm/yarn/npx invocations with install/run-style
+// subcommands. Capture group 1 is the allowed prefix; keep it aligned with
+// the line-number offset below.
 const packageManagerCommandPattern =
   /(^|[\s"'`([{;&|])(?:(?:npm|pnpm|yarn)\s+(?:add|audit|build|ci|config|create|dev|dlx|exec|format|i|info|init|install|link|lint|login|outdated|pack|publish|rebuild|remove|run|show|start|test|unlink|update|upgrade|version|view|x)\b|npx\s+[-@./\w])/g;
 
 function fail(message: string): never {
   console.error(`\nBun policy violation: ${message}\n`);
+  const bunExit = (Bun as typeof Bun & { exit?: (code?: number) => never })
+    .exit;
+  if (bunExit) return bunExit(1);
   process.exit(1);
 }
 
@@ -73,19 +82,40 @@ async function readPackageJson() {
   return Bun.file(new URL('package.json', repoRootUrl)).json();
 }
 
-function listTrackedFiles(): string[] {
-  const result = Bun.spawnSync(['git', 'ls-files'], {
-    cwd: repoRootPath,
-    stdout: 'pipe',
-    stderr: 'pipe',
-  });
+function listTrackedFiles(): string[] | null {
+  let result;
+  try {
+    result = Bun.spawnSync(['git', 'ls-files'], {
+      cwd: repoRootPath,
+      stdout: 'pipe',
+      stderr: 'pipe',
+    });
+  } catch {
+    return null;
+  }
 
   if (result.exitCode !== 0) {
-    const stderr = new TextDecoder().decode(result.stderr).trim();
-    fail(`could not list tracked files${stderr ? `: ${stderr}` : ''}`);
+    return null;
   }
 
   return new TextDecoder().decode(result.stdout).split('\n').filter(Boolean);
+}
+
+async function listCandidateFiles(): Promise<string[]> {
+  const trackedFiles = listTrackedFiles();
+  if (trackedFiles) return trackedFiles;
+
+  const files: string[] = [];
+  const glob = new Bun.Glob('**/*');
+  for await (const path of glob.scan({
+    cwd: repoRootPath,
+    dot: true,
+    onlyFiles: true,
+  })) {
+    files.push(path);
+  }
+
+  return files;
 }
 
 function shouldScanFile(path: string): boolean {
@@ -143,7 +173,7 @@ async function checkLockfiles() {
 async function checkAuthoredPackageManagerCommands() {
   const violations = [];
 
-  for (const path of listTrackedFiles()) {
+  for (const path of await listCandidateFiles()) {
     if (!shouldScanFile(path)) continue;
 
     const source = await Bun.file(new URL(path, repoRootUrl)).text();
@@ -155,8 +185,9 @@ async function checkAuthoredPackageManagerCommands() {
       match = packageManagerCommandPattern.exec(source)
     ) {
       const command = match[0].trim();
+      const commandOffset = match.index + match[1].length;
       violations.push(
-        `${path}:${lineNumberForOffset(source, match.index)} uses ${command}`
+        `${path}:${lineNumberForOffset(source, commandOffset)} uses ${command}`
       );
     }
   }
@@ -181,4 +212,6 @@ if (compareVersions(Bun.version, requiredBunVersion) < 0) {
 
 await checkPackageManagerMetadata();
 await checkLockfiles();
-await checkAuthoredPackageManagerCommands();
+if (!preinstallMode) {
+  await checkAuthoredPackageManagerCommands();
+}
