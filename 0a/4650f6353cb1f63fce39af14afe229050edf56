@@ -1,0 +1,38 @@
+AGENTS.md
+  s_78e797bfc5f211::t_22241c41741a5d 37,41,44-46
+src/lib/site.ts
+  s_78e797bfc5f211::t_c873147af69814 4
+src/routes/blog.$slug.tsx
+  s_78e797bfc5f211::t_801a955ea34f70 66
+src/routes/__root.tsx
+  s_78e797bfc5f211::t_f0f74802358952 25,29
+src/routes/blog.index.tsx
+  s_78e797bfc5f211::t_5e39203de104e4 27-42,46
+  s_78e797bfc5f211::t_ea00426d887e5f 5
+  s_78e797bfc5f211::t_87bd20f63af911 18
+src/routes/about.tsx
+  s_78e797bfc5f211::t_aa603a740056b0 17
+src/routes/partners.tsx
+  s_78e797bfc5f211::t_89676d34174662 56
+public/robots.txt
+  s_78e797bfc5f211::t_c15be0737d7503 6,9
+src/routes/index.tsx
+  s_78e797bfc5f211::t_996b3d646b4224 26-47,51
+  s_78e797bfc5f211::t_230a979fa6d80f 3,7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "0a4650f6353cb1f63fce39af14afe229050edf56",
+  "prompts": {},
+  "sessions": {
+    "s_78e797bfc5f211": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b410473-4c20-4086-91c7-459e6778925d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
