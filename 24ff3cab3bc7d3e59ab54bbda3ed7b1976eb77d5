@@ -1,0 +1,27 @@
+.woodpecker/blog.yml
+  s_4fcd8bbaf0d681::t_78cefc1685908c 1-9,11,13-17,20-25,27-31,33,36-39
+  s_4fcd8bbaf0d681::t_fa23124d25749e 12,32,40
+  s_4fcd8bbaf0d681::t_b2bf52866978ea 18
+  s_4fcd8bbaf0d681::t_c5eed3548fb243 19
+  s_4fcd8bbaf0d681::t_a07673d643f720 10,26,34-35
+docs/ops/self-hosted-ci.md
+  s_4fcd8bbaf0d681::t_78cefc1685908c 1-14,17-23,27-54
+  s_4fcd8bbaf0d681::t_c5eed3548fb243 15-16
+  s_4fcd8bbaf0d681::t_6dd1e7c659bf03 24-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "24ff3cab3bc7d3e59ab54bbda3ed7b1976eb77d5",
+  "prompts": {},
+  "sessions": {
+    "s_4fcd8bbaf0d681": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e722c-905b-7460-b9eb-253b46ee748d",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
