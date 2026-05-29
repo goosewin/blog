@@ -38,6 +38,11 @@ export default [
           ],
           patterns: [
             {
+              group: ['fs/*', 'path/*', 'crypto/*', 'child_process/*'],
+              message:
+                'Prefer Bun-native APIs or Web APIs when the runtime allows it.',
+            },
+            {
               regex: '^node:',
               message:
                 'Prefer Bun-native APIs or Web APIs when the runtime allows it.',
