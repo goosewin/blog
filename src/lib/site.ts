@@ -1,7 +1,7 @@
 export const SITE_NAME = 'Dan Goosewin';
 export const SITE_DESCRIPTION =
   'Dan Goosewin builds AI-native systems and publishes signal-first writing on software, execution, and leverage.';
-const DEFAULT_PUBLIC_BASE_URL = 'https://goose.dev';
+const DEFAULT_PUBLIC_BASE_URL = 'https://www.goose.dev';
 
 export function normalizeBaseUrl(baseUrl: string) {
   return baseUrl.trim().replace(/\/+$/, '');
