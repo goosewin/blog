@@ -1,0 +1,24 @@
+scripts/check-bun-version.ts
+  s_78e797bfc5f211::t_2a80e8830d9aba 1-24
+AGENTS.md
+  s_78e797bfc5f211::t_af770049c8d1c5 82-86
+package.json
+  s_78e797bfc5f211::t_173a522eee8c34 5-7
+  s_78e797bfc5f211::t_888f3509c67a48 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "9f3b720681d8d5b09d0e1ed58e9126d189b33cb8",
+  "prompts": {},
+  "sessions": {
+    "s_78e797bfc5f211": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b410473-4c20-4086-91c7-459e6778925d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
