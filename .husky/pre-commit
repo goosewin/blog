@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+# Blog pre-commit gate. Mirrors the blocking Woodpecker checks.
+#
+# Bypass with `git commit --no-verify` only for intentional WIP.
+
+set -e
+
+echo "> lint"
+bun run lint
+
+echo "> format:check"
+bun run format:check
+
+echo "> typecheck"
+bun run typecheck
+
+echo "> test"
+bun run test
+
+echo "> build"
+bun run build
+
+echo "pre-commit gates passed"

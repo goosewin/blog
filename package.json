@@ -6,13 +6,17 @@
     "#/*": "./src/*"
   },
   "scripts": {
+    "prepare": "husky",
     "dev": "bun --bun vite dev --port 3000",
     "build": "bun --bun vite build",
     "preview": "bun --bun vite preview",
     "test": "bun --bun vitest run --config vitest.config.ts",
+    "typecheck": "bun --bun tsc --noEmit --pretty false",
     "lint": "bun --bun eslint .",
     "format": "bun --bun prettier --write .",
+    "format:check": "bun --bun prettier --check .",
     "check": "bun --bun prettier --write . && bun --bun eslint --fix",
+    "precommit": "bun run lint && bun run format:check && bun run typecheck && bun run test && bun run build",
     "newsletter": "bash scripts/send-newsletter.sh",
     "deploy": "bunx --bun vercel --prod",
     "start": "bun --bun .output/server/index.mjs"
@@ -47,6 +51,7 @@
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.2.1",
+    "husky": "^9.1.7",
     "jsdom": "^28.1.0",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",

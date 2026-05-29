@@ -1,9 +1,9 @@
 #!/bin/bash
 #
 # Send Newsletter Script
-# 
+#
 # Usage:
-#   Automatic mode (GitHub Actions):
+#   Automatic mode (CI):
 #     ./scripts/send-newsletter.sh
 #     Detects new posts via git diff and sends newsletter
 #
@@ -69,24 +69,31 @@ if [ $# -gt 0 ]; then
       echo "Warning: Post file not found: $POST_FILE"
     fi
   done
-  
+
   # Remove trailing newline
   NEW_POSTS=$(echo "$NEW_POSTS" | sed '/^$/d')
-  
+
   if [ -z "$NEW_POSTS" ]; then
     echo "Error: No valid post files found"
     exit 1
   fi
 else
   echo "Automatic mode: Checking for new blog posts via git"
-  # Check for new blog posts using git diff
-  NEW_POSTS=$(git diff --name-only --diff-filter=A HEAD~1 HEAD | grep '^posts/.*\.mdx$' || true)
-  
+  BASE_COMMIT="${CI_PREV_COMMIT_SHA:-HEAD~1}"
+
+  if ! git rev-parse --verify "$BASE_COMMIT^{commit}" >/dev/null 2>&1; then
+    echo "Warning: Could not resolve base commit: $BASE_COMMIT"
+    NEW_POSTS=""
+  else
+    # Check for new blog posts using git diff
+    NEW_POSTS=$(git diff --name-only --diff-filter=A "$BASE_COMMIT" HEAD | grep '^posts/.*\.mdx$' || true)
+  fi
+
   if [ -z "$NEW_POSTS" ]; then
     echo "No new blog posts detected"
     exit 0
   fi
-  
+
   echo "New blog posts detected:"
   echo "$NEW_POSTS"
 fi
