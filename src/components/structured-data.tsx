@@ -10,6 +10,7 @@ const StructuredData: React.FC<StructuredDataProps> = ({ data }) => {
   return (
     <script
       type="application/ld+json"
+      // react-doctor-disable-next-line react-doctor/no-danger -- JSON-LD: serialized object with `<` escaped, not user-controlled HTML
       dangerouslySetInnerHTML={{ __html: serialized }}
     />
   );

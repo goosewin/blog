@@ -4,10 +4,39 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/nunito-variable.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-variable.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-dark-bg: #232323;
+  --color-orange: #f9a44e;
+  --color-orange-deep: #ec8a2b;
+  --color-off-white: #fefefe;
+  --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 /*
@@ -30,12 +59,12 @@
 
 @layer base {
   html {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: var(--font-sans);
     @apply text-base antialiased;
   }
 
   body {
-    @apply bg-white text-gray-900 transition-colors duration-300;
+    @apply bg-off-white text-gray-900 transition-colors duration-300;
   }
 
   .dark body {
@@ -79,11 +108,11 @@
     @apply mb-4 leading-relaxed;
   }
 
-  a:not(.nav-link):not(.title-link) {
+  a:not(.nav-link):not(.title-link):not(.underline-link) {
     @apply text-gray-900 dark:text-gray-100 transition-opacity duration-200;
   }
 
-  a:not(.nav-link):not(.title-link):hover {
+  a:not(.nav-link):not(.title-link):not(.underline-link):hover {
     @apply opacity-80;
   }
 
@@ -94,7 +123,7 @@
   }
 
   a.underline-link {
-    @apply transition-opacity duration-200 border-b border-black dark:border-white;
+    @apply text-gray-900 dark:text-gray-100 transition-colors duration-200 border-b border-orange/50 hover:border-orange hover:text-orange-deep dark:hover:text-orange;
   }
 
   a.nav-link {
@@ -106,7 +135,22 @@
   }
 
   a.active-nav-link {
-    @apply text-black dark:text-white font-semibold border-b-2 border-black dark:border-white;
+    @apply text-orange-deep dark:text-orange font-bold border-b-2 border-orange;
+  }
+
+  /* Reading-view links inherit the brand orange */
+  .prose a:not(.ref-link) {
+    color: var(--color-orange-deep);
+    text-decoration-color: color-mix(
+      in oklab,
+      var(--color-orange) 60%,
+      transparent
+    );
+    text-underline-offset: 2px;
+  }
+
+  .dark .prose a:not(.ref-link) {
+    color: var(--color-orange);
   }
 
   /* Reference link styles */
@@ -128,8 +172,8 @@
   }
 
   sup .ref-link:hover {
-    background-color: #f0f0f0;
-    color: #525252;
+    background-color: #fde8d4;
+    color: #ec8a2b;
     text-decoration: none !important;
     text-decoration-line: none !important;
     border-bottom: none !important;
@@ -141,8 +185,8 @@
   }
 
   .dark sup .ref-link:hover {
-    color: #d4d4d4;
-    background-color: #3a3a3a;
+    color: #f9a44e;
+    background-color: #3a2e1f;
   }
 
   /* Animated References Accordion */

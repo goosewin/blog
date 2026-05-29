@@ -26,7 +26,7 @@ export default function RouteTransitionManager() {
         toIndex: event.toLocation.state.__TSR_index,
       });
 
-      if ('startViewTransition' in document) {
+      if (typeof document.startViewTransition === 'function') {
         document.documentElement.dataset.routeTransition = direction;
       } else {
         document.documentElement.dataset.routeTransitionFallback = direction;

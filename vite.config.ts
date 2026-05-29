@@ -7,6 +7,7 @@ import viteReact from '@vitejs/plugin-react';
 import mdx from '@mdx-js/rollup';
 import tailwindcss from '@tailwindcss/vite';
 import { nitro } from 'nitro/vite';
+import { postHeroManifest } from './post-hero-manifest';
 
 const vercelEnv = process.env.VERCEL?.toLowerCase();
 const nitroPreset =
@@ -15,11 +16,15 @@ const nitroPreset =
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [
+    postHeroManifest(),
     devtools(),
     mdx({ providerImportSource: '@mdx-js/react' }),
     tailwindcss(),
     tanstackStart(),
-    nitro({ preset: nitroPreset }),
+    nitro({
+      preset: nitroPreset,
+      compressPublicAssets: { gzip: true, brotli: true },
+    }),
     viteReact(),
   ],
 });
