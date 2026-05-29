@@ -22,9 +22,11 @@ export const Route = createRootRouteWithContext()({
         { property: 'og:site_name', content: SITE_NAME },
         { property: 'og:title', content: SITE_NAME },
         { property: 'og:description', content: SITE_DESCRIPTION },
+        { property: 'og:image', content: `${baseUrl}/opengraph-image` },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:site', content: '@goosewin' },
         { name: 'twitter:creator', content: '@goosewin' },
+        { name: 'twitter:image', content: `${baseUrl}/opengraph-image` },
       ],
       links: [
         {

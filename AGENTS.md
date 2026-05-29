@@ -34,14 +34,16 @@ Scripts use `bun --bun` so local commands do not depend on PATH `node`.
 ## Env
 
 ```env
-VITE_PUBLIC_BASE_URL=https://goose.dev
+VITE_PUBLIC_BASE_URL=https://www.goose.dev
 RESEND_AUDIENCE_ID=
 RESEND_API_KEY=
 NEWSLETTER_SECRET=
-SITE_URL=https://goose.dev
+SITE_URL=https://www.goose.dev
 ```
 
-`VITE_` values are public. Keep secrets server-only.
+`VITE_` values are public. Keep secrets server-only. The canonical host is
+`www.goose.dev`; `VITE_PUBLIC_BASE_URL` and `SITE_URL` must use it (they feed
+canonical/OG/sitemap URLs and override the code default).
 
 ## Deployment
 

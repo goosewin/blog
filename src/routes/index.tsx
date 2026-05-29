@@ -1,9 +1,10 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import BlogPostList from '../components/blog-post-list';
+import StructuredData from '../components/structured-data';
 import ThemeToggle from '../components/theme-toggle';
 import { ArrowUpRightIcon } from '../components/icons';
 import { getAllBlogPosts } from '../lib/blog';
-import { getPublicBaseUrl } from '../lib/site';
+import { SITE_DESCRIPTION, SITE_NAME, getPublicBaseUrl } from '../lib/site';
 
 export const Route = createFileRoute('/')({
   loader: () => getAllBlogPosts(),
@@ -22,9 +23,32 @@ const socialLinks = [
 function Home() {
   const posts = Route.useLoaderData();
   const latestPosts = posts.slice(0, 4);
+  const baseUrl = getPublicBaseUrl();
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${baseUrl}/#website`,
+        url: baseUrl,
+        name: SITE_NAME,
+        description: SITE_DESCRIPTION,
+        publisher: { '@id': `${baseUrl}/#person` },
+      },
+      {
+        '@type': 'Person',
+        '@id': `${baseUrl}/#person`,
+        name: SITE_NAME,
+        url: baseUrl,
+        description: SITE_DESCRIPTION,
+        sameAs: socialLinks.map((link) => link.href),
+      },
+    ],
+  };
 
   return (
     <div className="space-y-16">
+      <StructuredData data={structuredData} />
       <header className="space-y-6">
         <div className="flex items-start justify-between gap-4">
           <h1 className="text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl">

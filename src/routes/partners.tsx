@@ -53,6 +53,7 @@ export const Route = createFileRoute('/partners')({
           content:
             'A running list of customers and collaborators across past, current, and future work.',
         },
+        { property: 'og:url', content: `${baseUrl}/partners` },
       ],
       links: [{ rel: 'canonical', href: `${baseUrl}/partners` }],
     };

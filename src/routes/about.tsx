@@ -14,6 +14,7 @@ export const Route = createFileRoute('/about')({
           content:
             "I'm a software engineer and founder building AI-native products in San Francisco. I focus on systems, execution, and product narratives that matter in AI.",
         },
+        { property: 'og:url', content: `${baseUrl}/about` },
       ],
       links: [{ rel: 'canonical', href: `${baseUrl}/about` }],
     };
