@@ -82,12 +82,17 @@ else
   BASE_COMMIT="${CI_PREV_COMMIT_SHA:-HEAD~1}"
 
   if ! git rev-parse --verify "$BASE_COMMIT^{commit}" >/dev/null 2>&1; then
-    echo "Warning: Could not resolve base commit: $BASE_COMMIT"
-    NEW_POSTS=""
-  else
-    # Check for new blog posts using git diff
-    NEW_POSTS=$(git diff --name-only --diff-filter=A "$BASE_COMMIT" HEAD | grep '^posts/.*\.mdx$' || true)
+    echo "Base commit not present in checkout, fetching: $BASE_COMMIT"
+    git fetch --no-tags --depth=1 origin "$BASE_COMMIT"
   fi
+
+  if ! git rev-parse --verify "$BASE_COMMIT^{commit}" >/dev/null 2>&1; then
+    echo "Error: Could not resolve base commit: $BASE_COMMIT"
+    exit 1
+  fi
+
+  # Check for new blog posts using git diff
+  NEW_POSTS=$(git diff --name-only --diff-filter=A "$BASE_COMMIT" HEAD | grep '^posts/.*\.mdx$' || true)
 
   if [ -z "$NEW_POSTS" ]; then
     echo "No new blog posts detected"

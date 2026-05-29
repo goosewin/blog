@@ -25,6 +25,10 @@ Both steps use the pinned public `oven/bun:1.3.14-debian` image. The newsletter
 step installs `curl`, `git`, and `jq` at runtime because those tools are needed
 only for dispatch.
 
+The clone step uses `depth: 0` so newsletter dispatch can compare against
+`CI_PREV_COMMIT_SHA` even after large pushes. The newsletter script still fetches
+the previous commit explicitly if a CI checkout is missing it.
+
 ## Woodpecker Setup
 
 1. Activate `goosewin/blog` in the existing `ci.goosewin.com` Woodpecker
