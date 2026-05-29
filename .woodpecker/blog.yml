@@ -1,0 +1,40 @@
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      partial: false
+      depth: 0
+
+steps:
+  critical:
+    image: oven/bun:1.3.14-debian
+    environment:
+      CI: 'true'
+      SITE_URL: https://goose.dev
+      VITE_PUBLIC_BASE_URL: https://goose.dev
+    commands:
+      - bun install --frozen-lockfile
+      - bun run lint
+      - bun run format:check
+      - bun run typecheck
+      - bun run test
+      - bun run build
+    when:
+      - event: [pull_request, push, manual]
+
+  newsletter:
+    image: oven/bun:1.3.14-debian
+    environment:
+      SITE_URL:
+        from_secret: site_url
+      NEWSLETTER_SECRET:
+        from_secret: newsletter_secret
+      NEWSLETTER_DRY_RUN: 'false'
+    commands:
+      - apt-get update
+      - apt-get install -y --no-install-recommends ca-certificates curl git jq
+      - bun run newsletter
+    when:
+      - event: push
+        branch: main
+        path: 'posts/*.mdx'

@@ -9,6 +9,7 @@ bun install
 bun dev
 bun run build
 bun run lint
+bun run typecheck
 bun run format
 ```
 
@@ -57,3 +58,11 @@ Manual deploy:
 ```bash
 bun run deploy
 ```
+
+## CI
+
+Self-hosted Woodpecker is the CI path for lint, tests, build, and automatic
+newsletter dispatch. See `docs/ops/self-hosted-ci.md`.
+
+The pre-commit hook runs lint, format check, typecheck, tests, and build through
+Bun before allowing a commit.

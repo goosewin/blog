@@ -1,41 +1,15 @@
-name: Send Newsletter for New Blog Posts
+# DISABLED 2026-05-28 - goosewin/blog CI and newsletter dispatch now run on
+# self-hosted Woodpecker. Keep this GitHub Actions workflow dispatch-only and
+# non-operational while GitHub Actions quota/billing is not the CI path.
+
+name: newsletter (disabled)
 
 on:
-  push:
-    branches: [main]
-    paths: ['posts/*.mdx']
   workflow_dispatch:
-    inputs:
-      dry_run:
-        description: Validate the newsletter without sending a Resend broadcast
-        required: true
-        type: boolean
-        default: true
-      slugs:
-        description: Optional space-separated post slugs to send or validate
-        required: false
-        type: string
 
 jobs:
-  send-newsletter:
+  noop:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 2 # Fetch current and previous commit to compare changes
-
-      - name: Send newsletter for new posts
-        env:
-          SITE_URL: ${{ secrets.SITE_URL }}
-          NEWSLETTER_SECRET: ${{ secrets.NEWSLETTER_SECRET }}
-          NEWSLETTER_DRY_RUN: ${{ inputs.dry_run || 'false' }}
-          NEWSLETTER_SLUGS: ${{ inputs.slugs || '' }}
-        run: |
-          if [ -n "$NEWSLETTER_SLUGS" ]; then
-            read -r -a slugs <<< "$NEWSLETTER_SLUGS"
-            bash scripts/send-newsletter.sh "${slugs[@]}"
-          else
-            bash scripts/send-newsletter.sh
-          fi
+      - name: Disabled
+        run: echo "Disabled. See .woodpecker/blog.yml and docs/ops/self-hosted-ci.md."
