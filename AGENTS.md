@@ -79,6 +79,11 @@ Newsletter sending depends on `jq`, `curl`, `SITE_URL`, and
 - `nitro-nightly` is exempt (`minimumReleaseAgeExcludes`); nightlies are fresh
   by design. To bump a brand-new version of any other package before the
   cooldown elapses, run `bun install --minimum-release-age=0` deliberately.
+- Requires Bun >= 1.3 (`minimumReleaseAge` was added in 1.3; older Bun and
+  non-Bun managers ignore it silently). `engines.bun` declares this and a
+  `preinstall` guard (`scripts/check-bun-version.ts`) hard-fails the install on
+  unsupported versions so the cooldown can never be a silent no-op. Vercel's
+  `bunVersion: "1.x"` auto-resolves to a current 1.3.x, so deploys enforce it.
 
 ## Next
 
