@@ -70,6 +70,16 @@ Newsletter sending depends on `jq`, `curl`, `SITE_URL`, and
 - Do not force `nitro({ preset: 'bun' })` on Vercel; it emits generic `.output`
   instead of Vercel Build Output. Use the Vercel preset plus `bunVersion`.
 
+## Dependency policy
+
+- Minimum release age: 14 days. `bunfig.toml` sets `minimumReleaseAge` so
+  `bun install` refuses package versions published less than two weeks ago —
+  a cooldown against compromised/typosquatted releases. Re-installing locked
+  versions is unaffected; the gate only applies to new/updated resolutions.
+- `nitro-nightly` is exempt (`minimumReleaseAgeExcludes`); nightlies are fresh
+  by design. To bump a brand-new version of any other package before the
+  cooldown elapses, run `bun install --minimum-release-age=0` deliberately.
+
 ## Next
 
 - Add focused tests for blog metadata and newsletter validation.
