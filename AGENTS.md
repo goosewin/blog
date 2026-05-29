@@ -80,10 +80,18 @@ Newsletter sending depends on `jq`, `curl`, `SITE_URL`, and
   by design. To bump a brand-new version of any other package before the
   cooldown elapses, run `bun install --minimum-release-age=0` deliberately.
 - Requires Bun >= 1.3 (`minimumReleaseAge` was added in 1.3; older Bun and
-  non-Bun managers ignore it silently). `engines.bun` declares this and a
-  `preinstall` guard (`scripts/check-bun-version.ts`) hard-fails the install on
-  unsupported versions so the cooldown can never be a silent no-op. Vercel's
-  `bunVersion: "1.x"` auto-resolves to a current 1.3.x, so deploys enforce it.
+  non-Bun managers ignore it silently). Declared via `engines.bun` and
+  `packageManager`. The `preinstall` guard (`scripts/check-bun-version.ts`)
+  inspects `npm_config_user_agent` — the _invoking_ manager, not the hook's own
+  runtime — so `npm`/`yarn`/`pnpm` and Bun < 1.3 hard-fail the install; the
+  `.husky/pre-commit` hook runs the same guard so an old Bun can't commit a
+  lockfile that skipped the cooldown.
+- Authoritative enforcement is the Woodpecker `critical` step
+  (`.woodpecker/blog.yml`, `oven/bun:1.3.14-debian`): lifecycle hooks are
+  best-effort locally, so CI re-runs `bun install --frozen-lockfile` on a pinned
+  Bun. GitHub Actions stays disabled (see `docs/ops/self-hosted-ci.md`).
+  Vercel's `bunVersion: "1.x"` resolves to a current 1.3.x, so deploys enforce
+  it too.
 
 ## Next
 

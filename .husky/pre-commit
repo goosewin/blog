@@ -1,9 +1,14 @@
 #!/usr/bin/env sh
-# Blog pre-commit gate. Mirrors the blocking Woodpecker checks.
+# Blog pre-commit gate. Mirrors the blocking Woodpecker checks, and guards the
+# Bun version so a commit can't be produced under a Bun that ignores the
+# bunfig.toml minimumReleaseAge cooldown (added in Bun 1.3).
 #
 # Bypass with `git commit --no-verify` only for intentional WIP.
 
 set -e
+
+echo "> bun version"
+bun scripts/check-bun-version.ts
 
 echo "> lint"
 bun run lint
