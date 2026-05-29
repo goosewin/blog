@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import type { ComponentType, LazyExoticComponent } from 'react';
+import { postHeroes } from 'virtual:post-heroes';
 
 export interface BlogPostMetadata {
   title: string;
@@ -10,6 +11,9 @@ export interface BlogPostMetadata {
 
 export interface BlogPost extends BlogPostMetadata {
   slug: string;
+  // The cover image when it is actually rendered in the post body (the LCP
+  // candidate). Undefined when the cover is only used for OG/metadata.
+  heroImage?: string;
 }
 
 interface BlogPostModule {
@@ -110,6 +114,7 @@ function toBlogPostEntry(
     date,
     description,
     image,
+    heroImage: postHeroes[slug],
     filePath,
     sortTimestamp: getSortTimestamp(date, filePath),
   };
@@ -122,6 +127,7 @@ function toBlogPost(post: BlogPostEntry): BlogPost {
     date: post.date,
     description: post.description,
     image: post.image,
+    heroImage: post.heroImage,
   };
 }
 

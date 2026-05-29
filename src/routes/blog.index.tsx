@@ -26,7 +26,7 @@ function Blog() {
   return (
     <div className="space-y-10">
       <BackLink />
-      <h1 className="text-3xl font-bold">Blog</h1>
+      <h1 className="text-4xl font-black tracking-tight sm:text-5xl">Blog</h1>
       <BlogPostList posts={posts} showDate />
       <div className="pt-6">
         <SubscriptionForm />

@@ -20,18 +20,12 @@ function getPublicAssetUrl(publicPathname: string) {
 async function getIconSrc(): Promise<string> {
   if (!iconSrcPromise) {
     iconSrcPromise = (async () => {
-      const candidates = [join(publicDir, 'icon.png')];
-
-      for (const candidate of candidates) {
-        try {
-          const buffer = await readFile(candidate);
-          return `data:image/png;base64,${Buffer.from(buffer).toString('base64')}`;
-        } catch {
-          continue;
-        }
+      try {
+        const buffer = await readFile(join(publicDir, 'icon.png'));
+        return `data:image/png;base64,${Buffer.from(buffer).toString('base64')}`;
+      } catch {
+        return getPublicAssetUrl('icon.png');
       }
-
-      return getPublicAssetUrl('icon.png');
     })();
   }
 
@@ -113,6 +107,7 @@ export async function createSiteOgImageResponse() {
   return materializePngResponse(
     new ImageResponse(
       <div
+        // react-doctor-disable-next-line react-doctor/no-inline-exhaustive-style -- @vercel/og (satori) supports inline styles only
         style={{
           background: '#232323',
           width: '100%',
@@ -141,6 +136,7 @@ export async function createBlogPostOgImageResponse(post: BlogPost | null) {
   return materializePngResponse(
     new ImageResponse(
       <div
+        // react-doctor-disable-next-line react-doctor/no-inline-exhaustive-style -- @vercel/og (satori) supports inline styles only
         style={{
           fontSize: 32,
           background: '#232323',
@@ -158,6 +154,7 @@ export async function createBlogPostOgImageResponse(post: BlogPost | null) {
           <img
             src={postImageSrc}
             alt={post?.title || 'Blog Post'}
+            // react-doctor-disable-next-line react-doctor/no-inline-exhaustive-style -- @vercel/og (satori) supports inline styles only
             style={{
               position: 'absolute',
               top: 0,

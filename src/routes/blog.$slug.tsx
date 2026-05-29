@@ -11,6 +11,11 @@ import SubscriptionForm from '../components/subscription-form';
 import { getAllBlogPosts, getBlogPost, getBlogPostContent } from '../lib/blog';
 import { formatPostDate } from '../lib/dates';
 import { getPublicBaseUrl } from '../lib/site';
+import {
+  HERO_IMAGE_SIZES,
+  PriorityImageContext,
+  heroSrcSet,
+} from '../mdx-components';
 
 const defaultBlogPostDescription = 'A blog post by Dan Goosewin';
 
@@ -20,13 +25,14 @@ function getBlogPostDescription(post: { description?: string }) {
 
 export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
-    const posts = await getAllBlogPosts();
+    const [posts, post] = await Promise.all([
+      getAllBlogPosts(),
+      getBlogPost(params.slug),
+    ]);
 
     if (posts.length === 0) {
       throw redirect({ to: '/' });
     }
-
-    const post = await getBlogPost(params.slug);
 
     if (!post) {
       throw notFound();
@@ -66,7 +72,21 @@ export const Route = createFileRoute('/blog/$slug')({
         },
         { name: 'twitter:image', content: image },
       ],
-      links: [{ rel: 'canonical', href: `${baseUrl}/blog/${post.slug}` }],
+      links: [
+        { rel: 'canonical', href: `${baseUrl}/blog/${post.slug}` },
+        ...(post.heroImage
+          ? [
+              {
+                rel: 'preload',
+                as: 'image',
+                href: post.heroImage,
+                imageSrcSet: heroSrcSet(post.heroImage),
+                imageSizes: HERO_IMAGE_SIZES,
+                fetchPriority: 'high' as const,
+              },
+            ]
+          : []),
+      ],
     };
   },
   component: Article,
@@ -121,7 +141,9 @@ function Article() {
           </div>
         </div>
         <Suspense fallback={null}>
-          <Content />
+          <PriorityImageContext.Provider value={post.heroImage}>
+            <Content />
+          </PriorityImageContext.Provider>
         </Suspense>
       </article>
 
@@ -134,10 +156,11 @@ function Article() {
               className="flex items-center gap-3 rounded-lg bg-gray-50 p-4 transition-opacity duration-200 hover:opacity-80 dark:bg-[#1c1c1c]/60"
             >
               <svg
-                className="h-5 w-5 text-gray-600 dark:text-gray-400"
+                className="size-5 text-gray-600 dark:text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -174,10 +197,11 @@ function Article() {
                 </div>
               </div>
               <svg
-                className="h-5 w-5 text-gray-600 dark:text-gray-400"
+                className="size-5 text-gray-600 dark:text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"

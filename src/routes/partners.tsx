@@ -98,7 +98,7 @@ function Partners() {
         <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
           Future
         </h2>
-        <div className="flex min-h-[120px] items-center justify-center rounded-2xl bg-gray-100/70 px-8 py-8 text-center dark:bg-[#1a1a1a]">
+        <div className="flex min-h-[120px] items-center justify-center rounded-2xl bg-gray-100/70 p-8 text-center dark:bg-[#1a1a1a]">
           <p className="text-balance mb-0 text-base text-gray-900 dark:text-gray-100 sm:text-lg">
             I work with a small number of companies each quarter on
             sponsorships, technical breakdowns, and collaborations.
@@ -135,7 +135,7 @@ function ClientSection({
             className="block"
           >
             <div className="flex items-center gap-3 rounded-xl border border-gray-300/40 px-4 py-2.5 dark:border-gray-600/50">
-              <div className="flex h-12 w-12 items-center justify-center bg-transparent">
+              <div className="flex size-12 items-center justify-center bg-transparent">
                 <img
                   src={client.logo}
                   alt={`${client.name} logo`}
@@ -143,7 +143,7 @@ function ClientSection({
                   height={36}
                   loading="lazy"
                   decoding="async"
-                  className="h-9 w-9 rounded-md object-contain"
+                  className="size-9 rounded-md object-contain"
                 />
               </div>
               <div className="space-y-0">

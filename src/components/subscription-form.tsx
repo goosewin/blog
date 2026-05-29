@@ -49,7 +49,7 @@ export default function SubscriptionForm({
 
   return (
     <div className={`${className}`}>
-      <h3 className="text-lg font-medium mb-2">Subscribe to my blog</h3>
+      <h2 className="text-lg font-bold mb-2">Subscribe to my blog</h2>
       <p className="text-gray-600 dark:text-gray-400 mb-4">
         Get notified when I publish new posts.
         <br />
@@ -61,19 +61,23 @@ export default function SubscriptionForm({
       ) : (
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="flex gap-2">
+            <label htmlFor="subscribe-email" className="sr-only">
+              Email address
+            </label>
             <input
+              id="subscribe-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="goose@duck.com"
               required
               disabled={isPending}
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:border-gray-900 dark:focus:border-gray-100 bg-white dark:bg-[#232323] text-gray-900 dark:text-white disabled:opacity-50 text-sm"
+              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:border-orange dark:focus:border-orange bg-white dark:bg-[#232323] text-gray-900 dark:text-white disabled:opacity-50 text-sm"
             />
             <button
               type="submit"
               disabled={isPending}
-              className="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md hover:opacity-80 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+              className="px-4 py-2 bg-orange text-[#232323] rounded-md hover:bg-orange-deep transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-bold"
             >
               {isPending ? 'Subscribing...' : 'Subscribe'}
             </button>

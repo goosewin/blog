@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "react-doctor/only-export-components": "off"
+  }
+}
