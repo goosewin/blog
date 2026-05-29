@@ -9,6 +9,7 @@ export default function RouteTransitionManager() {
 
   useEffect(() => {
     let cleanupTimer: number | undefined;
+    const root = document.documentElement;
     const clearCleanupTimer = () => {
       if (cleanupTimer !== undefined) {
         window.clearTimeout(cleanupTimer);
@@ -27,17 +28,17 @@ export default function RouteTransitionManager() {
       });
 
       if (typeof document.startViewTransition === 'function') {
-        document.documentElement.dataset.routeTransition = direction;
+        root.dataset.routeTransition = direction;
       } else {
-        document.documentElement.dataset.routeTransitionFallback = direction;
+        root.dataset.routeTransitionFallback = direction;
       }
     });
 
     const unsubscribeResolved = router.subscribe('onResolved', () => {
       clearCleanupTimer();
       cleanupTimer = window.setTimeout(() => {
-        delete document.documentElement.dataset.routeTransition;
-        delete document.documentElement.dataset.routeTransitionFallback;
+        delete root.dataset.routeTransition;
+        delete root.dataset.routeTransitionFallback;
       }, 500);
     });
 
