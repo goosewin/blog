@@ -1,0 +1,25 @@
+AGENTS.md
+  s_78e797bfc5f211::t_51778be370fae4 83-94
+scripts/check-bun-version.ts
+  s_78e797bfc5f211::t_63a2403f131e03 1,3-9,11,13,18-39,42-44
+package.json
+  s_78e797bfc5f211::t_b7b85f72ce26d7 8
+.husky/pre-commit
+  s_78e797bfc5f211::t_61467e39586d50 2-4,10-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "3a47982f30b8c582f927a3fd78da3ecb26cb4d53",
+  "prompts": {},
+  "sessions": {
+    "s_78e797bfc5f211": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b410473-4c20-4086-91c7-459e6778925d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
