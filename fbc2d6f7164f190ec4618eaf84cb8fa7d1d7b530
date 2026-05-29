@@ -1,0 +1,25 @@
+app/components/page-layout.tsx
+  c478e2e1ac5df23d 11
+app/globals.css
+  c478e2e1ac5df23d 239-240,245,249,278-279
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.22",
+  "base_commit_sha": "fbc2d6f7164f190ec4618eaf84cb8fa7d1d7b530",
+  "prompts": {
+    "c478e2e1ac5df23d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019d4157-4395-7990-8dc2-9376a0069487",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>",
+      "messages": [],
+      "total_additions": 7,
+      "total_deletions": 7,
+      "accepted_lines": 7,
+      "overriden_lines": 0
+    }
+  }
+}
