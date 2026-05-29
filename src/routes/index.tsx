@@ -51,7 +51,10 @@ function Home() {
       <StructuredData data={structuredData} />
       <header className="space-y-6">
         <div className="flex items-start justify-between gap-4">
-          <h1 className="text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl">
+          <h1
+            aria-label="Dan Goosewin"
+            className="text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl"
+          >
             Dan
             <br />
             Goosewin
