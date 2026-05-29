@@ -7,8 +7,7 @@ clone:
 
 steps:
   critical:
-    image: goosewin-blog-ci:bun-1.3.14-jq-curl
-    pull: false
+    image: oven/bun:1.3.14-debian
     environment:
       CI: 'true'
       SITE_URL: https://goose.dev
@@ -24,8 +23,7 @@ steps:
       - event: [pull_request, push, manual]
 
   newsletter:
-    image: goosewin-blog-ci:bun-1.3.14-jq-curl
-    pull: false
+    image: oven/bun:1.3.14-debian
     environment:
       SITE_URL:
         from_secret: site_url
@@ -33,6 +31,8 @@ steps:
         from_secret: newsletter_secret
       NEWSLETTER_DRY_RUN: 'false'
     commands:
+      - apt-get update
+      - apt-get install -y --no-install-recommends ca-certificates curl git jq
       - bun run newsletter
     when:
       - event: push

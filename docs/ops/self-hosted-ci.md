@@ -21,26 +21,9 @@ The `newsletter` step runs only for pushes to `main` that add `posts/*.mdx`.
 It sends through the existing `scripts/send-newsletter.sh` path after the
 critical checks pass.
 
-## CI Image
-
-Build the pinned local image on the Woodpecker Docker host before enabling the
-repo. It includes the Bun version used locally plus `git`, `jq`, and `curl` for
-the newsletter script.
-
-```sh
-cat >/tmp/blog-ci.Dockerfile <<'EOF'
-FROM oven/bun:1.3.14-debian
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends bash ca-certificates curl git jq \
-  && rm -rf /var/lib/apt/lists/*
-RUN bun --version && git --version && jq --version && curl --version
-EOF
-
-docker build \
-  -f /tmp/blog-ci.Dockerfile \
-  -t goosewin-blog-ci:bun-1.3.14-jq-curl \
-  /tmp
-```
+Both steps use the pinned public `oven/bun:1.3.14-debian` image. The newsletter
+step installs `curl`, `git`, and `jq` at runtime because those tools are needed
+only for dispatch.
 
 ## Woodpecker Setup
 
