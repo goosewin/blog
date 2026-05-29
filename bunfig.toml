@@ -1,0 +1,13 @@
+[install]
+# Supply-chain cooldown: refuse package versions published less than 14 days
+# ago. Compromised releases and typosquats are usually caught and yanked within
+# days, so a two-week minimum keeps freshly-published malicious versions out of
+# the lockfile. Applies when resolving new/updated versions; re-installing
+# already-locked versions is unaffected.
+# Override for a single command with: bun install --minimum-release-age=0
+minimumReleaseAge = 1209600 # 14 days, in seconds
+
+# Exempt packages. `nitro` is pinned to an exact nitro-nightly build (see
+# package.json); nightlies are fresh by definition, so the cooldown would block
+# every intentional bump. The registry package name is nitro-nightly.
+minimumReleaseAgeExcludes = ["nitro-nightly"]
