@@ -1,6 +1,5 @@
-const currentYear = new Date().getFullYear();
-
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
   return (
     <footer className="py-4 mt-8">
       <div className="flex flex-col sm:flex-row items-center">

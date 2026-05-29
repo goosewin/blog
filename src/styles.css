@@ -59,7 +59,7 @@
 
 @layer base {
   html {
-    font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
     @apply text-base antialiased;
   }
 
