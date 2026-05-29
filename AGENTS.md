@@ -1,7 +1,9 @@
 # Agent Notes
 
-Keep changes small. Use Bun. Run `bun format` and `bun run lint` before
-handoff. Use conventional commits with concise lowercase subjects.
+Keep changes small. Use Bun 1.3.14+ exclusively for package and script
+commands. Prefer Bun or Web APIs over Node built-ins when the runtime allows it.
+Run `bun format` and `bun run lint` before handoff. Use conventional commits
+with concise lowercase subjects.
 
 ## Project
 

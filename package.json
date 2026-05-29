@@ -3,21 +3,22 @@
   "private": true,
   "type": "module",
   "engines": {
-    "bun": ">=1.3.0"
+    "bun": ">=1.3.14"
   },
   "packageManager": "bun@1.3.14",
   "imports": {
     "#/*": "./src/*"
   },
   "scripts": {
-    "preinstall": "bun scripts/check-bun-version.ts",
+    "preinstall": "bun run scripts/enforce-bun-policy.ts --preinstall",
     "prepare": "husky",
     "dev": "bun --bun vite dev --port 3000",
     "build": "bun --bun vite build",
     "preview": "bun --bun vite preview",
     "test": "bun --bun vitest run --config vitest.config.ts",
     "typecheck": "bun --bun tsc --noEmit --pretty false",
-    "lint": "bun --bun eslint .",
+    "lint": "bun run lint:package-manager && bun --bun eslint .",
+    "lint:package-manager": "bun run scripts/enforce-bun-policy.ts",
     "format": "bun --bun prettier --write .",
     "format:check": "bun --bun prettier --check .",
     "check": "bun --bun prettier --write . && bun --bun eslint --fix",
