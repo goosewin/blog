@@ -12,7 +12,7 @@ export const Route = createFileRoute('/about')({
         {
           name: 'description',
           content:
-            "I'm a software engineer and founder building AI-native products in San Francisco. I focus on systems, execution, and product narratives that matter in AI.",
+            "I'm a software engineer and founder building AI-native products. I focus on systems, execution, and product narratives that matter in AI.",
         },
         { property: 'og:url', content: `${baseUrl}/about` },
       ],
@@ -42,7 +42,19 @@ function About() {
           output.
         </p>
         <p className="text-balance text-gray-600 dark:text-gray-400">
-          Based in California.
+          Previously DevRel Lead at Vapi in San Francisco. Now fractional DevRel
+          through my own company, Goosewin Media Group, helping devtools and AI
+          companies win developer mindshare. I also talk about tech, AI, and the
+          change ahead on{' '}
+          <a
+            href="https://youtube.com/@dan_goosewin"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline-link"
+          >
+            YouTube
+          </a>
+          .
         </p>
         <p className="text-balance text-gray-600 dark:text-gray-400">
           I care about leverage, speed, and clarity. I love products and teams
