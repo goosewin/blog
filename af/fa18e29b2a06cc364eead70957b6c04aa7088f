@@ -1,0 +1,21 @@
+src/routes/about.tsx
+  s_18abfebf2a36d1::t_d0cea2df55afe5 49-57
+  s_18abfebf2a36d1::t_064daffc0d6ba1 45-48
+  s_18abfebf2a36d1::t_57f8e53f40d536 15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "affa18e29b2a06cc364eead70957b6c04aa7088f",
+  "prompts": {},
+  "sessions": {
+    "s_18abfebf2a36d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "89e56915-d19a-4831-b725-e665fd4e4763",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
