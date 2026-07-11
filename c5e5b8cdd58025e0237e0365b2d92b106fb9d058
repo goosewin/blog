@@ -1,0 +1,28 @@
+package.json
+  s_82d0a74927de77::t_71f630c9586d5e 13
+vitest.config.ts
+  s_82d0a74927de77::t_17890fc08f4322 5
+scripts/enforce-bun-policy.ts
+  s_82d0a74927de77::t_745356bfdf2646 6,10,15,53-55,166,168,193-195
+  s_82d0a74927de77::t_18a7b87037e5ba 61-63
+eslint.config.js
+  s_82d0a74927de77::t_17f0bce4d4df5a 25-28,33-36,42-46,52-53
+vercel.json
+  s_82d0a74927de77::t_07b18528b820cb 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "c5e5b8cdd58025e0237e0365b2d92b106fb9d058",
+  "prompts": {},
+  "sessions": {
+    "s_82d0a74927de77": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e729a-cbf4-7a72-9e8e-14b99fa4f04e",
+        "model": "gpt-5.5"
+      },
+      "human_author": null
+    }
+  }
+}
