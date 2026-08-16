@@ -1,4 +1,7 @@
-import { Link, useRouterState } from '@tanstack/react-router';
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface ErrorMessage {
   title: string;
@@ -52,9 +55,7 @@ const errorMessages: ErrorMessage[] = [
 ];
 
 export default function NotFoundPage() {
-  const pathname = useRouterState({
-    select: (state) => state.location.pathname,
-  });
+  const pathname = usePathname();
   const hash = Array.from(pathname).reduce(
     (acc, char) => acc + char.charCodeAt(0),
     0
@@ -85,7 +86,7 @@ export default function NotFoundPage() {
       </div>
 
       <Link
-        to="/"
+        href="/"
         className="mt-4 border border-gray-900 px-6 py-3 transition-colors duration-200 hover:bg-gray-900 hover:text-white dark:border-gray-100 dark:hover:bg-gray-100 dark:hover:text-gray-900"
       >
         {randomError.buttonText}

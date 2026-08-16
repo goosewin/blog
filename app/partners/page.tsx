@@ -1,8 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router';
-import BackLink from '../components/back-link';
-import StructuredData from '../components/structured-data';
-import { ArrowUpRightIcon } from '../components/icons';
-import { getPublicBaseUrl } from '../lib/site';
+import type { Metadata } from 'next';
+import BackLink from '#/components/back-link';
+import StructuredData from '#/components/structured-data';
+import { ArrowUpRightIcon } from '#/components/icons';
+import { getPublicBaseUrl } from '#/lib/site';
 
 interface ClientEntry {
   name: string;
@@ -41,27 +41,15 @@ const pastClients: ClientEntry[] = [
   },
 ];
 
-export const Route = createFileRoute('/partners')({
-  head: () => {
-    const baseUrl = getPublicBaseUrl();
+export const metadata: Metadata = {
+  title: 'Partners',
+  description:
+    'A running list of customers and collaborators across past, current, and future work.',
+  openGraph: { url: `${getPublicBaseUrl()}/partners` },
+  alternates: { canonical: `${getPublicBaseUrl()}/partners` },
+};
 
-    return {
-      meta: [
-        { title: 'Partners | Dan Goosewin' },
-        {
-          name: 'description',
-          content:
-            'A running list of customers and collaborators across past, current, and future work.',
-        },
-        { property: 'og:url', content: `${baseUrl}/partners` },
-      ],
-      links: [{ rel: 'canonical', href: `${baseUrl}/partners` }],
-    };
-  },
-  component: Partners,
-});
-
-function Partners() {
+export default function Partners() {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',

@@ -4,6 +4,8 @@ dist
 dist-ssr
 *.local
 .env
+.env.local
+.next
 .nitro
 .tanstack
 .wrangler
@@ -13,3 +15,5 @@ dist-ssr
 __unconfig*
 todos.json
 legacy-source
+tsconfig.tsbuildinfo
+next-env.d.ts

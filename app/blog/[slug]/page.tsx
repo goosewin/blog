@@ -1,21 +1,18 @@
-import { Suspense } from 'react';
-import {
-  Link,
-  createFileRoute,
-  notFound,
-  redirect,
-} from '@tanstack/react-router';
-import BackLink from '../components/back-link';
-import StructuredData from '../components/structured-data';
-import SubscriptionForm from '../components/subscription-form';
-import { getAllBlogPosts, getBlogPost, getBlogPostContent } from '../lib/blog';
-import { formatPostDate } from '../lib/dates';
-import { getPublicBaseUrl } from '../lib/site';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound, redirect } from 'next/navigation';
+import { preload } from 'react-dom';
+import BackLink from '#/components/back-link';
+import StructuredData from '#/components/structured-data';
+import SubscriptionForm from '#/components/subscription-form';
+import { getAllBlogPosts, getBlogPost, getBlogPostContent } from '#/lib/blog';
+import { formatPostDate } from '#/lib/dates';
+import { getPublicBaseUrl } from '#/lib/site';
 import {
   HERO_IMAGE_SIZES,
-  PriorityImageContext,
+  createMdxComponents,
   heroSrcSet,
-} from '../mdx-components';
+} from '#/mdx-components';
 
 const defaultBlogPostDescription = 'A blog post by Dan Goosewin';
 
@@ -23,84 +20,84 @@ function getBlogPostDescription(post: { description?: string }) {
   return post.description || defaultBlogPostDescription;
 }
 
-export const Route = createFileRoute('/blog/$slug')({
-  loader: async ({ params }) => {
-    const [posts, post] = await Promise.all([
-      getAllBlogPosts(),
-      getBlogPost(params.slug),
-    ]);
+export async function generateStaticParams() {
+  const posts = await getAllBlogPosts();
+  return posts.map((post) => ({ slug: post.slug }));
+}
 
-    if (posts.length === 0) {
-      throw redirect({ to: '/' });
-    }
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
+  if (!post) return {};
 
-    if (!post) {
-      throw notFound();
-    }
+  const baseUrl = getPublicBaseUrl();
+  const image = `${baseUrl}/blog/${post.slug}/opengraph-image`;
+  const description = getBlogPostDescription(post);
 
-    return { post, posts };
-  },
-  head: ({ loaderData }) => {
-    const post = loaderData?.post;
-    if (!post) return {};
+  return {
+    title: post.title,
+    description,
+    openGraph: {
+      title: post.title,
+      description,
+      type: 'article',
+      publishedTime: post.date,
+      authors: ['Dan Goosewin'],
+      url: `${baseUrl}/blog/${post.slug}`,
+      images: [image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description,
+      images: [image],
+    },
+    alternates: { canonical: `${baseUrl}/blog/${post.slug}` },
+  };
+}
 
-    const baseUrl = getPublicBaseUrl();
-    const image = `${baseUrl}/blog/${post.slug}/opengraph-image`;
-    const description = getBlogPostDescription(post);
+export default async function Article({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const [posts, post] = await Promise.all([
+    getAllBlogPosts(),
+    getBlogPost(slug),
+  ]);
 
-    return {
-      meta: [
-        { title: `${post.title} | Dan Goosewin` },
-        {
-          name: 'description',
-          content: description,
-        },
-        { property: 'og:title', content: post.title },
-        {
-          property: 'og:description',
-          content: description,
-        },
-        { property: 'og:type', content: 'article' },
-        { property: 'article:published_time', content: post.date },
-        { property: 'article:author', content: 'Dan Goosewin' },
-        { property: 'og:url', content: `${baseUrl}/blog/${post.slug}` },
-        { property: 'og:image', content: image },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: post.title },
-        {
-          name: 'twitter:description',
-          content: description,
-        },
-        { name: 'twitter:image', content: image },
-      ],
-      links: [
-        { rel: 'canonical', href: `${baseUrl}/blog/${post.slug}` },
-        ...(post.heroImage
-          ? [
-              {
-                rel: 'preload',
-                as: 'image',
-                href: post.heroImage,
-                imageSrcSet: heroSrcSet(post.heroImage),
-                imageSizes: HERO_IMAGE_SIZES,
-                fetchPriority: 'high' as const,
-              },
-            ]
-          : []),
-      ],
-    };
-  },
-  component: Article,
-});
+  if (posts.length === 0) {
+    redirect('/');
+  }
 
-function Article() {
-  const { post, posts } = Route.useLoaderData();
-  const Content = getBlogPostContent(post.slug);
+  if (!post) {
+    notFound();
+  }
+
+  const Content = await getBlogPostContent(post.slug);
+
+  // The hero is the LCP element, so hint it before the body streams. Rendering
+  // a bare <link> here would emit both a hoisted and an inline copy.
+  if (post.heroImage) {
+    preload(post.heroImage, {
+      as: 'image',
+      imageSrcSet: heroSrcSet(post.heroImage),
+      imageSizes: HERO_IMAGE_SIZES,
+      fetchPriority: 'high',
+    });
+  }
+
   const currentIndex = posts.findIndex((entry) => entry.slug === post.slug);
   const previousPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
   const nextPost =
     currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
   const baseUrl = getPublicBaseUrl();
+  const description = getBlogPostDescription(post);
 
   const structuredData = {
     '@context': 'https://schema.org',
@@ -112,7 +109,7 @@ function Article() {
       '@type': 'Person',
       name: 'Dan Goosewin',
     },
-    description: getBlogPostDescription(post),
+    description,
     image: post.image ? `${baseUrl}${post.image}` : undefined,
     mainEntityOfPage: {
       '@type': 'WebPage',
@@ -141,19 +138,14 @@ function Article() {
             </span>
           </div>
         </div>
-        <Suspense fallback={null}>
-          <PriorityImageContext.Provider value={post.heroImage}>
-            <Content />
-          </PriorityImageContext.Provider>
-        </Suspense>
+        <Content components={createMdxComponents(post.heroImage)} />
       </article>
 
       <nav className="mt-12 flex items-center justify-between border-t border-gray-200 pt-8 dark:border-gray-600">
         <div className="flex-1">
           {previousPost ? (
             <Link
-              to="/blog/$slug"
-              params={{ slug: previousPost.slug }}
+              href={`/blog/${previousPost.slug}`}
               className="flex items-center gap-3 rounded-lg bg-gray-50 p-4 transition-opacity duration-200 hover:opacity-80 dark:bg-[#1c1c1c]/60"
             >
               <svg
@@ -182,11 +174,10 @@ function Article() {
           ) : null}
         </div>
 
-        <div className="flex flex-1 justify-end">
+        <div className="flex-1 flex justify-end">
           {nextPost ? (
             <Link
-              to="/blog/$slug"
-              params={{ slug: nextPost.slug }}
+              href={`/blog/${nextPost.slug}`}
               className="flex items-center gap-3 rounded-lg bg-gray-50 p-4 transition-opacity duration-200 hover:opacity-80 dark:bg-[#1c1c1c]/60"
             >
               <div className="text-right">

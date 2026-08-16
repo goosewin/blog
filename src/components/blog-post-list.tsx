@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import Link from 'next/link';
 import type { BlogPost } from '#/lib/blog';
 import { formatPostDate } from '../lib/dates';
 
@@ -30,8 +30,7 @@ export default function BlogPostList({
           className="border-t border-gray-200 last:border-b dark:border-gray-700"
         >
           <Link
-            to="/blog/$slug"
-            params={{ slug: post.slug }}
+            href={`/blog/${post.slug}`}
             className="group flex items-baseline gap-4 py-4"
           >
             <span className="flex-1 text-lg font-semibold leading-snug transition-colors group-hover:text-orange-deep dark:group-hover:text-orange">

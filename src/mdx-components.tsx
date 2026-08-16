@@ -1,13 +1,5 @@
-import { createContext, useContext } from 'react';
 import type { ImgHTMLAttributes } from 'react';
 import type { MDXComponents } from 'mdx/types';
-
-// Carries the post's hero image src (the LCP element). The matching inline
-// image loads eagerly with high priority and a responsive srcset; every other
-// image stays lazy.
-export const PriorityImageContext = createContext<string | undefined>(
-  undefined
-);
 
 // The hero renders full-bleed up to the prose column (max-w-3xl = 768px).
 export const HERO_IMAGE_SIZES = '(max-width: 768px) 100vw, 768px';
@@ -18,30 +10,38 @@ export function heroSrcSet(src: string): string {
   return `${small} 768w, ${src} 1600w`;
 }
 
-function MdxImage({ alt = '', ...props }: ImgHTMLAttributes<HTMLImageElement>) {
-  const prioritySrc = useContext(PriorityImageContext);
-  const isPriority =
-    prioritySrc != null &&
-    typeof props.src === 'string' &&
-    props.src === prioritySrc;
+// `heroImage` is the post's LCP element. The matching inline image loads eagerly
+// with high priority and a responsive srcset; every other image stays lazy.
+// The hero is known on the server, so it is bound here instead of travelling
+// through a client context.
+export function createMdxComponents(heroImage?: string): MDXComponents {
+  function MdxImage({
+    alt = '',
+    ...props
+  }: ImgHTMLAttributes<HTMLImageElement>) {
+    const isHero =
+      heroImage != null &&
+      typeof props.src === 'string' &&
+      props.src === heroImage;
 
-  if (isPriority && typeof props.src === 'string') {
-    return (
-      <img
-        {...props}
-        alt={alt}
-        loading="eager"
-        fetchPriority="high"
-        srcSet={heroSrcSet(props.src)}
-        sizes={HERO_IMAGE_SIZES}
-      />
-    );
+    if (isHero && typeof props.src === 'string') {
+      return (
+        <img
+          {...props}
+          alt={alt}
+          loading="eager"
+          fetchPriority="high"
+          srcSet={heroSrcSet(props.src)}
+          sizes={HERO_IMAGE_SIZES}
+        />
+      );
+    }
+
+    return <img {...props} alt={alt} loading="lazy" />;
   }
 
-  return <img {...props} alt={alt} loading="lazy" />;
+  return {
+    Image: MdxImage,
+    img: MdxImage,
+  };
 }
-
-export const mdxComponents: MDXComponents = {
-  Image: MdxImage,
-  img: MdxImage,
-};

@@ -7,23 +7,25 @@ clone:
 
 steps:
   critical:
-    image: oven/bun:1.3.14-debian
+    image: node:24.18.1-bookworm-slim@sha256:a09aabc645e86e81e23dab78e0c0f2eaa233cab4277c7188232181a1a8bd5d39
     environment:
       CI: 'true'
       SITE_URL: https://goose.dev
-      VITE_PUBLIC_BASE_URL: https://goose.dev
+      NEXT_PUBLIC_BASE_URL: https://goose.dev
+      NEXT_TELEMETRY_DISABLED: '1'
     commands:
-      - bun install --frozen-lockfile
-      - bun run lint
-      - bun run format:check
-      - bun run typecheck
-      - bun run test
-      - bun run build
+      - corepack enable
+      - corepack prepare pnpm@11.17.0 --activate
+      - pnpm install --frozen-lockfile
+      - pnpm run lint:package-manager
+      - pnpm exec vp check
+      - pnpm exec vp test
+      - pnpm run build
     when:
       - event: [pull_request, push, manual]
 
   newsletter:
-    image: oven/bun:1.3.14-debian
+    image: node:24.18.1-bookworm-slim@sha256:a09aabc645e86e81e23dab78e0c0f2eaa233cab4277c7188232181a1a8bd5d39
     environment:
       SITE_URL:
         from_secret: site_url
@@ -33,7 +35,10 @@ steps:
     commands:
       - apt-get update
       - apt-get install -y --no-install-recommends ca-certificates curl git jq
-      - bun run newsletter
+      - corepack enable
+      - corepack prepare pnpm@11.17.0 --activate
+      - pnpm install --frozen-lockfile
+      - pnpm run newsletter
     when:
       - event: push
         branch: main

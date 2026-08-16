@@ -1,0 +1,28 @@
+packages:
+  - '.'
+
+minimumReleaseAge: 20160
+
+# Pinned Vite+ toolchain is newer than the 14-day cooldown. Frozen lockfile
+# installs skip this gate; exclude so deliberate bumps are not blocked.
+minimumReleaseAgeExclude:
+  - vite-plus
+  - '@voidzero-dev/*'
+  - vitest
+  - '@vitest/*'
+  - oxlint
+  - oxlint-tsgolint
+  - oxfmt
+  - '@oxlint/*'
+  - '@oxfmt/*'
+  - '@oxc-project/*'
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  core-js: false
+
+overrides:
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.9
+  vitest: 4.1.10

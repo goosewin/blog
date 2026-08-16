@@ -1,18 +1,15 @@
-import { Link, createFileRoute } from '@tanstack/react-router';
-import BlogPostList from '../components/blog-post-list';
-import StructuredData from '../components/structured-data';
-import ThemeToggle from '../components/theme-toggle';
-import { ArrowUpRightIcon } from '../components/icons';
-import { getAllBlogPosts } from '../lib/blog';
-import { SITE_DESCRIPTION, SITE_NAME, getPublicBaseUrl } from '../lib/site';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import BlogPostList from '#/components/blog-post-list';
+import StructuredData from '#/components/structured-data';
+import ThemeToggle from '#/components/theme-toggle';
+import { ArrowUpRightIcon } from '#/components/icons';
+import { getAllBlogPosts } from '#/lib/blog';
+import { SITE_DESCRIPTION, SITE_NAME, getPublicBaseUrl } from '#/lib/site';
 
-export const Route = createFileRoute('/')({
-  loader: () => getAllBlogPosts(),
-  head: () => ({
-    links: [{ rel: 'canonical', href: getPublicBaseUrl() }],
-  }),
-  component: Home,
-});
+export const metadata: Metadata = {
+  alternates: { canonical: getPublicBaseUrl() },
+};
 
 const socialLinks = [
   { label: 'X', href: 'https://x.com/goosewin' },
@@ -20,8 +17,8 @@ const socialLinks = [
   { label: 'YouTube', href: 'https://youtube.com/@dan_goosewin' },
 ];
 
-function Home() {
-  const posts = Route.useLoaderData();
+export default async function Home() {
+  const posts = await getAllBlogPosts();
   const latestPosts = posts.slice(0, 4);
   const baseUrl = getPublicBaseUrl();
   const structuredData = {
@@ -73,7 +70,7 @@ function Home() {
             <span className="text-orange">01</span> &mdash; Writing
           </h2>
           <Link
-            to="/blog"
+            href="/blog"
             className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 transition-colors hover:text-orange-deep dark:text-gray-400 dark:hover:text-orange"
           >
             All posts &rarr;
@@ -88,12 +85,12 @@ function Home() {
         </h2>
         <ul className="flex flex-wrap gap-x-6 gap-y-3">
           <li>
-            <Link to="/about" className="underline-link">
+            <Link href="/about" className="underline-link">
               About
             </Link>
           </li>
           <li>
-            <Link to="/partners" className="underline-link">
+            <Link href="/partners" className="underline-link">
               Partners
             </Link>
           </li>
