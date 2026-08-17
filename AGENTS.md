@@ -15,7 +15,7 @@ This file is the single source of truth for AI coding agents.
 
 ## Stack
 
-- Next.js 16 App Router, React 19, TypeScript strict
+- Next.js 16 App Router, React 19, TypeScript 7
 - Tailwind 4 (`src/styles.css`)
 - Vite+ (`vp`) for check, lint, format, and tests. Tests import from `vite-plus/test`.
 - MDX posts in `posts/*.mdx` with an ESM `export const metadata = { title, date, description?, image? }`
@@ -76,6 +76,6 @@ Newsletter sending depends on `jq`, `curl`, `SITE_URL`, and `NEWSLETTER_SECRET`.
 - Keep MDX posts in `posts/*.mdx`; `src/lib/blog.ts` reads them from disk.
 - Generate OG images with `@vercel/og`.
 - Use App Router route handlers for Resend so secrets stay off the client.
-- Minimum release age is 14 days via `pnpm-workspace.yaml`. Vite+ packages are excluded because the pin is newer than 14 days. Next 16.3.1, `@vercel/og` 1.0.1, `react-email` 6.9.2, Resend 6.20.0, and tsx 4.23.12 were taken early on 2026-08-16; drop those excludes after 2026-08-27.
+- Minimum release age is 14 days via `pnpm-workspace.yaml`. Vite+ packages are excluded because the pin is newer than 14 days. Next 16.3.1, `@vercel/og` 1.0.1, `react-email` 6.9.2, Resend 6.20.0, and tsx 4.23.12 are excluded at exact versions until 2026-08-27.
 - Authoritative enforcement is Woodpecker `.woodpecker/blog.yml` on `node:24.18.1-bookworm-slim` with Corepack pnpm. GitHub Actions stays disabled.
 - Commits and PR titles: conventional `type: summary`. No ticket key. No `[NA]` prefix.
