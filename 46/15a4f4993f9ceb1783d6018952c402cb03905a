@@ -1,0 +1,23 @@
+src/components/icons.tsx
+  s_cf51792ed42e5b::t_eef24d5f991dc2 19-36
+app/page.tsx
+  s_cf51792ed42e5b::t_2e099179a26036 69,75,78
+  s_cf51792ed42e5b::t_159720521de262 6
+  s_cf51792ed42e5b::t_be934920261e33 85
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "4615a4f4993f9ceb1783d6018952c402cb03905a",
+  "prompts": {},
+  "sessions": {
+    "s_cf51792ed42e5b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "64516b7d-7867-4254-89f6-b108e364732a",
+        "model": "grok-4.6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
