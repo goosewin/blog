@@ -24,14 +24,14 @@
   },
   "dependencies": {
     "@mdx-js/mdx": "^3.1.1",
-    "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.1.0",
     "@vercel/analytics": "^2.0.1",
-    "@vercel/og": "^0.11.1",
-    "next": "16.2.12",
+    "@vercel/og": "^1.0.1",
+    "next": "16.3.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "resend": "^6.18.1"
+    "react-email": "^6.9.2",
+    "resend": "^6.20.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
@@ -42,8 +42,8 @@
     "@types/react-dom": "^19.2.4",
     "husky": "^9.1.7",
     "tailwindcss": "^4.3.3",
-    "tsx": "^4.23.5",
-    "typescript": "^5.9.3",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@0.2.9",
     "vite-plus": "0.2.9"
   },

@@ -1,0 +1,29 @@
+language: en-US
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  path_instructions:
+    - path: package.json
+      instructions: >-
+        This repo is pnpm + Node 24 + Next.js App Router. packageManager must
+        stay a pnpm version. Do not request engines.bun, packageManager bun,
+        bun.lock, bunfig.toml, a preinstall bun version guard, or
+        scripts/check-bun-version.ts. Those belong to a removed stack.
+        engines.node must stay ">=24.18.0". Do not bump @types/node to 25+
+        while CI and engines stay on Node 24.
+    - path: '**/*'
+      instructions: >-
+        Do not suggest reintroducing Bun or TanStack Start. Commits and PR
+        titles use conventional type: summary. Do not require a ticket key or
+        [NA] prefix.
+  pre_merge_checks:
+    title:
+      mode: warning
+      requirements: >-
+        Conventional commit style: type: summary. Do not require a ticket key,
+        Linear ID, or [NA] prefix.
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - AGENTS.md
