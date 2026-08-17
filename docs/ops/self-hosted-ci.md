@@ -10,20 +10,21 @@ The checked-in workflow is `.woodpecker/blog.yml`.
 
 The `critical` step runs on pushes, pull requests, and manual Woodpecker runs:
 
-- `bun install --frozen-lockfile`
-- `bun run lint`
-- `bun run format:check`
-- `bun run typecheck`
-- `bun run test`
-- `bun run build`
+- `corepack prepare pnpm@11.17.0 --activate`
+- `pnpm install --frozen-lockfile`
+- `pnpm run lint:package-manager`
+- `pnpm exec vp check` (oxfmt, oxlint, and tsgolint types in one pass)
+- `pnpm exec vp test`
+- `pnpm run build` (Next.js owns bundling; `vite-plus` ships the `vp` bin)
 
 The `newsletter` step runs only for pushes to `main` that add `posts/*.mdx`.
 It sends through the existing `scripts/send-newsletter.sh` path after the
 critical checks pass.
 
-Both steps use the pinned public `oven/bun:1.3.14-debian` image. The newsletter
-step installs `curl`, `git`, and `jq` at runtime because those tools are needed
-only for dispatch.
+Both steps use the pinned public `node:24.18.1-bookworm-slim` image. The
+newsletter step installs `curl`, `git`, and `jq` at runtime for dispatch. The
+critical step uses `pnpm exec vp` from the `vite-plus` dependency, not a
+curl-installed global.
 
 The clone step uses `depth: 0` so newsletter dispatch can compare against
 `CI_PREV_COMMIT_SHA` even after large pushes. The newsletter script still fetches
@@ -41,7 +42,7 @@ the previous commit explicitly if a CI checkout is missing it.
 woodpecker-cli repo secret add \
   --repository goosewin/blog \
   --name site_url \
-  --value https://goose.dev \
+  --value https://www.goose.dev \
   --event push
 
 woodpecker-cli repo secret add \
@@ -54,5 +55,5 @@ woodpecker-cli repo secret add \
 5. Require the Woodpecker `blog` status in GitHub branch protection. Do not
    require the disabled GitHub Actions workflow.
 
-Manual newsletter sends should use `bun run newsletter -- <post-slug>` from a
+Manual newsletter sends should use `pnpm run newsletter -- <post-slug>` from a
 trusted shell with `SITE_URL` and `NEWSLETTER_SECRET` set.

@@ -1,28 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router';
-import BackLink from '../components/back-link';
-import { getPublicBaseUrl } from '../lib/site';
+import type { Metadata } from 'next';
+import BackLink from '#/components/back-link';
+import { createPageOpenGraph, getPublicBaseUrl } from '#/lib/site';
 
-export const Route = createFileRoute('/about')({
-  head: () => {
-    const baseUrl = getPublicBaseUrl();
+const title = 'About Dan Goosewin';
+const description =
+  "I'm a software engineer and founder building AI-native products. I focus on systems, execution, and product narratives that matter in AI.";
 
-    return {
-      meta: [
-        { title: 'About Dan Goosewin | Dan Goosewin' },
-        {
-          name: 'description',
-          content:
-            "I'm a software engineer and founder building AI-native products. I focus on systems, execution, and product narratives that matter in AI.",
-        },
-        { property: 'og:url', content: `${baseUrl}/about` },
-      ],
-      links: [{ rel: 'canonical', href: `${baseUrl}/about` }],
-    };
-  },
-  component: About,
-});
+export const metadata: Metadata = {
+  title,
+  description,
+  openGraph: createPageOpenGraph({ title, description, path: '/about' }),
+  alternates: { canonical: `${getPublicBaseUrl()}/about` },
+};
 
-function About() {
+export default function About() {
   return (
     <div className="space-y-8">
       <BackLink />

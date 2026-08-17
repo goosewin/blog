@@ -306,39 +306,31 @@
     animation: page-fade-in 400ms cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
-  html:active-view-transition-type(route-forward)::view-transition-old(
-      main-content-transition
-    ),
-  html[data-route-transition='forward']::view-transition-old(
-      main-content-transition
-    ) {
+  html:active-view-transition-type(
+      route-forward
+    )::view-transition-old(main-content-transition),
+  html[data-route-transition='forward']::view-transition-old(main-content-transition) {
     animation: page-exit-left 400ms cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
-  html:active-view-transition-type(route-forward)::view-transition-new(
-      main-content-transition
-    ),
-  html[data-route-transition='forward']::view-transition-new(
-      main-content-transition
-    ) {
+  html:active-view-transition-type(
+      route-forward
+    )::view-transition-new(main-content-transition),
+  html[data-route-transition='forward']::view-transition-new(main-content-transition) {
     animation: page-enter-right 400ms cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
-  html:active-view-transition-type(route-back)::view-transition-old(
-      main-content-transition
-    ),
-  html[data-route-transition='back']::view-transition-old(
-      main-content-transition
-    ) {
+  html:active-view-transition-type(
+      route-back
+    )::view-transition-old(main-content-transition),
+  html[data-route-transition='back']::view-transition-old(main-content-transition) {
     animation: page-exit-right 400ms cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
-  html:active-view-transition-type(route-back)::view-transition-new(
-      main-content-transition
-    ),
-  html[data-route-transition='back']::view-transition-new(
-      main-content-transition
-    ) {
+  html:active-view-transition-type(
+      route-back
+    )::view-transition-new(main-content-transition),
+  html[data-route-transition='back']::view-transition-new(main-content-transition) {
     animation: page-enter-left 400ms cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 

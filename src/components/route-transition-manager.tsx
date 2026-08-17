@@ -1,53 +1,89 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from '@tanstack/react-router';
-import { getTransitionDirection } from '../lib/route-transition';
+import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+import {
+  getTransitionDirection,
+  getViewTransitionTypes,
+} from '../lib/route-transition';
+
+const CLEANUP_DELAY_MS = 500;
+
+// The App Router does not expose a history index the way TanStack Router's
+// `__TSR_index` did, so stamp one onto each history entry. Entries created by a
+// push keep their index across back/forward, which is what tells the two apart.
+const HISTORY_INDEX_KEY = '__blogRouteIndex';
+
+function readHistoryIndex(): number | undefined {
+  const state: unknown = window.history.state;
+  if (typeof state !== 'object' || state === null) return undefined;
+
+  const index = (state as Record<string, unknown>)[HISTORY_INDEX_KEY];
+  return typeof index === 'number' ? index : undefined;
+}
+
+function writeHistoryIndex(index: number) {
+  const state: unknown = window.history.state;
+  const nextState =
+    typeof state === 'object' && state !== null
+      ? { ...(state as Record<string, unknown>), [HISTORY_INDEX_KEY]: index }
+      : { [HISTORY_INDEX_KEY]: index };
+
+  window.history.replaceState(nextState, '');
+}
+
+function clearRouteTransition(root: HTMLElement) {
+  delete root.dataset.routeTransition;
+  delete root.dataset.routeTransitionFallback;
+  delete root.dataset.routeTransitionType;
+}
 
 export default function RouteTransitionManager() {
-  const router = useRouter();
+  const pathname = usePathname();
+  const previousPathname = useRef<string | null>(null);
+  const previousIndex = useRef<number | undefined>(undefined);
+  const highestIndex = useRef(0);
 
   useEffect(() => {
-    let cleanupTimer: number | undefined;
+    const isFirstCommit = previousPathname.current === null;
+    const pathChanged = previousPathname.current !== pathname;
+    previousPathname.current = pathname;
+
+    // Next replaces `history.state` on navigation, so a missing index means
+    // this entry was just pushed rather than revisited.
+    let index = readHistoryIndex();
+    if (index === undefined) {
+      index = isFirstCommit ? 0 : highestIndex.current + 1;
+      writeHistoryIndex(index);
+    }
+
+    highestIndex.current = Math.max(highestIndex.current, index);
+
+    const fromIndex = previousIndex.current;
+    previousIndex.current = index;
+
+    if (isFirstCommit || !pathChanged) return;
+
+    const direction = getTransitionDirection({ fromIndex, toIndex: index });
+    const nativeTypes = getViewTransitionTypes(direction);
     const root = document.documentElement;
-    const clearCleanupTimer = () => {
-      if (cleanupTimer !== undefined) {
-        window.clearTimeout(cleanupTimer);
-        cleanupTimer = undefined;
-      }
-    };
+    root.dataset.routeTransition = direction;
+    root.dataset.routeTransitionFallback = direction;
+    if (nativeTypes[0]) {
+      root.dataset.routeTransitionType = nativeTypes[0];
+    } else {
+      delete root.dataset.routeTransitionType;
+    }
 
-    const unsubscribe = router.subscribe('onBeforeNavigate', (event) => {
-      if (!event.pathChanged) return;
-
-      clearCleanupTimer();
-
-      const direction = getTransitionDirection({
-        fromIndex: event.fromLocation?.state.__TSR_index,
-        toIndex: event.toLocation.state.__TSR_index,
-      });
-
-      if (typeof document.startViewTransition === 'function') {
-        root.dataset.routeTransition = direction;
-      } else {
-        root.dataset.routeTransitionFallback = direction;
-      }
-    });
-
-    const unsubscribeResolved = router.subscribe('onResolved', () => {
-      clearCleanupTimer();
-      cleanupTimer = window.setTimeout(() => {
-        delete root.dataset.routeTransition;
-        delete root.dataset.routeTransitionFallback;
-      }, 500);
-    });
+    const cleanupTimer = window.setTimeout(() => {
+      clearRouteTransition(root);
+    }, CLEANUP_DELAY_MS);
 
     return () => {
-      clearCleanupTimer();
-      unsubscribe();
-      unsubscribeResolved();
+      window.clearTimeout(cleanupTimer);
+      clearRouteTransition(root);
     };
-  }, [router]);
+  }, [pathname]);
 
   return null;
 }

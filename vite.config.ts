@@ -1,32 +1,48 @@
-import { defineConfig } from 'vite';
-import { devtools } from '@tanstack/devtools-vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'vite-plus';
 
-import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+const root = path.dirname(fileURLToPath(import.meta.url));
 
-import viteReact from '@vitejs/plugin-react';
-import mdx from '@mdx-js/rollup';
-import tailwindcss from '@tailwindcss/vite';
-import { nitro } from 'nitro/vite';
-import { postHeroManifest } from './post-hero-manifest';
-
-const vercelEnv = process.env.VERCEL?.toLowerCase();
-const nitroPreset =
-  vercelEnv === '1' || vercelEnv === 'true' ? 'vercel' : 'bun';
-
-const config = defineConfig({
-  resolve: { tsconfigPaths: true },
-  plugins: [
-    postHeroManifest(),
-    devtools(),
-    mdx({ providerImportSource: '@mdx-js/react' }),
-    tailwindcss(),
-    tanstackStart(),
-    nitro({
-      preset: nitroPreset,
-      compressPublicAssets: { gzip: true, brotli: true },
-    }),
-    viteReact(),
-  ],
+export default defineConfig({
+  resolve: {
+    alias: {
+      '#': path.join(root, 'src'),
+      '@': path.join(root, 'src'),
+    },
+  },
+  test: {
+    environment: 'node',
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    exclude: ['src/routes/**'],
+  },
+  fmt: {
+    semi: true,
+    singleQuote: true,
+    trailingComma: 'es5',
+    printWidth: 80,
+    ignorePatterns: [
+      '.next/**',
+      'node_modules/**',
+      'coverage/**',
+      'pnpm-lock.yaml',
+      'posts/**',
+      'next-env.d.ts',
+      'tsconfig.tsbuildinfo',
+    ],
+  },
+  lint: {
+    ignorePatterns: [
+      '.next/**',
+      'node_modules/**',
+      'out/**',
+      'coverage/**',
+      'posts/**',
+      'next-env.d.ts',
+    ],
+    options: {
+      typeAware: true,
+      typeCheck: true,
+    },
+  },
 });
-
-export default config;

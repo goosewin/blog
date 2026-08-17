@@ -1,103 +1,80 @@
-# Agent Notes
+# goose.dev · agent rules
 
-Keep changes small. Use Bun 1.3.14+ exclusively for package and script
-commands. Prefer Bun or Web APIs over Node built-ins when the runtime allows it.
-Run `bun format` and `bun run lint` before handoff. Use conventional commits
-with concise lowercase subjects.
+This file is the single source of truth for AI coding agents.
+`CLAUDE.md` is a symlink to this file. Edit here, not there.
 
-## Project
+## Hard rules
 
-TanStack Start personal blog: local MDX posts, newsletter endpoints, Vercel
-Analytics, and generated Open Graph images.
+1. **pnpm + Node 24 + Vite+.** Use pnpm 11.17.0 and Node.js >=24.18.0 for package and script commands: `pnpm`, `pnpm add`, `pnpm remove`, `pnpm run <script>`, and `pnpm dlx`. The lockfile is `pnpm-lock.yaml`. Do not commit bun.lock, package-lock.json, or yarn.lock. Use `vp` (vite-plus) for check/lint/fmt/test. Keep Next.js 16 App Router. Do not rewrite the site to Vite, TanStack Start, or Bun. CI and Vercel are configured for pnpm and Node 24.
+
+2. **Docs-first, no training-data guesses.** Before using any library, framework, or API, fetch current documentation and verify the exact symbols, flags, and signatures.
+
+3. **Hosting target is Vercel.** Deploy config and runtime assumptions should match Vercel's Node.js runtime.
+
+4. **No em dashes.** The em dash character (U+2014) is banned from all copy, code, comments, and commit messages.
+
+## Stack
+
+- Next.js 16 App Router, React 19, TypeScript strict
+- Tailwind 4 (`src/styles.css`)
+- Vite+ (`vp`) for check, lint, format, and tests. Tests import from `vite-plus/test`.
+- MDX posts in `posts/*.mdx` with an ESM `export const metadata = { title, date, description?, image? }`
+- Resend + react-email for subscribe and newsletter
+- Vercel Analytics
+- `@vercel/og` for Open Graph PNGs
 
 ## Commands
 
 ```bash
-bun install
-bun dev
-bun run build
-bun run lint
-bun run format
-bun run newsletter -- <post-slug>
+pnpm install
+pnpm dev
+pnpm run build
+pnpm run check
+pnpm run test
+pnpm run format
+pnpm run lint
+pnpm run newsletter -- <post-slug>
 ```
 
-Scripts use `bun --bun` so local commands do not depend on PATH `node`.
+TypeScript scripts run with `tsx` or `node --import tsx`. Source `~/.vite-plus/env` if the `vp` binary is missing from PATH.
 
 ## Layout
 
-- `src/routes`: file routes and server handlers
+- `app`: App Router pages and route handlers
 - `src/components`: shared UI
-- `src/lib/blog.ts`: MDX loading via `import.meta.glob`
+- `src/lib/blog.ts`: MDX loading from `posts/` via `fs`
 - `src/lib/og-image.server.tsx`: server-only OG PNG generation
 - `src/emails`: React Email templates
 - `posts`: source articles; avoid formatting churn
-- `src/routeTree.gen.ts`: generated; do not edit manually
 
 ## Env
 
 ```env
-VITE_PUBLIC_BASE_URL=https://www.goose.dev
+NEXT_PUBLIC_BASE_URL=https://www.goose.dev
 RESEND_AUDIENCE_ID=
 RESEND_API_KEY=
 NEWSLETTER_SECRET=
 SITE_URL=https://www.goose.dev
 ```
 
-`VITE_` values are public. Keep secrets server-only. The canonical host is
-`www.goose.dev`; `VITE_PUBLIC_BASE_URL` and `SITE_URL` must use it (they feed
-canonical/OG/sitemap URLs and override the code default).
+`NEXT_PUBLIC_` values are public. Keep secrets server-only. The canonical host is `www.goose.dev`.
 
 ## Deployment
 
-Deploy on Vercel from `main`. `vercel.json` pins Bun and the TanStack Start
-framework preset. `vite.config.ts` uses Nitro's Vercel preset during Vercel
-builds and Nitro's Bun preset for local Bun builds. Enable Vercel Web Analytics
-in the dashboard.
+Deploy on Vercel from `main`. `vercel.json` uses the Next.js framework preset. Enable Vercel Web Analytics in the dashboard.
 
 Manual deploy:
 
 ```bash
-bun run deploy
+pnpm run deploy
 ```
 
-Newsletter sending depends on `jq`, `curl`, `SITE_URL`, and
-`NEWSLETTER_SECRET`.
+Newsletter sending depends on `jq`, `curl`, `SITE_URL`, and `NEWSLETTER_SECRET`.
 
 ## Decisions
 
-- Keep MDX posts in `posts/*.mdx`; router loaders read them directly.
-- Generate OG images with `@vercel/og`; do not bring Next.js back for
-  `next/og`.
-- Use server route handlers for Resend so secrets stay off the client.
-- Keep `tanstackStart()` before `viteReact()` and keep Nitro enabled in
-  `vite.config.ts` for Vercel.
-- Do not force `nitro({ preset: 'bun' })` on Vercel; it emits generic `.output`
-  instead of Vercel Build Output. Use the Vercel preset plus `bunVersion`.
-
-## Dependency policy
-
-- Minimum release age: 14 days. `bunfig.toml` sets `minimumReleaseAge` so
-  `bun install` refuses package versions published less than two weeks ago —
-  a cooldown against compromised/typosquatted releases. Re-installing locked
-  versions is unaffected; the gate only applies to new/updated resolutions.
-- `nitro-nightly` is exempt (`minimumReleaseAgeExcludes`); nightlies are fresh
-  by design. To bump a brand-new version of any other package before the
-  cooldown elapses, run `bun install --minimum-release-age=0` deliberately.
-- Requires Bun >= 1.3 (`minimumReleaseAge` was added in 1.3; older Bun and
-  non-Bun managers ignore it silently). Declared via `engines.bun` and
-  `packageManager`. The `preinstall` guard (`scripts/check-bun-version.ts`)
-  inspects `npm_config_user_agent` — the _invoking_ manager, not the hook's own
-  runtime — so `npm`/`yarn`/`pnpm` and Bun < 1.3 hard-fail the install; the
-  `.husky/pre-commit` hook runs the same guard so an old Bun can't commit a
-  lockfile that skipped the cooldown.
-- Authoritative enforcement is the Woodpecker `critical` step
-  (`.woodpecker/blog.yml`, `oven/bun:1.3.14-debian`): lifecycle hooks are
-  best-effort locally, so CI re-runs `bun install --frozen-lockfile` on a pinned
-  Bun. GitHub Actions stays disabled (see `docs/ops/self-hosted-ci.md`).
-  Vercel's `bunVersion: "1.x"` resolves to a current 1.3.x, so deploys enforce
-  it too.
-
-## Next
-
-- Add focused tests for blog metadata and newsletter validation.
-- Verify production env vars after first Vercel deployment from `main`.
+- Keep MDX posts in `posts/*.mdx`; `src/lib/blog.ts` reads them from disk.
+- Generate OG images with `@vercel/og`.
+- Use App Router route handlers for Resend so secrets stay off the client.
+- Minimum release age is 14 days via `pnpm-workspace.yaml`. Vite+ packages are excluded because the pin is newer than 14 days.
+- Authoritative enforcement is Woodpecker `.woodpecker/blog.yml` on `node:24.18.1-bookworm-slim` with Corepack pnpm. GitHub Actions stays disabled.

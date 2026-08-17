@@ -1,31 +1,32 @@
 # goose.dev
 
-TanStack Start blog for goose.dev.
+Next.js blog for goose.dev.
 
 ## Commands
 
 ```bash
-bun install
-bun dev
-bun run build
-bun run lint
-bun run typecheck
-bun run format
+pnpm install
+pnpm dev
+pnpm run build
+pnpm run lint
+pnpm run typecheck
+pnpm run format
+pnpm run test
 ```
 
 Send a newsletter for a post:
 
 ```bash
-bun run newsletter -- <post-slug>
+pnpm run newsletter -- <post-slug>
 ```
 
 Requires `jq`, `curl`, `SITE_URL`, and `NEWSLETTER_SECRET`.
 
 ## Stack
 
-- TanStack Start and TanStack Router
+- Next.js 16 App Router
 - React 19
-- Bun
+- pnpm 11.17.0 + Node.js 24 + Vite+
 - Tailwind CSS v4
 - MDX posts from `posts/*.mdx`
 - Resend newsletter endpoints
@@ -37,32 +38,27 @@ Requires `jq`, `curl`, `SITE_URL`, and `NEWSLETTER_SECRET`.
 Create `.env.local` from `.env.example`.
 
 ```env
-VITE_PUBLIC_BASE_URL=https://goose.dev
+NEXT_PUBLIC_BASE_URL=https://www.goose.dev
 RESEND_AUDIENCE_ID=
 RESEND_API_KEY=
 NEWSLETTER_SECRET=
-SITE_URL=https://goose.dev
+SITE_URL=https://www.goose.dev
 ```
 
-`VITE_` values are public. Keep secrets server-only.
+`NEXT_PUBLIC_` values are public. Keep secrets server-only.
 
 ## Deployment
 
-Deploy on Vercel from `main`. The app uses TanStack Start with Nitro's Vercel
-preset on Vercel and Bun preset for local Bun builds. `vercel.json` sets
-Vercel's TanStack Start framework preset plus Bun runtime selection. Enable Web
-Analytics in the Vercel dashboard.
+Deploy on Vercel from `main`. The app uses the Next.js framework preset. Enable Web Analytics in the Vercel dashboard.
 
 Manual deploy:
 
 ```bash
-bun run deploy
+pnpm run deploy
 ```
 
 ## CI
 
-Self-hosted Woodpecker is the CI path for lint, tests, build, and automatic
-newsletter dispatch. See `docs/ops/self-hosted-ci.md`.
+Self-hosted Woodpecker is the CI path for lint, tests, build, and automatic newsletter dispatch. See `docs/ops/self-hosted-ci.md`.
 
-The pre-commit hook runs lint, format check, typecheck, tests, and build through
-Bun before allowing a commit.
+The pre-commit hook runs check, tests, and build through pnpm before allowing a commit.
