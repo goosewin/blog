@@ -1,0 +1,22 @@
+pnpm-workspace.yaml
+  s_7c9ca5f4a088fc::t_15153fa3a4f936 20-33
+AGENTS.md
+  s_7c9ca5f4a088fc::t_2393d059da1ca2 79
+  s_7c9ca5f4a088fc::t_3ad4bc6b3587ca 18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "ed02919cc2a1ba431a93d9e271fb325312303814",
+  "prompts": {},
+  "sessions": {
+    "s_7c9ca5f4a088fc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9265f5e7-af49-4ef1-a91c-2c19c2a4fba1",
+        "model": "grok-4.6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
