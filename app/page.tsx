@@ -3,7 +3,7 @@ import Link from 'next/link';
 import BlogPostList from '#/components/blog-post-list';
 import StructuredData from '#/components/structured-data';
 import ThemeToggle from '#/components/theme-toggle';
-import { ArrowUpRightIcon } from '#/components/icons';
+import { ArrowRightIcon, ArrowUpRightIcon } from '#/components/icons';
 import { getAllBlogPosts } from '#/lib/blog';
 import { SITE_DESCRIPTION, SITE_NAME, getPublicBaseUrl } from '#/lib/site';
 
@@ -66,22 +66,23 @@ export default async function Home() {
 
       <section className="space-y-5">
         <div className="flex items-center justify-between">
-          <h2 className="font-mono text-sm text-gray-500 dark:text-gray-400">
+          <h2 className="mb-0 font-mono text-sm text-gray-500 dark:text-gray-400">
             <span className="text-orange">01</span> Writing
           </h2>
           <Link
             href="/blog"
             transitionTypes={['route-forward']}
-            className="quiet-link"
+            className="quiet-link inline-flex items-center gap-1.5"
           >
             All posts
+            <ArrowRightIcon className="size-4" />
           </Link>
         </div>
         <BlogPostList posts={latestPosts} />
       </section>
 
       <section className="space-y-5">
-        <h2 className="font-mono text-sm text-gray-500 dark:text-gray-400">
+        <h2 className="mb-0 font-mono text-sm text-gray-500 dark:text-gray-400">
           <span className="text-orange">02</span> Elsewhere
         </h2>
         <ul className="flex flex-wrap gap-x-6 gap-y-3">
