@@ -60,7 +60,7 @@ export default function WelcomeEmail({ baseUrl }: WelcomeEmailProps) {
 
           <Section style={styles.ctaSection}>
             <Button href={`${baseUrl}/blog`} style={styles.button}>
-              Read My Latest Posts →
+              Read My Latest Posts
             </Button>
           </Section>
 

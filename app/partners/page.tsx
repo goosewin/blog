@@ -146,7 +146,7 @@ function ClientSection({
                   {client.description}
                 </p>
               </div>
-              <ArrowUpRightIcon className="ml-auto text-gray-400" />
+              <ArrowUpRightIcon className="size-4 ml-auto text-gray-400" />
             </div>
           </a>
         ))}

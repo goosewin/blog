@@ -1,3 +1,5 @@
+import { ArrowUpRightIcon } from './icons';
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
@@ -6,12 +8,13 @@ const Footer = () => {
         <p className="mb-2 sm:mb-0 sm:mr-auto text-center sm:text-left text-gray-600 dark:text-gray-400">
           Dan Goosewin, {currentYear}.{' '}
           <a
-            className="nav-link underline decoration-orange/60 underline-offset-2"
+            className="nav-link inline-flex items-center gap-1"
             href="https://github.com/goosewin/blog"
             target="_blank"
             rel="noopener noreferrer"
           >
             Source
+            <ArrowUpRightIcon />
           </a>
         </p>
       </div>

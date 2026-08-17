@@ -65,16 +65,16 @@ export default async function Home() {
       </header>
 
       <section className="space-y-5">
-        <div className="flex items-baseline justify-between">
+        <div className="flex items-center justify-between">
           <h2 className="font-mono text-sm text-gray-500 dark:text-gray-400">
             <span className="text-orange">01</span> Writing
           </h2>
           <Link
             href="/blog"
             transitionTypes={['route-forward']}
-            className="font-mono text-sm text-gray-500 transition-colors hover:text-orange-deep dark:text-gray-400 dark:hover:text-orange"
+            className="underline-link"
           >
-            All posts &rarr;
+            All posts
           </Link>
         </div>
         <BlogPostList posts={latestPosts} />
