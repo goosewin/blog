@@ -66,7 +66,7 @@ export default async function Home() {
 
       <section className="space-y-5">
         <div className="flex items-center justify-between">
-          <h2 className="mb-0 font-mono text-sm text-gray-500 dark:text-gray-400">
+          <h2 className="m-0 font-mono text-sm leading-5 text-gray-500 dark:text-gray-400">
             <span className="text-orange">01</span> Writing
           </h2>
           <Link
@@ -81,11 +81,11 @@ export default async function Home() {
         <BlogPostList posts={latestPosts} />
       </section>
 
-      <section className="space-y-8">
-        <h2 className="mb-0 font-mono text-sm text-gray-500 dark:text-gray-400">
+      <section className="flex flex-col gap-5">
+        <h2 className="m-0 font-mono text-sm leading-5 text-gray-500 dark:text-gray-400">
           <span className="text-orange">02</span> Elsewhere
         </h2>
-        <ul className="flex flex-wrap gap-x-6 gap-y-3">
+        <ul className="flex flex-wrap gap-x-6 gap-y-3 pt-4">
           <li>
             <Link
               href="/about"
