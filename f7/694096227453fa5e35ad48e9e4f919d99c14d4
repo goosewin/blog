@@ -1,0 +1,35 @@
+app/partners/page.tsx
+  s_cf51792ed42e5b::t_d2ff125837f689 149
+src/emails/welcome.tsx
+  s_cf51792ed42e5b::t_0cd21908fb20ae 63
+src/emails/newsletter.tsx
+  s_cf51792ed42e5b::t_8ea691674f8add 128
+  s_cf51792ed42e5b::t_4630c72624120d 99
+src/components/back-link.tsx
+  s_cf51792ed42e5b::t_6c457f164c2b74 10,12
+src/components/footer.tsx
+  s_cf51792ed42e5b::t_71c89ee7bcaf49 1-2,11
+  s_cf51792ed42e5b::t_099cf12a80cb6f 17
+src/components/icons.tsx
+  s_cf51792ed42e5b::t_8f0c453f85ad88 10
+  s_cf51792ed42e5b::t_a36dafca2eae1e 28
+app/page.tsx
+  s_cf51792ed42e5b::t_a0db7caec2791e 68
+  s_cf51792ed42e5b::t_97dbe31c14bc2a 75,77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "f7694096227453fa5e35ad48e9e4f919d99c14d4",
+  "prompts": {},
+  "sessions": {
+    "s_cf51792ed42e5b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "64516b7d-7867-4254-89f6-b108e364732a",
+        "model": "grok-4.6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
