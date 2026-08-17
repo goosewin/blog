@@ -72,7 +72,7 @@ export default async function Home() {
           <Link
             href="/blog"
             transitionTypes={['route-forward']}
-            className="pill-link"
+            className="quiet-link"
           >
             All posts
             <ArrowRightIcon className="size-4" />
