@@ -1,0 +1,31 @@
+.woodpecker/blog.yml
+  s_bae46e852e307b::t_80428b991f3f99 13-14
+docs/ops/self-hosted-ci.md
+  s_bae46e852e307b::t_58096f912bacbf 45
+README.md
+  s_bae46e852e307b::t_d6b66aa447f97e 41,45
+src/components/route-transition-manager.tsx
+  s_bae46e852e307b::t_2f6937bff07569 35-39
+  s_bae46e852e307b::t_ef8b900673573b 79,84
+  s_bae46e852e307b::t_26dffd3aadf313 5-8
+  s_bae46e852e307b::t_72c32370dd43fd 68,72-76
+  s_bae46e852e307b::t_730d1ac2e5768e 40
+src/components/main-view-transition.tsx
+  s_bae46e852e307b::t_c5295170443781 17-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "2b657fc1f81396988011e5c59de82ada1d53922a",
+  "prompts": {},
+  "sessions": {
+    "s_bae46e852e307b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "a73e2122-1f35-4a6f-9b4a-68e3720fa5b5",
+        "model": "grok-4.6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
