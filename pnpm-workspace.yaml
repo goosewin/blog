@@ -16,6 +16,21 @@ minimumReleaseAgeExclude:
   - '@oxlint/*'
   - '@oxfmt/*'
   - '@oxc-project/*'
+  # Taken before the 14-day window on 2026-08-16. Drop after 2026-08-27.
+  - next@16.3.1
+  - '@next/env@16.3.1'
+  - '@next/swc-darwin-arm64@16.3.1'
+  - '@next/swc-darwin-x64@16.3.1'
+  - '@next/swc-linux-arm64-gnu@16.3.1'
+  - '@next/swc-linux-arm64-musl@16.3.1'
+  - '@next/swc-linux-x64-gnu@16.3.1'
+  - '@next/swc-linux-x64-musl@16.3.1'
+  - '@next/swc-win32-arm64-msvc@16.3.1'
+  - '@next/swc-win32-x64-msvc@16.3.1'
+  - '@vercel/og@1.0.1'
+  - react-email@6.9.2
+  - resend@6.20.0
+  - tsx@4.23.12
 
 allowBuilds:
   esbuild: true

@@ -9,11 +9,9 @@ const requiredPackageManager = 'pnpm@11.17.0';
 const repoRoot = fileURLToPath(new URL('../', import.meta.url));
 
 const forbiddenFiles = [
-  // Bun is not used in this repo.
   'bun.lock',
   'bun.lockb',
   'bunfig.toml',
-  // Other package managers' lockfiles.
   'package-lock.json',
   'npm-shrinkwrap.json',
   'yarn.lock',
@@ -173,5 +171,5 @@ checkLockfiles();
 checkAuthoredBunUsage();
 
 if (violations.length > 0) {
-  fail(`use pnpm (via \`vp\`) instead of Bun:\n${violations.join('\n')}`);
+  fail(`use pnpm (via \`vp\`):\n${violations.join('\n')}`);
 }
