@@ -1,0 +1,20 @@
+app/api/subscribe/route.ts
+  s_bae46e852e307b::t_ee470facc07866 55,57,64
+  s_bae46e852e307b::t_f7c080c1a77b74 88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "10d25e822d3530397841f594c43643d1d7c9f26a",
+  "prompts": {},
+  "sessions": {
+    "s_bae46e852e307b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "a73e2122-1f35-4a6f-9b4a-68e3720fa5b5",
+        "model": "grok-4.6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
