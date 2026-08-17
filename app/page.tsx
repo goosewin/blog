@@ -66,13 +66,13 @@ export default async function Home() {
 
       <section className="space-y-5">
         <div className="flex items-baseline justify-between">
-          <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400">
-            <span className="text-orange">01</span> &mdash; Writing
+          <h2 className="font-mono text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-orange">01</span> Writing
           </h2>
           <Link
             href="/blog"
             transitionTypes={['route-forward']}
-            className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 transition-colors hover:text-orange-deep dark:text-gray-400 dark:hover:text-orange"
+            className="font-mono text-sm text-gray-500 transition-colors hover:text-orange-deep dark:text-gray-400 dark:hover:text-orange"
           >
             All posts &rarr;
           </Link>
@@ -81,8 +81,8 @@ export default async function Home() {
       </section>
 
       <section className="space-y-5">
-        <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400">
-          <span className="text-orange">02</span> &mdash; Elsewhere
+        <h2 className="font-mono text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-orange">02</span> Elsewhere
         </h2>
         <ul className="flex flex-wrap gap-x-6 gap-y-3">
           <li>

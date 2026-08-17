@@ -87,7 +87,7 @@ export default function Partners() {
       <ClientSection title="Past" clients={pastClients} />
 
       <section className="space-y-4">
-        <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
+        <h2 className="text-base font-semibold text-gray-500 dark:text-gray-400">
           Future
         </h2>
         <div className="flex min-h-[120px] items-center justify-center rounded-2xl bg-gray-100/70 p-8 text-center dark:bg-[#1a1a1a]">
@@ -114,7 +114,7 @@ function ClientSection({
 }) {
   return (
     <section className="space-y-4">
-      <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
+      <h2 className="text-base font-semibold text-gray-500 dark:text-gray-400">
         {title}
       </h2>
       <div className="grid gap-4 sm:grid-cols-2">
