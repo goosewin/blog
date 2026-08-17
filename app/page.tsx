@@ -3,7 +3,7 @@ import Link from 'next/link';
 import BlogPostList from '#/components/blog-post-list';
 import StructuredData from '#/components/structured-data';
 import ThemeToggle from '#/components/theme-toggle';
-import { ArrowUpRightIcon } from '#/components/icons';
+import { ArrowRightIcon, ArrowUpRightIcon } from '#/components/icons';
 import { getAllBlogPosts } from '#/lib/blog';
 import { SITE_DESCRIPTION, SITE_NAME, getPublicBaseUrl } from '#/lib/site';
 
@@ -65,26 +65,27 @@ export default async function Home() {
       </header>
 
       <section className="space-y-5">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400">
-            <span className="text-orange">01</span> &mdash; Writing
+        <div className="flex items-center justify-between">
+          <h2 className="m-0 font-mono text-sm leading-5 text-gray-500 dark:text-gray-400">
+            <span className="text-orange">01</span> Writing
           </h2>
           <Link
             href="/blog"
             transitionTypes={['route-forward']}
-            className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 transition-colors hover:text-orange-deep dark:text-gray-400 dark:hover:text-orange"
+            className="quiet-link"
           >
-            All posts &rarr;
+            All posts
+            <ArrowRightIcon className="size-4" />
           </Link>
         </div>
         <BlogPostList posts={latestPosts} />
       </section>
 
-      <section className="space-y-5">
-        <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400">
-          <span className="text-orange">02</span> &mdash; Elsewhere
+      <section className="flex flex-col gap-5">
+        <h2 className="m-0 font-mono text-sm leading-5 text-gray-500 dark:text-gray-400">
+          <span className="text-orange">02</span> Elsewhere
         </h2>
-        <ul className="flex flex-wrap gap-x-6 gap-y-3">
+        <ul className="flex flex-wrap gap-x-6 gap-y-3 pt-4">
           <li>
             <Link
               href="/about"

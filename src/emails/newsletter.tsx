@@ -96,7 +96,7 @@ export default function NewsletterEmail({
                 href={`${baseUrl}/blog/${posts[0].slug}`}
                 style={styles.button}
               >
-                Read Article →
+                Read Article
               </Button>
             </Section>
           ) : (
@@ -125,7 +125,7 @@ export default function NewsletterEmail({
                   href={`${baseUrl}/blog/${post.slug}`}
                   style={styles.smallButton}
                 >
-                  Read Article →
+                  Read Article
                 </Button>
                 {index < posts.length - 1 && <Hr style={styles.divider} />}
               </Section>
