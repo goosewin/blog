@@ -7,7 +7,7 @@ export default function BackLink() {
       <Link
         href="/"
         transitionTypes={['route-back']}
-        className="underline-link inline-flex items-center gap-1.5"
+        className="quiet-link inline-flex items-center gap-1.5"
       >
         <ArrowLeftIcon className="size-4" />
         Back to home

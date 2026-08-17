@@ -72,7 +72,7 @@ export default async function Home() {
           <Link
             href="/blog"
             transitionTypes={['route-forward']}
-            className="underline-link"
+            className="quiet-link"
           >
             All posts
           </Link>
