@@ -1,0 +1,29 @@
+package.json
+  s_7c9ca5f4a088fc::t_1c86c95d910b2a 28,31-34,37-42,44-46
+pnpm-lock.yaml
+  s_f7072d7abc5f81::t_fa67522e796367 22,26,31-32,34,37,40,44,47,50,53,56,59,65,68,71,432-433,435-436,441-442,447-448,454-455,461-462,468-469,475-476,481-482,2024-2025,2681,2683,2686,2689,2692,2695,2698,2701,2704,3138,3140,4062,4064,4073-4080
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "847525064667b0ccf7a6f97fedba7304f1fd07d9",
+  "prompts": {},
+  "sessions": {
+    "s_7c9ca5f4a088fc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9265f5e7-af49-4ef1-a91c-2c19c2a4fba1",
+        "model": "grok-4.6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    },
+    "s_f7072d7abc5f81": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "7eb9309e-ee2f-4c17-8b0f-d4d87cfca298",
+        "model": "gpt-5.6-sol-medium"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
