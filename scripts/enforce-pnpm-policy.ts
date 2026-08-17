@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
 import { spawnSync } from 'node:child_process';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -144,6 +144,14 @@ function checkAuthoredBunUsage() {
 
     const absolute = join(repoRoot, path);
     if (!existsSync(absolute)) continue;
+    if (
+      !path.endsWith('.md') &&
+      !path.endsWith('.mdx') &&
+      lstatSync(absolute).isSymbolicLink()
+    ) {
+      violations.push(`${path} must not be a symbolic link`);
+      continue;
+    }
 
     const lines = readFileSync(absolute, 'utf8').split('\n');
     lines.forEach((line, index) => {

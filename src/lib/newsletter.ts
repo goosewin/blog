@@ -1,4 +1,4 @@
-export function isNonEmptyString(value: unknown) {
+export function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
@@ -50,4 +50,22 @@ export function getRequestedNewsletterSlugs(body: Record<string, unknown>) {
 
 export function isNewsletterDryRun(body: Record<string, unknown>) {
   return body.dryRun === true;
+}
+
+export function getNewsletterRequestId({
+  body,
+  headerValue,
+}: {
+  body: Record<string, unknown>;
+  headerValue: string | null;
+}) {
+  if (isNonEmptyString(body.requestId)) {
+    return body.requestId.trim();
+  }
+
+  if (isNonEmptyString(headerValue)) {
+    return headerValue.trim();
+  }
+
+  return null;
 }

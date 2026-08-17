@@ -1,4 +1,5 @@
 import Footer from './footer';
+import MainViewTransition from './main-view-transition';
 
 export default function PageLayout({
   children,
@@ -11,7 +12,7 @@ export default function PageLayout({
         className="flex-1 flex flex-col justify-center py-10"
         style={{ viewTransitionName: 'main-content-transition' }}
       >
-        {children}
+        <MainViewTransition>{children}</MainViewTransition>
       </main>
       <Footer />
     </div>

@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
 import BackLink from '#/components/back-link';
-import { getPublicBaseUrl } from '#/lib/site';
+import { createPageOpenGraph, getPublicBaseUrl } from '#/lib/site';
 
+const title = 'About Dan Goosewin';
 const description =
   "I'm a software engineer and founder building AI-native products. I focus on systems, execution, and product narratives that matter in AI.";
 
 export const metadata: Metadata = {
-  title: 'About Dan Goosewin',
+  title,
   description,
-  openGraph: { url: `${getPublicBaseUrl()}/about` },
+  openGraph: createPageOpenGraph({ title, description, path: '/about' }),
   alternates: { canonical: `${getPublicBaseUrl()}/about` },
 };
 

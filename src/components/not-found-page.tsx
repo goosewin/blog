@@ -87,6 +87,7 @@ export default function NotFoundPage() {
 
       <Link
         href="/"
+        transitionTypes={['route-back']}
         className="mt-4 border border-gray-900 px-6 py-3 transition-colors duration-200 hover:bg-gray-900 hover:text-white dark:border-gray-100 dark:hover:bg-gray-100 dark:hover:text-gray-900"
       >
         {randomError.buttonText}

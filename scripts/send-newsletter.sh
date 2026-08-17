@@ -121,11 +121,17 @@ echo "Sending newsletter with slugs: $SLUGS_JSON"
 echo "API URL: $SITE_URL/api/send-newsletter"
 
 # Build full payload with jq
+REQUEST_ID="${NEWSLETTER_REQUEST_ID:-}"
+if [ -z "$REQUEST_ID" ]; then
+  REQUEST_SOURCE="$(git rev-parse HEAD 2>/dev/null || printf 'local')${SLUGS_JSON}"
+  REQUEST_ID="$(printf '%s' "$REQUEST_SOURCE" | shasum -a 256 | cut -c1-64)"
+fi
+
 if [ "${NEWSLETTER_DRY_RUN:-}" = "true" ]; then
   echo "Dry run mode enabled"
-  PAYLOAD=$(echo "$SLUGS_JSON" | jq -c '{slugs: ., dryRun: true}')
+  PAYLOAD=$(echo "$SLUGS_JSON" | jq -c --arg requestId "$REQUEST_ID" '{slugs: ., dryRun: true, requestId: $requestId}')
 else
-  PAYLOAD=$(echo "$SLUGS_JSON" | jq -c '{slugs: .}')
+  PAYLOAD=$(echo "$SLUGS_JSON" | jq -c --arg requestId "$REQUEST_ID" '{slugs: ., requestId: $requestId}')
 fi
 
 # Send newsletter via API

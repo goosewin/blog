@@ -2,6 +2,9 @@ import { createElement } from 'react';
 import { render } from '@react-email/render';
 import { Resend } from 'resend';
 import WelcomeEmail from '#/emails/welcome';
+import { subscribeRateLimiter } from '#/lib/rate-limit';
+import { getClientIp } from '#/lib/request-ip';
+import type { ResendRequestOptions } from '#/lib/resend-request';
 import { EMAIL_FROM, getServerBaseUrl } from '#/lib/site.server';
 import {
   getEmailFromBody,
@@ -9,6 +12,8 @@ import {
   isDuplicateSubscriberError,
   isValidEmail,
 } from '#/lib/subscription';
+
+const RESEND_TIMEOUT_MS = 10_000;
 
 export async function POST(request: Request) {
   try {
@@ -30,6 +35,11 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
+    const clientIp = getClientIp(request);
+    if (!subscribeRateLimiter.consume(clientIp)) {
+      return Response.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     const audienceId = process.env.RESEND_AUDIENCE_ID;
 
@@ -42,11 +52,17 @@ export async function POST(request: Request) {
     }
 
     const resend = new Resend(apiKey);
+    const requestOptions: ResendRequestOptions = {
+      signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
+    };
 
-    const createContactResponse = await resend.contacts.create({
-      email,
-      audienceId,
-    });
+    const createContactResponse = await resend.contacts.create(
+      {
+        email,
+        audienceId,
+      },
+      requestOptions
+    );
 
     if (createContactResponse.error) {
       if (isDuplicateSubscriberError(createContactResponse.error)) {
@@ -62,12 +78,15 @@ export async function POST(request: Request) {
     const baseUrl = getServerBaseUrl();
     const emailHtml = await render(createElement(WelcomeEmail, { baseUrl }));
 
-    const welcomeEmailResponse = await resend.emails.send({
-      from: EMAIL_FROM,
-      to: email,
-      subject: 'Thanks for subscribing to my blog!',
-      html: emailHtml,
-    });
+    const welcomeEmailResponse = await resend.emails.send(
+      {
+        from: EMAIL_FROM,
+        to: email,
+        subject: 'Thanks for subscribing to my blog!',
+        html: emailHtml,
+      },
+      requestOptions
+    );
 
     if (welcomeEmailResponse.error) {
       throw new Error(getResendErrorMessage(welcomeEmailResponse.error));

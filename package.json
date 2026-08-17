@@ -44,6 +44,7 @@
     "tailwindcss": "^4.1.18",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.9",
     "vite-plus": "0.2.9"
   },
   "engines": {

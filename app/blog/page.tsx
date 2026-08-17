@@ -4,12 +4,15 @@ import BlogPostList from '#/components/blog-post-list';
 import SubscriptionForm from '#/components/subscription-form';
 import StructuredData from '#/components/structured-data';
 import { getAllBlogPosts } from '#/lib/blog';
-import { getPublicBaseUrl } from '#/lib/site';
+import { createPageOpenGraph, getPublicBaseUrl } from '#/lib/site';
+
+const title = 'Blog';
+const description = 'Opinionated writing on software, execution, and leverage.';
 
 export const metadata: Metadata = {
-  title: 'Blog',
-  description: 'Opinionated writing on software, execution, and leverage.',
-  openGraph: { url: `${getPublicBaseUrl()}/blog` },
+  title,
+  description,
+  openGraph: createPageOpenGraph({ title, description, path: '/blog' }),
   alternates: { canonical: `${getPublicBaseUrl()}/blog` },
 };
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vite-plus/test';
 import {
   dedupeSlugs,
+  getNewsletterRequestId,
   getRequestedNewsletterSlugs,
   isNewsletterDryRun,
 } from './newsletter';
@@ -31,5 +32,21 @@ describe('newsletter validation', () => {
     expect(getRequestedNewsletterSlugs({ posts: [{ slug: '' }] })).toEqual([]);
     expect(isNewsletterDryRun({ dryRun: true })).toBe(true);
     expect(isNewsletterDryRun({ dryRun: 'true' })).toBe(false);
+  });
+
+  it('reads a request ID from the body or the idempotency header', () => {
+    expect(
+      getNewsletterRequestId({
+        body: { requestId: ' send-1 ' },
+        headerValue: 'header-id',
+      })
+    ).toBe('send-1');
+    expect(
+      getNewsletterRequestId({
+        body: {},
+        headerValue: ' header-id ',
+      })
+    ).toBe('header-id');
+    expect(getNewsletterRequestId({ body: {}, headerValue: null })).toBeNull();
   });
 });

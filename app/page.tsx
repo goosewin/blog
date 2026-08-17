@@ -71,6 +71,7 @@ export default async function Home() {
           </h2>
           <Link
             href="/blog"
+            transitionTypes={['route-forward']}
             className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 transition-colors hover:text-orange-deep dark:text-gray-400 dark:hover:text-orange"
           >
             All posts &rarr;
@@ -85,12 +86,20 @@ export default async function Home() {
         </h2>
         <ul className="flex flex-wrap gap-x-6 gap-y-3">
           <li>
-            <Link href="/about" className="underline-link">
+            <Link
+              href="/about"
+              transitionTypes={['route-forward']}
+              className="underline-link"
+            >
               About
             </Link>
           </li>
           <li>
-            <Link href="/partners" className="underline-link">
+            <Link
+              href="/partners"
+              transitionTypes={['route-forward']}
+              className="underline-link"
+            >
               Partners
             </Link>
           </li>

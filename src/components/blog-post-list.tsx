@@ -31,6 +31,7 @@ export default function BlogPostList({
         >
           <Link
             href={`/blog/${post.slug}`}
+            transitionTypes={['route-forward']}
             className="group flex items-baseline gap-4 py-4"
           >
             <span className="flex-1 text-lg font-semibold leading-snug transition-colors group-hover:text-orange-deep dark:group-hover:text-orange">

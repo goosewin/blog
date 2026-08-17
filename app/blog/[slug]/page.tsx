@@ -16,6 +16,8 @@ import {
 
 const defaultBlogPostDescription = 'A blog post by Dan Goosewin';
 
+export const dynamicParams = false;
+
 function getBlogPostDescription(post: { description?: string }) {
   return post.description || defaultBlogPostDescription;
 }
@@ -146,6 +148,7 @@ export default async function Article({
           {previousPost ? (
             <Link
               href={`/blog/${previousPost.slug}`}
+              transitionTypes={['route-back']}
               className="flex items-center gap-3 rounded-lg bg-gray-50 p-4 transition-opacity duration-200 hover:opacity-80 dark:bg-[#1c1c1c]/60"
             >
               <svg
@@ -178,6 +181,7 @@ export default async function Article({
           {nextPost ? (
             <Link
               href={`/blog/${nextPost.slug}`}
+              transitionTypes={['route-forward']}
               className="flex items-center gap-3 rounded-lg bg-gray-50 p-4 transition-opacity duration-200 hover:opacity-80 dark:bg-[#1c1c1c]/60"
             >
               <div className="text-right">

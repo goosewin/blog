@@ -4,9 +4,15 @@ import { Resend } from 'resend';
 import NewsletterEmail from '#/emails/newsletter';
 import { getBlogPost } from '#/lib/blog';
 import {
+  getNewsletterRequestId,
   getRequestedNewsletterSlugs,
   isNewsletterDryRun,
 } from '#/lib/newsletter';
+import {
+  findBroadcastIdByName,
+  runExclusiveNewsletterOperation,
+} from '#/lib/newsletter-operations';
+import type { ResendRequestOptions } from '#/lib/resend-request';
 import { EMAIL_FROM, getServerBaseUrl } from '#/lib/site.server';
 
 export async function POST(request: Request) {
@@ -82,6 +88,18 @@ export async function POST(request: Request) {
       );
     }
 
+    const requestId = getNewsletterRequestId({
+      body: requestBody,
+      headerValue: request.headers.get('idempotency-key'),
+    });
+
+    if (!requestId) {
+      return Response.json(
+        { error: 'requestId is required', retrySafe: true },
+        { status: 400 }
+      );
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     const audienceId = process.env.RESEND_AUDIENCE_ID;
 
@@ -94,43 +112,69 @@ export async function POST(request: Request) {
     }
 
     const resend = new Resend(apiKey);
-    const createResponse = await resend.broadcasts.create({
-      audienceId,
-      from: EMAIL_FROM,
-      subject,
-      html: emailHtml,
-      send: true,
-    });
+    const sendResult = await runExclusiveNewsletterOperation(
+      requestId,
+      async () => {
+        const existingBroadcastId = await findBroadcastIdByName(
+          async (cursor) => {
+            const listed = await resend.broadcasts.list(
+              cursor ? { after: cursor, limit: 100 } : { limit: 100 }
+            );
 
-    if (createResponse.error) {
-      console.error('Error creating broadcast:', createResponse.error);
-      return Response.json(
-        {
-          error: 'Failed to create broadcast',
-          details: createResponse.error,
-          retrySafe: false,
-        },
-        { status: 500 }
-      );
-    }
+            if (listed.error || !listed.data) {
+              throw new Error('Failed to list broadcasts');
+            }
 
-    const broadcastId = createResponse.data.id;
+            return {
+              items: listed.data.data.map((item) => ({
+                id: item.id,
+                name: item.name,
+              })),
+              hasMore: listed.data.has_more,
+            };
+          },
+          requestId
+        );
 
-    if (!broadcastId) {
-      return Response.json(
-        {
-          error: 'Failed to create broadcast',
-          details: 'Missing broadcast id from Resend',
-          retrySafe: false,
-        },
-        { status: 500 }
-      );
-    }
+        if (existingBroadcastId) {
+          return { broadcastId: existingBroadcastId, reused: true };
+        }
+
+        const createOptions: ResendRequestOptions = {
+          idempotencyKey: requestId,
+        };
+        const createResponse = await resend.broadcasts.create(
+          {
+            audienceId,
+            from: EMAIL_FROM,
+            subject,
+            html: emailHtml,
+            name: requestId,
+            send: true,
+          },
+          createOptions
+        );
+
+        if (createResponse.error) {
+          throw new Error('Failed to create broadcast');
+        }
+
+        const broadcastId = createResponse.data.id;
+
+        if (!broadcastId) {
+          throw new Error('Missing broadcast id from Resend');
+        }
+
+        return { broadcastId, reused: false };
+      }
+    );
 
     return Response.json(
       {
-        message: 'Newsletter broadcast sent successfully',
-        broadcastId,
+        message: sendResult.reused
+          ? 'Newsletter broadcast already sent'
+          : 'Newsletter broadcast sent successfully',
+        broadcastId: sendResult.broadcastId,
         postsCount: resolvedPosts.length,
       },
       { status: 200 }

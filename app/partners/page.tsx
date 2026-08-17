@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import BackLink from '#/components/back-link';
 import StructuredData from '#/components/structured-data';
 import { ArrowUpRightIcon } from '#/components/icons';
-import { getPublicBaseUrl } from '#/lib/site';
+import { createPageOpenGraph, getPublicBaseUrl } from '#/lib/site';
 
 interface ClientEntry {
   name: string;
@@ -41,11 +41,14 @@ const pastClients: ClientEntry[] = [
   },
 ];
 
+const title = 'Partners';
+const description =
+  'A running list of customers and collaborators across past, current, and future work.';
+
 export const metadata: Metadata = {
-  title: 'Partners',
-  description:
-    'A running list of customers and collaborators across past, current, and future work.',
-  openGraph: { url: `${getPublicBaseUrl()}/partners` },
+  title,
+  description,
+  openGraph: createPageOpenGraph({ title, description, path: '/partners' }),
   alternates: { canonical: `${getPublicBaseUrl()}/partners` },
 };
 

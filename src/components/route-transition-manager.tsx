@@ -57,14 +57,17 @@ export default function RouteTransitionManager() {
 
     const direction = getTransitionDirection({ fromIndex, toIndex: index });
     const root = document.documentElement;
+    root.dataset.routeTransition = direction;
     root.dataset.routeTransitionFallback = direction;
 
     const cleanupTimer = window.setTimeout(() => {
+      delete root.dataset.routeTransition;
       delete root.dataset.routeTransitionFallback;
     }, CLEANUP_DELAY_MS);
 
     return () => {
       window.clearTimeout(cleanupTimer);
+      delete root.dataset.routeTransition;
       delete root.dataset.routeTransitionFallback;
     };
   }, [pathname]);
