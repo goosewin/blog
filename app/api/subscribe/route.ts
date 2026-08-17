@@ -52,16 +52,16 @@ export async function POST(request: Request) {
     }
 
     const resend = new Resend(apiKey);
-    const requestOptions: ResendRequestOptions = {
+    const createResendTimeout = (): ResendRequestOptions => ({
       signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
-    };
+    });
 
     const createContactResponse = await resend.contacts.create(
       {
         email,
         audienceId,
       },
-      requestOptions
+      createResendTimeout()
     );
 
     if (createContactResponse.error) {
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
         subject: 'Thanks for subscribing to my blog!',
         html: emailHtml,
       },
-      requestOptions
+      createResendTimeout()
     );
 
     if (welcomeEmailResponse.error) {
