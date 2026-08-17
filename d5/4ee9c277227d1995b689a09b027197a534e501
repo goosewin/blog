@@ -1,0 +1,95 @@
+app/page.tsx
+  s_d341e70428b654::t_3cc7b1680108eb 74
+  s_bae46e852e307b::t_3493e07418ddd3 89-93,98-102
+src/lib/rate-limit.test.ts
+  s_bae46e852e307b::t_f9c98817ce3564 1-22
+src/components/blog-post-list.tsx
+  s_d341e70428b654::t_2db85cb8ac5eb7 34
+src/lib/newsletter-operations.test.ts
+  s_d341e70428b654::t_85c6920d715dab 1-26,35-61
+  s_bae46e852e307b::t_3493e07418ddd3 27-34
+app/blog/[slug]/page.tsx
+  s_d341e70428b654::t_6cc289aa9cf216 19-20
+  s_d341e70428b654::t_753f741fec4b21 151
+  s_d341e70428b654::t_e80920fcfbc106 184
+src/components/not-found-page.tsx
+  s_d341e70428b654::t_b4c8f5a727a7d4 90
+next.config.ts
+  s_d341e70428b654::t_92738c2168ca86 5-7,12-13
+app/blog/page.tsx
+  s_d341e70428b654::t_48d4bf3a4d49e7 7-10,13-15
+app/partners/page.tsx
+  s_d341e70428b654::t_4b89ec12b02476 44-47,49-51
+  s_d341e70428b654::t_62c38dad16fc19 5
+src/components/route-transition-manager.tsx
+  s_d341e70428b654::t_8cb1ebd46664b2 60,64,70
+src/components/back-link.tsx
+  s_d341e70428b654::t_02fbfe1f17738a 9
+src/lib/resend-request.ts
+  s_bae46e852e307b::t_c4a8b73fb9ae4c 1-8
+src/lib/newsletter-operations.ts
+  s_d341e70428b654::t_8fb20304934ca3 1-58
+scripts/enforce-pnpm-policy.ts
+  s_bae46e852e307b::t_a8f8d1aaa7ef51 147-151
+  s_d341e70428b654::t_4864c397012e67 4
+  s_d341e70428b654::t_b185c95dc99f34 152-154
+src/components/page-layout.tsx
+  s_d341e70428b654::t_65307c520246c9 2,15
+app/api/send-newsletter/route.ts
+  s_d341e70428b654::t_691f04c3727046 7,11-15,91-102,115-117,123,127,138-170,174-177
+  s_bae46e852e307b::t_3493e07418ddd3 118-122,124-126,128-137
+src/lib/site.ts
+  s_d341e70428b654::t_b386ab5f770a63 1-2
+  s_d341e70428b654::t_302a37bca3fde4 16-37
+scripts/send-newsletter.sh
+  s_d341e70428b654::t_a8dbfacea47552 124-129,132,134
+src/lib/newsletter.ts
+  s_bae46e852e307b::t_023d630265d7fe 1
+  s_d341e70428b654::t_bc4574603e405a 54-71
+src/lib/rate-limit.ts
+  s_d341e70428b654::t_f654d1e8095c64 1-31
+package.json
+  s_d341e70428b654::t_0fbc6cc74f36f7 47
+app/api/subscribe/route.ts
+  s_d341e70428b654::t_7cb844f06b560e 38-40
+  s_d341e70428b654::t_bb1a4b01aafa98 5-7,16-17,55-65,81-89
+  s_bae46e852e307b::t_9233759db1d8ed 41-42
+src/components/main-view-transition.tsx
+  s_d341e70428b654::t_1e943232830993 1-27
+app/about/page.tsx
+  s_d341e70428b654::t_661cc18aac72fb 3,5,10,12
+src/lib/request-ip.test.ts
+  s_bae46e852e307b::t_774267fcaf3a59 1-23,27-28
+  s_bae46e852e307b::t_3493e07418ddd3 24-26
+src/lib/request-ip.ts
+  s_d341e70428b654::t_f9bc7b65d1efd9 1-10
+src/lib/newsletter.test.ts
+  s_bae46e852e307b::t_3314a79f0f49fe 36-51
+  s_bae46e852e307b::t_7abebb8ddd30d2 4
+src/lib/route-transition.ts
+  s_d341e70428b654::t_a6755b0f8ef88d 14-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "d54ee9c277227d1995b689a09b027197a534e501",
+  "prompts": {},
+  "sessions": {
+    "s_bae46e852e307b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "a73e2122-1f35-4a6f-9b4a-68e3720fa5b5",
+        "model": "grok-4.6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    },
+    "s_d341e70428b654": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "74b8e2f8-f858-4f5e-9593-1e47911ba959",
+        "model": "grok-4.6"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
