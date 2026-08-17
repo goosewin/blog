@@ -40,7 +40,7 @@ export default function BlogPostList({
             {showDate && (
               <time
                 dateTime={post.date}
-                className="whitespace-nowrap pt-1 font-mono text-xs text-gray-500 dark:text-gray-400"
+                className="whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"
               >
                 {formatPostDate(post.date, 'short')}
               </time>

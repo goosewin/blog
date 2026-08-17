@@ -81,7 +81,7 @@ export default async function Home() {
         <BlogPostList posts={latestPosts} />
       </section>
 
-      <section className="space-y-5">
+      <section className="space-y-8">
         <h2 className="mb-0 font-mono text-sm text-gray-500 dark:text-gray-400">
           <span className="text-orange">02</span> Elsewhere
         </h2>
