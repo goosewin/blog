@@ -14,6 +14,11 @@ export default function MainViewTransition({
         'route-back': 'auto',
         default: 'none',
       }}
+      update={{
+        'route-forward': 'auto',
+        'route-back': 'auto',
+        default: 'none',
+      }}
       exit={{
         'route-forward': 'auto',
         'route-back': 'auto',

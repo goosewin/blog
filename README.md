@@ -38,11 +38,11 @@ Requires `jq`, `curl`, `SITE_URL`, and `NEWSLETTER_SECRET`.
 Create `.env.local` from `.env.example`.
 
 ```env
-NEXT_PUBLIC_BASE_URL=https://goose.dev
+NEXT_PUBLIC_BASE_URL=https://www.goose.dev
 RESEND_AUDIENCE_ID=
 RESEND_API_KEY=
 NEWSLETTER_SECRET=
-SITE_URL=https://goose.dev
+SITE_URL=https://www.goose.dev
 ```
 
 `NEXT_PUBLIC_` values are public. Keep secrets server-only.

@@ -2,7 +2,10 @@
 
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { getTransitionDirection } from '../lib/route-transition';
+import {
+  getTransitionDirection,
+  getViewTransitionTypes,
+} from '../lib/route-transition';
 
 const CLEANUP_DELAY_MS = 500;
 
@@ -27,6 +30,12 @@ function writeHistoryIndex(index: number) {
       : { [HISTORY_INDEX_KEY]: index };
 
   window.history.replaceState(nextState, '');
+}
+
+function clearRouteTransition(root: HTMLElement) {
+  delete root.dataset.routeTransition;
+  delete root.dataset.routeTransitionFallback;
+  delete root.dataset.routeTransitionType;
 }
 
 export default function RouteTransitionManager() {
@@ -56,19 +65,23 @@ export default function RouteTransitionManager() {
     if (isFirstCommit || !pathChanged) return;
 
     const direction = getTransitionDirection({ fromIndex, toIndex: index });
+    const nativeTypes = getViewTransitionTypes(direction);
     const root = document.documentElement;
     root.dataset.routeTransition = direction;
     root.dataset.routeTransitionFallback = direction;
+    if (nativeTypes[0]) {
+      root.dataset.routeTransitionType = nativeTypes[0];
+    } else {
+      delete root.dataset.routeTransitionType;
+    }
 
     const cleanupTimer = window.setTimeout(() => {
-      delete root.dataset.routeTransition;
-      delete root.dataset.routeTransitionFallback;
+      clearRouteTransition(root);
     }, CLEANUP_DELAY_MS);
 
     return () => {
       window.clearTimeout(cleanupTimer);
-      delete root.dataset.routeTransition;
-      delete root.dataset.routeTransitionFallback;
+      clearRouteTransition(root);
     };
   }, [pathname]);
 

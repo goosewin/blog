@@ -10,8 +10,8 @@ steps:
     image: node:24.18.1-bookworm-slim@sha256:a09aabc645e86e81e23dab78e0c0f2eaa233cab4277c7188232181a1a8bd5d39
     environment:
       CI: 'true'
-      SITE_URL: https://goose.dev
-      NEXT_PUBLIC_BASE_URL: https://goose.dev
+      SITE_URL: https://www.goose.dev
+      NEXT_PUBLIC_BASE_URL: https://www.goose.dev
       NEXT_TELEMETRY_DISABLED: '1'
     commands:
       - corepack enable

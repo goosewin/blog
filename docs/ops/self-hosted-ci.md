@@ -42,7 +42,7 @@ the previous commit explicitly if a CI checkout is missing it.
 woodpecker-cli repo secret add \
   --repository goosewin/blog \
   --name site_url \
-  --value https://goose.dev \
+  --value https://www.goose.dev \
   --event push
 
 woodpecker-cli repo secret add \
