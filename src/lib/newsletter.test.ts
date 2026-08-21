@@ -17,9 +17,9 @@ describe('newsletter validation', () => {
   it('accepts current slugs payloads and legacy posts payloads', () => {
     expect(
       getRequestedNewsletterSlugs({
-        slugs: ['leaving-san-francisco', ' leaving-san-francisco '],
+        slugs: ['first-post', ' first-post '],
       })
-    ).toEqual(['leaving-san-francisco']);
+    ).toEqual(['first-post']);
     expect(
       getRequestedNewsletterSlugs({
         posts: [{ slug: 'devrel-the-goose-way' }],

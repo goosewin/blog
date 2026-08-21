@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vite-plus/test';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { getAllBlogPosts, getBlogPost } from './blog';
+import { UNPUBLISHED_BLOG_SLUGS } from './gone';
 
 const getPostFileSlugs = async () => {
   const filenames = await readdir(join(process.cwd(), 'posts'));
@@ -30,6 +31,10 @@ describe('blog metadata', () => {
 
     expect(posts.length).toBeGreaterThan(0);
     expect([...slugs].sort()).toEqual(await getPostFileSlugs());
+
+    for (const slug of UNPUBLISHED_BLOG_SLUGS) {
+      expect(slugs).not.toContain(slug);
+    }
 
     for (const post of posts) {
       expect(post.slug).toMatch(/^[a-z0-9-]+$/);
