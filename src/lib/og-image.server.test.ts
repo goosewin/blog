@@ -37,7 +37,7 @@ describe('Open Graph image generation', () => {
   });
 
   it('returns materialized PNG bytes for a blog post image', async () => {
-    const post = await getBlogPost('leaving-san-francisco');
+    const post = await getBlogPost('devrel-the-goose-way');
 
     await expectPngResponse(await createBlogPostOgImageResponse(post));
   });
