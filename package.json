@@ -45,7 +45,7 @@
     "tsx": "^4.23.12",
     "typescript": "^7.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@0.2.9",
-    "vite-plus": "0.2.9"
+    "vite-plus": "1.1.0"
   },
   "engines": {
     "node": ">=24.18.0"
