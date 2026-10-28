@@ -8,13 +8,13 @@ export const metadata = {
 
 Since 1950 the Turing test has asked whether a machine can pass as human. In
 2025 one did. In a three-party test, people chatted with a human and an AI at
-the same time and
-[picked GPT-4.5 as the human 73% of the time](https://arxiv.org/abs/2503.23674),
-more often than they picked the actual person.
+the same time, and when GPT-4.5 was prompted to play a humanlike persona they
+[picked it as the human 73% of the time](https://arxiv.org/abs/2503.23674), more
+often than they picked the actual person. Without that prompt it was 36%.
 
 <Image
   src="/images/ai-vessels-turing-test.png"
-  alt="Bar chart: in a three-party Turing test, people picked GPT-4.5 as the human 73% of the time, LLaMa-3.1-405B 56%, ELIZA 23% and GPT-4o 21%, against 50% chance."
+  alt="Bar chart: in a three-party Turing test, people picked GPT-4.5 as the human 73% of the time when it was prompted with a humanlike persona (36% without it), LLaMa-3.1-405B with the same prompt 56%, ELIZA 23% and GPT-4o 21%, against 50% chance."
   width={1536}
   height={897}
 />
@@ -56,7 +56,8 @@ two models talking through two people.
 ## Model collapse
 
 A [2024 paper in Nature](https://www.nature.com/articles/s41586-024-07566-y)
-showed what happens when models are trained on the output of earlier models. The
+showed what happens when each new model is trained indiscriminately on the
+output of earlier ones, generation after generation. Under those conditions the
 models collapse. Rare cases in the tails disappear first, and after enough
 generations the output narrows toward a single average.
 
