@@ -1,0 +1,20 @@
+posts/ai-vessels.mdx
+  s_528eb62fcd4aba::t_3e483b0a794dad 7,10-16
+  s_528eb62fcd4aba::t_6778f6a33195df 17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7977cd73fcaa6646e7be07aaaf04928587866a81",
+  "prompts": {},
+  "sessions": {
+    "s_528eb62fcd4aba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1d24e841-3128-4d30-a766-068ed155d3a5",
+        "model": "unknown"
+      },
+      "human_author": "Dan Goosewin <dan@goosewin.com>"
+    }
+  }
+}
