@@ -3,24 +3,19 @@ export const metadata = {
   title: 'We\'re All AI Vessels Now',
   date: '2026-10-27',
   description:
-    'A chatbot passed the Turing test in 2025. Now the question is whether people still pass as human.',
+    'A chatbot passing the Turing test is old news. The question now is whether people still pass as human.',
 };
 
-Since 1950 the Turing test has asked whether a machine can pass as human. In
-2025 one did. In a three-party test, people chatted with a human and an AI at
-the same time, and when GPT-4.5 was prompted to play a humanlike persona they
-[picked it as the human 73% of the time](https://arxiv.org/abs/2503.23674), more
-often than they picked the actual person. Without that prompt it was 36%.
+Since 1950 the Turing test has asked whether a machine can pass as human. This
+May, PNAS published the answer. In a three-party test, people chatted with a
+human and an AI at the same time, and when the AI was told to play a humanlike
+persona they
+[picked it as the human 73% of the time](https://www.pnas.org/doi/10.1073/pnas.2524472123),
+more often than they picked the actual person. That AI was GPT-4.5, which OpenAI
+had pulled from its API ten months before the paper came out.
 
-<Image
-  src="/images/ai-vessels-turing-test.png"
-  alt="Bar chart: in a three-party Turing test, people picked GPT-4.5 as the human 73% of the time when it was prompted with a humanlike persona (36% without it), LLaMa-3.1-405B with the same prompt 56%, ELIZA 23% and GPT-4o 21%, against 50% chance."
-  width={1536}
-  height={897}
-/>
-
-What I keep thinking about is the reverse test: whether people still pass as
-human once a model is making their decisions.
+A machine passing as human is old news. The test I care about runs the other
+way: whether people still pass as human once a model is making their decisions.
 
 People are asking ChatGPT, Gemini, Claude and Grok whether to take the job,
 whether to move, what to text their partner after a fight, whether to put money
@@ -43,50 +38,70 @@ before they check their own judgment, and then act on it.
 
 Baudrillard described an image passing through stages. First it reflects
 reality, then it distorts it, then it hides that the reality is gone, and
-finally it refers to nothing at all. Chatbots already distort. OpenAI
-[rolled back a GPT-4o update](https://openai.com/index/sycophancy-in-gpt-4o/) in
-April 2025 because it had become too agreeable, and that was only the version
-bad enough for people to notice. An advisor you see once a month is an advisor.
-One you ask a hundred times a day, who rarely pushes back, is a steering wheel.
-
-They also hide the absence. A text a model wrote for you after a fight still
-sounds like you, and there is no way to know how many arguments right now are
-two models talking through two people.
-
-## Model collapse
-
-A [2024 paper in Nature](https://www.nature.com/articles/s41586-024-07566-y)
-showed what happens when each new model is trained indiscriminately on the
-output of earlier ones, generation after generation. Under those conditions the
-models collapse. Rare cases in the tails disappear first, and after enough
-generations the output narrows toward a single average.
+finally it refers to nothing at all. Chatbots already distort. In March a
+Stanford team
+[reported in Science](https://www.science.org/doi/10.1126/science.aec8352) that
+11 leading models took the user's side 49% more often than people did. In Reddit
+posts where the crowd had decided the poster was in the wrong, the models still
+sided with the poster 51% of the time. People who talked to the agreeable models
+came away more sure they were right, less willing to apologize and more likely
+to come back for advice. An advisor you see once a month is an advisor. One you
+ask a hundred times a day, who rarely pushes back, is a steering wheel.
 
 <Image
-  src="/images/ai-vessels-model-collapse.png"
-  alt="Schematic of model collapse: the distribution of outputs narrows from generation 0 to generation 10 as the rare outputs in the tails disappear."
+  src="/images/ai-vessels-sycophancy.png"
+  alt="Bar chart: across 11 chatbots, the models backed the user in 51% of Reddit AITA posts where the crowd had judged the user in the wrong, and in 47% of cases where the user described a harmful or illegal act. Across all prompts they backed the user 49% more often than people did."
   width={1536}
-  height={934}
+  height={670}
 />
 
+They also hide the absence. The study's lead author got interested in the
+problem after hearing that undergraduates were having chatbots
+[draft their breakup texts](https://techcrunch.com/2026/03/28/stanford-study-outlines-dangers-of-asking-ai-chatbots-for-personal-advice/).
+A text a model wrote for you after a fight still sounds like you, and there is
+no way to know how many arguments right now are two models talking through two
+people.
+
+## Model collapse in people
+
+AI researchers have a name for what happens when each new model is trained
+indiscriminately on the output of earlier ones, generation after generation:
+model collapse. Rare cases in the tails disappear first, and after enough
+generations the output narrows toward a single average.
+
 The same loop now runs through people.
-[ChatGPT alone has over a billion monthly users](https://techcrunch.com/2026/06/16/chatgpts-market-share-slips-below-50-for-first-time/).
+[ChatGPT alone has 1.2 billion weekly users](https://www.engadget.com/2271985/openai-dev-day-live-blog-chatgpt-news/).
 The models learned from us, we take their answers, and the next models will
 learn from whatever we write after that.
 
 <Image
-  src="/images/ai-vessels-chatbot-users.png"
-  alt="Bar chart of monthly users as reported in June 2026: ChatGPT over 1 billion, Gemini 662 million, Claude 245 million."
+  src="/images/ai-vessels-chatgpt-users.png"
+  alt="Line chart of ChatGPT weekly users as announced by OpenAI: 100 million in November 2023, 300 million in December 2024, 400 million in February 2025, 500 million in March 2025, 700 million in August 2025, 800 million in October 2025 and 1.2 billion in September 2026."
   width={1536}
-  height={748}
+  height={1029}
 />
 
-In a
-[2024 study in Science Advances](https://www.science.org/doi/10.1126/sciadv.adn5290),
-writers who got story ideas from an LLM wrote stories that judges rated as more
-creative and better written, and those stories were more similar to each other
-than stories written without help. Baudrillard's last stage is a copy with no
-original, and that's where a person ends up after years of never overruling the
-model.
+In August a USC team
+[published what that loop does to writing](https://www.nature.com/articles/s41562-026-02550-0)
+in Nature Human Behaviour. They analyzed more than 880,000 texts. In Reddit
+stories, local news and arXiv papers, the variety in how complex people write
+started shrinking after ChatGPT came out. When the researchers had models
+rewrite human texts, the meaning survived and the variance in complexity dropped
+by 21% to 50%, and the rewrites amplified the dominant patterns and suppressed
+the rest.
+
+<Image
+  src="/images/ai-vessels-writing-variance.png"
+  alt="Schematic dot plot: each dot is a writer placed by how complex their writing is. After LLM rewrites that cut the variance by 21% and by 50%, the dots pull toward the middle and the simplest and most complex writers disappear first."
+  width={1536}
+  height={886}
+/>
+
+The paper's first author, Zhivar Sourati, has described people accepting model
+suggestions that seem good enough instead of writing their own, which
+[gradually shifts agency from the user to the model](https://dornsife.usc.edu/news/stories/ai-may-be-making-us-think-and-write-more-alike/).
+Baudrillard's last stage is a copy with no original, and that's where a person
+ends up after years of never overruling the model.
 
 ## Grok Bot, Muse and dots
 
