@@ -9,9 +9,17 @@ const size = {
   height: 630,
 };
 
+interface OgFont {
+  name: string;
+  data: Buffer;
+  weight: 400 | 700;
+}
+
 let iconSrcPromise: Promise<string> | null = null;
+let fontsPromise: Promise<OgFont[]> | null = null;
 const imageSrcCache = new Map<string, Promise<string | null>>();
 const publicDir = resolve(process.cwd(), 'public');
+const fontsDir = resolve(process.cwd(), 'src/assets/fonts');
 
 function getPublicAssetUrl(publicPathname: string) {
   return new URL(publicPathname, `${getPublicBaseUrl()}/`).toString();
@@ -30,6 +38,20 @@ async function getIconSrc(): Promise<string> {
   }
 
   return iconSrcPromise;
+}
+
+// Satori cannot read the site's WOFF2 variable fonts, so these are static TTF
+// cuts of public/fonts/*-variable.woff2 made with fontTools' varLib.instancer.
+function getFonts(): Promise<OgFont[]> {
+  fontsPromise ??= Promise.all([
+    readFile(join(fontsDir, 'nunito-700.ttf')),
+    readFile(join(fontsDir, 'jetbrains-mono-400.ttf')),
+  ]).then(([nunitoBold, jetBrainsMono]) => [
+    { name: 'Nunito', data: nunitoBold, weight: 700 },
+    { name: 'JetBrains Mono', data: jetBrainsMono, weight: 400 },
+  ]);
+
+  return fontsPromise;
 }
 
 function resolvePublicImagePath(pathname: string) {
@@ -132,12 +154,14 @@ export async function createSiteOgImageResponse() {
 export async function createBlogPostOgImageResponse(post: BlogPost | null) {
   const iconSrc = await getIconSrc();
   const postImageSrc = post?.image ? await getImageSrc(post.image) : null;
+  const fonts = await getFonts();
 
   return materializePngResponse(
     new ImageResponse(
       <div
         // react-doctor-disable-next-line react-doctor/no-inline-exhaustive-style -- @vercel/og (satori) supports inline styles only
         style={{
+          fontFamily: 'Nunito',
           fontSize: 32,
           background: '#232323',
           color: '#ffffff',
@@ -203,14 +227,21 @@ export async function createBlogPostOgImageResponse(post: BlogPost | null) {
             position: 'relative',
           }}
         >
-          <p style={{ fontSize: 24, opacity: 0.8 }}>
+          <p
+            style={{ fontFamily: 'JetBrains Mono', fontSize: 24, opacity: 0.8 }}
+          >
             Collection of thoughts by Dan Goosewin
           </p>
-          <p style={{ fontSize: 24, opacity: 0.8 }}>Read more at goose.dev</p>
+          <p
+            style={{ fontFamily: 'JetBrains Mono', fontSize: 24, opacity: 0.8 }}
+          >
+            Read more at goose.dev
+          </p>
         </div>
       </div>,
       {
         ...size,
+        fonts,
       }
     )
   );
